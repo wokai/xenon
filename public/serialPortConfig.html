@@ -1,0 +1,81 @@
+<div class="card shadow-sm p-2">
+
+
+<div class="card-body">
+  <!--- Choose path of serial port --->
+  <div class="text-secondary" style="font-size:small;">Port</div>
+  <select class="form-control" ng-model="current.path" ng-options="p.path for p in paths">
+  </select>
+</div>
+
+<div class="card-body border-top">
+  <!--- Choose Dräger device which loads appropriate port parameter defaults--->
+  <div class="text-secondary" style="font-size:small;">Device</div>
+  <select class="form-control" ng-model="device" ng-options="d.name for d in devices" ng-change="onDeviceUpdate()">
+  </select>
+</div>
+
+<div class="card-body border-top">
+
+  <div class="row">
+    <div class="col-6">
+      <!--- Select baud rate --->      
+      <div class="text-secondary mt-2" style="font-size:small;">Baud rate</div>
+      <select class="form-control" ng-model="current.baudRate" ng-options="p for p in config.select.baudRate">
+      </select>  
+    </div>
+    
+    <div class="col-6">
+      <!--- Select Data bits --->
+      <div class="text-secondary mt-2" style="font-size:small;">Data bits</div>
+      <select class="form-control" ng-model="current.dataBits" ng-options="p for p in config.select.dataBits">
+      </select>
+    </div>
+  </div><!--- row --->
+
+
+  <div class="row">
+    <div class="col-6">
+      <!--- Select Parity --->
+      <div class="text-secondary mt-2" style="font-size:small;">Parity</div>
+      <select class="form-control" ng-model="current.parity" ng-options="p for p in config.select.parity">
+      </select>
+    </div>
+    <div class="col-6">
+      <!--- Select StopBits --->
+      <div class="text-secondary mt-2" style="font-size:small;">Stop Bits</div>
+      <select class="form-control" ng-model="current.stopBits" ng-options="p for p in config.select.stopBits">
+      </select>
+    </div>
+  </div>
+
+
+</div><!--- card-body --->
+
+<!--- Button row ---> 
+<div class="card-body border-top">
+  <div class="row">
+    <div class="btn-group" role="group">
+    <button class="btn btn-primary" ng-click="initialisePort()" ng-disabled="portStatus.open">
+      Init
+    </button>
+    <button class="btn btn-primary" ng-click="setParams()" ng-disabled="!portStatus.open">
+      Set
+    </button>
+    <button class="btn btn-success" ng-click="openPort()" ng-disabled="portStatus.open">
+      Open
+    </button>
+    <button class="btn btn-warning" ng-click="stopCom()" ng-disabled="!portStatus.open">
+      Stop
+    </button>
+    <button class="btn btn-secondary" ng-click="closePort()" ng-disabled="!portStatus.open">
+      Close
+    </button>
+    </div>
+  </div>
+</div>
+
+  
+</div>
+
+

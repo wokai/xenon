@@ -1,0 +1,12 @@
+<div class="card shadow-sm">
+  <div class="btn-group" role="group">
+    <button class="btn btn-success" ng-click="openPort()" ng-disabled="portStatus.open">
+      Open
+    </button>
+    <button class="btn btn-warning" ng-click="stopCom()" ng-disabled="!portStatus.open">
+      Stop
+    </button>
+  </div>
+</div>
+
+

@@ -1,0 +1,190 @@
+'use strict';
+/*******************************************************************************
+ * The MIT License
+ * Copyright 2021, Wolfgang Kaisers
+ * Permission is hereby granted, free of charge, to any person obtaining a 
+ * copy of this software and associated documentation files (the "Software"), 
+ * to deal in the Software without restriction, including without limitation 
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+ * and/or sell copies of the Software, and to permit persons to whom the 
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included 
+ * in all copies or substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+ * USE OR OTHER DEALINGS IN THE SOFTWARE.
+ ******************************************************************************/
+
+const config     = require('../config/medibus');
+const win        = require('../logger/logger');
+const status     = require('./statusController');
+const responses  = require('../model/medibus/responses');
+const commands   = require('../model/medibus/commands');
+const { port }   = require('./portController');
+
+
+/// //////////////////////////////////////////////////////////////////////// ///
+/// Rejecting a promise, when not resolved within a given timespan
+///
+/// Dräger RS 232 MEDIBUS (Revision Level 6.00): Time-out (p.5)
+/// Any pause in the data flow exceeding 3 seconds leads to a time-out.
+/// ////////////////////////////////////////////////////////////////////// ///
+
+class CommandTimeout {
+  
+  #msg
+  #promise
+  #reject
+  #resolve
+  
+  constructor(msg) {
+    
+    this.#msg = msg;
+    this.#promise = new Promise((resolve, reject) => {
+        
+      setTimeout(() => {
+          reject({ status: 'Timeout', message: msg })
+      }, config.time.timeout); /// Limit: 3 sec
+      
+      this.#resolve = resolve;
+      this.#reject = reject;
+    });
+  }
+  
+  /// ////////////////////////////////////////////////////////////////////// ///
+  /// The promise is the only connection to downstream processing of reply
+  /// to a pending command:
+  /// Either, 
+  /// ////////////////////////////////////////////////////////////////////// ///
+  
+  get promise() { return this.#promise; }
+  
+  /// ////////////////////////////////////////////////////////////////////// ///
+  /// Will be used only internally inside ProtocolLayer object:
+  /// Upon reception of a message, ProtocolLayer will call this method
+  /// ////////////////////////////////////////////////////////////////////// ///
+  onReply = (msg) => {
+    if(msg.hexCode == this.#msg.hexCode){
+      win.def.log({ level: 'verbose', file: 'protocolController', func: 'CommandTimeout.onReply', message: `Resolving reply: ID ${msg.id} | Code ${msg.code}`});
+      this.#resolve(msg);
+    } else {
+      /// This may be a NAK ...
+      this.#reject(msg);
+      win.def.log({ level: 'verbose', file: 'protocolController', func: 'CommandTimeout.onReply', message: `Non resolving reply: ID ${msg.id} | Code ${msg.code}`});
+    }
+  }
+  
+  /// Required here in order to re-throw Promise rejection
+  sendCommand = () => {
+    port.sendMessage(this.#msg)
+      .then((res) => { /** Should be 'OK' **/ })
+      .catch((err) => { this.#reject({ id: 0, code: err }); });
+  }
+  
+}
+
+
+/// //////////////////////////////////////////////////////////////////////// ///
+/// Manages part of Medibus communication requirements not covered by
+/// EventLoop:
+/// - Initialisation and stopping of commmunication
+/// - Sending and receiving NOP commands at appropriate timepoints
+/// - Sending Commands and receiving appropriate replies
+///
+/// Intermediate between EventLoop and MessageLayer
+/// //////////////////////////////////////////////////////////////////////// ///
+
+
+class ProtocolController {
+  
+  #port         /// PortController
+  #cmdTimeout   
+  
+  constructor() {
+    this.#cmdTimeout = null;
+  }
+
+  /// Retry | recovery strategy ?
+  initCom = () => {
+    if(status.controller.listen) {
+      port.sendMessage(responses.icc)
+        .then(res => {
+          /// ////////////////////////////////////////////////////////////// ///
+          /// Communication is initialized after having received a response to a
+          /// transmitted ICC (p.4).
+          /// Setting status triggers first action of messageController
+          /// ////////////////////////////////////////////////////////////// ///
+          status.controller.setStatus(status.status.initialising);
+          status.controller.startEpisode();
+        })
+        .catch(err => {
+          win.def.log({ level: 'warn', file: 'protocolController', func: 'initCom', message: `Port closed.`});
+        })
+    }
+  }
+
+    
+  /// ////////////////////////////////////////////////////////////////////// ///
+  /// Send command and receive a reply via Promise
+  /// ////////////////////////////////////////////////////////////////////// ///
+  
+  /// EventLoop -> react catches arriving message
+  receiveMessage = (msg) => {
+    win.def.log({ level: 'debug', file: 'protocolController', func: 'receiveMessage', message: `Id: ${msg.id} | Code: ${msg.code}`});
+    if(this.#cmdTimeout){ 
+      this.#cmdTimeout.onReply(msg);
+    } 
+  }
+  
+  /// MessageLayer sends Messages and receives replies via the same function
+  
+  /// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ///
+  /// ToDo: A Timeout is unexpected and should therefore trigger
+  /// a retry or a schutdown ....
+  /// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ///
+  async sendCommand(msg) {
+    this.#cmdTimeout = new CommandTimeout(msg);
+    this.#cmdTimeout.sendCommand();
+    return this.#cmdTimeout.promise
+  }
+  
+  
+  /// ////////////////////////////////////////////////////////////////////// ///
+  /// Terminate Medibus communication via STOP command
+  /// ////////////////////////////////////////////////////////////////////// ///
+  
+  /// Called directly from inside EventLoop (React) or when this.stop fails
+  shutdown = () => {
+    port.close()
+      .then(res => {
+        win.def.log({ level: 'verbose', file: 'protocolController', func: 'shutdown', message: `${res.text} | Status: ${res.status.openText} | Path: ${res.status.path.path}`});
+      })
+      .catch(err => {
+        win.def.log({ level: 'warn', file: 'protocolController', func: 'shutdown', message: err.message });
+      })
+  }
+  
+  /// Will be called by NextMessage in order to send a synchronised STOP command
+  stop = () => {
+    port.sendMessage(commands.stop)
+      .then((resp) => {
+        status.controller.setStatus(status.status.inactive);
+        win.def.log({ level: 'verbose', file: 'protocolController', func: 'stop', message: 'Sent STOP command'});
+      }).catch(err => {
+        this.shutdown();
+        win.def.log({ level: 'warn', file: 'protocolController', func: 'stop', message: err.message });
+      });
+  }
+  
+}
+
+const protocolController = new ProtocolController();
+
+module.exports = {
+  protocol : protocolController
+}

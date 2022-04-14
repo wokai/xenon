@@ -1,0 +1,173 @@
+<div class="card shadow-sm mt-2">
+
+  <div class="card-body bg-light">
+    <div class="row">
+      <div class="col-4">
+        Anae
+      </div>
+      <div class="col-4">
+        <small>{{ data.vent.time.date }}</small>
+      </div>
+      <div class="col-4">
+        <small>{{ data.vent.time.time }}</small>
+      </div>
+    </div>  <!--- row --->    
+    
+  </div>    <!--- card-body --->
+  
+  
+  <div class="card-body border-top">
+
+    <!---<param-limited param="data.vent.respiration.peak" label='P<sub>max</sub>' unit='mbar'></param-limited> -->
+    <div class="row">
+      <div class="col-4" parse-html='P<sub>Peak</sub>'></div>
+      <div class="col-5 fs-4">{{data.vent.respiration.peak}}</div>
+      <div class="col-3"><small>mbar</small></div>
+    </div>
+    
+    
+    <div class="row">
+      <div class="col-4" parse-html='P<sub>Plat</sub>'></div>
+      <div class="col-5 fs-4">{{data.vent.respiration.plateau}}</div>
+      <div class="col-3"><small>mbar</small></div>
+    </div>
+        
+    <div class="row">
+      <div class="col-4">PEEP</div>
+      <div class="col-5 fs-4">{{ data.vent.respiration.peep }}</div> 
+      <div class="col-3">mbar</div>         
+    </div>   
+    
+  </div>
+
+  <div class="card-body border-top">
+    <!--- <param-limited param="data.vent.gas.fio2" label='F<sub>i</sub>O<sub>2</sub>' unit='%'></param-limited>    -->
+    <div class="row">
+      <div class="col-4" parse-html='F<sub>i</sub>O<sub>2</sub>'></div>
+      <div class="col-5 fs-4">{{ data.vent.gas.fio2 }}</div>
+      <div class="col-3">%</div>
+    </div>
+    
+    
+    <div class="row">
+      <div class="col-4" parse-html='F<sub>e</sub>O<sub>2</sub>'></div>
+      <div class="col-5 fs-4">{{ data.vent.gas.feo2 }}</div>
+      <div class="col-3">%</div>
+    </div>
+    <div class="row">
+      <div class="col-4" parse-html='<small>O<sub>2</sub>-Uptake</small>'></div>
+      <div class="col-5 fs-4">{{ data.vent.gas.o2uptake }}</div>
+      <div class="col-3" style="font-size: x-small;">ml/min</div>
+    </div>
+  </div> <!--- card-body --->
+  
+  <div class="card-body border-top">
+    <!-- <param-limited param="data.vent.gas.feco2" label='F<sub>et</sub>CO<sub>2</sub>' unit='mmHg'></param-limited> -->
+    
+    <div class="row">
+      <div class="col-4" parse-html='F<sub>e</sub>CO<sub>2</sub>'></div>
+      <div class="col-5 fs-4">{{ data.vent.gas.feco2 }}</div>
+      <div class="col-3" style="font-size: x-small;">mmHg</div>
+    </div>
+    
+  </div>
+  
+  <div class="card-body border-top">
+    <!---<param-limited param="data.vent.respiration.minutevolume" label="MV" unit="l/min"></param-limited> -->
+    
+    <div class="row">
+      <div class="col-4">MV</div>
+      <div class="col-5">{{ data.vent.respiration.minutevolume }}</div>
+      <div class="col-3">l/min</div>
+    </div>
+    <div class="row">
+      <div class="col-4">Rate</div>
+      <div class="col-5">{{ data.vent.respiration.rate }}</div>
+      <div class="col-3">/min</div>
+    </div>
+    <div class="row">
+      <div class="col-4">Tidalvolume</div>
+      <div class="col-5">{{ data.vent.respiration.tidalvolume }}</div>
+      <div class="col-3">ml</div>
+    </div>
+  </div>
+    
+  
+  <div class="card-body border-top bg-light">
+    <div class="row">
+      <div class="col-4">MAC</div>
+      <div class="col-5">{{ data.vent.inhalation.mac }}</div>
+      <div class="col-3"></div>
+    </div>
+  </div>
+  
+  <div class="card-body border-top" ng-if="data.vent.inhalation.desflurane.insp">
+    <div class="row">
+      <div class="col-12">
+        Desflurane
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4" parse-html="F<sub>et</sub>"></div>
+      <div class="col-5">{{ data.vent.inhalation.desflurane.exp}}</div>
+      <div class="col-3">%</div>
+    </div>
+    <div class="row">
+      <div class="col-4">Cons</div>
+      <div class="col-5">{{ data.vent.inhalation.desflurane.cons }}</div>
+      <div class="col-3" style="font-size: x-small;">ml/min</div>
+    </div>
+  </div><!--- card-body --->
+  
+    <div class="card-body border-top" ng-if="data.vent.inhalation.isoflurane.insp">
+      <div class="row">
+        <div class="col-12">
+          Isoflurane
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4" parse-html="F<sub>et</sub>"></div>
+        <div class="col-5">{{ data.vent.inhalation.isoflurane.exp }}</div>
+        <div class="col-3">%</div>
+      </div>
+      <div class="row">
+        <div class="col-4">Cons</div>
+        <div class="col-5">{{ data.vent.inhalation.isoflurane.cons }}</div>
+        <div class="col-3" style="font-size: x-small;">ml/min</div>
+      </div>
+  </div><!--- card-body --->
+  
+  <div class="card-body border-top" ng-if="data.vent.inhalation.sevoflurane.insp">
+    <div class="row">
+      <div class="col-12">
+        Sevoflurane
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4" parse-html="F<sub>et</sub>"></div>
+      <div class="col-4">{{ data.vent.inhalation.sevoflurane.exp }}</div>
+      <div class="col-4">%</div>
+    </div>
+    <div class="row">
+      <div class="col-4">Cons</div>
+      <div class="col-4">{{ data.vent.inhalation.sevoflurane.cons }}</div>
+      <div class="col-4" style="font-size: x-small;">ml/min</div>
+    </div>
+  </div><!--- card-body --->
+  
+  <div class="card-body border-top bg-light">
+    <div class="row">
+      <div class="col-4">
+        <small>Compliance</small>
+      </div>
+      <div class="col-5">
+        {{ data.vent.patient.compliance }}
+      </div>
+      <div class="col-3" style="font-size: x-small;">
+        ml/mbar
+      </div>
+    </div>
+  </div>
+  
+
+</div> <!--- card --->

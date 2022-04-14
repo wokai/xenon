@@ -1,0 +1,69 @@
+<html>
+
+<head>
+  <title>Medibus</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <!--- See: app.js 'app.use' entries -->    
+  <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+  <script src="/jquery/jquery.min.js"></script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/angular/angular.min.js"></script>
+  <script src="/socket/socket.io.min.js"></script>
+  
+  <script>
+    var app = angular.module('globalModule', []);
+    
+    app.controller('globalCtrl', function($scope, $rootScope, $http, PortService, MedibusService, MedibusDataParameters) {
+      const ctrl = this;
+      
+      
+      $scope.getData = function() {
+        MedibusService.getDeviceData();
+        MedibusService.getDateTime();
+        MedibusService.getVentData();
+        MedibusService.getAlarmData();
+        MedibusService.getAnaesthData();
+      }
+      
+      $scope.socket = io.connect();
+      
+      
+      // Message format: { time, action, message, data }
+      ctrl.messages = [];
+
+      $scope.socket.on('io:port', function(msg) {
+        PortService.setPortStatus(msg.data);
+        $scope.$apply(function() {
+          ctrl.messages.unshift(msg);
+        });
+      });
+      
+      $scope.socket.on('io:com', function(msg) {
+        PortService.setComStatus(msg.data);
+      });     
+
+      $scope.socket.on('io:data', function(msg) {
+        if(msg.action == 'cycle'){ $scope.getData(); }
+        $scope.$apply(function() {
+          ctrl.messages.unshift(msg);
+        });
+      });
+      
+    })
+
+  </script>
+  <script src="port.service.js"></script>
+  <script src="medibus.service.js"></script>
+</head>
+
+<body ng-app="globalModule" ng-controller='globalCtrl as global'>
+
+<div class="container-fluid">
+  <evita-param></evita-param>
+</div>
+
+
+</body>
+
+</html>

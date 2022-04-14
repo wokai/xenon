@@ -1,0 +1,42 @@
+    <div class="card shadow-sm">
+      <div class="card-header">
+        Medibus Parameter
+      </div>
+        <div class="card-body border-top">
+          <mbus-param-input-form></mbus-param-input-form>
+        </div>
+      <div class="card-body border-top">
+        
+        <table class="table table-hover">
+          <thead>
+            <tr class="d-flex">
+              <th scope="col" class="col-1">Code</th>
+              <th scope="col" class="col-2">Data description</th>
+              <th scope="col" class="col-2">Snomed</th>
+              <th scope="col" class="col-1">Unit</th>
+              <th scope="col" class="col-1">Format</th>
+              <th scope="col" class="col-1">M</th>
+              <th scope="col" class="col-1">LL</th>
+              <th scope="col" class="col-1">HL</th>
+              <th scope="col" class="col-2">Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr  ng-repeat="p in list" class="d-flex">
+              <td class="col-1">{{ p.code }}</td>
+              <td class="col-2">{{ p.description }}</td>
+              <td class="col-2">{{ p.sctid }}</td>
+              <td class="col-1">{{ p.unit }}</td>
+              <td class="col-1">{{ p.format }}</td>
+              <td class="col-1">{{ p.m }}</td>
+              <td class="col-1">{{ p.ll }}</td>
+              <td class="col-1">{{ p.hl }}</td>
+              <td class="col-2">
+                <mbus-edit-param param="p"></mbus-edit-param>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+      </div>
+    </div>

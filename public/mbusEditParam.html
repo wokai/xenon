@@ -1,0 +1,130 @@
+   
+<!-- Button trigger modal. Unique Modal-id is provided by param.code -->
+<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#mbusEditParamModal_{{$ctrl.param.code}}" ng-click="$ctrl.onClick()">
+  Edit
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="mbusEditParamModal_{{$ctrl.param.code}}" tabindex="-1" aria-labelledby="mbusEditParamModalLabel" aria-hidden="true">
+  
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mbusEditParamModalLabel">Edit parameter</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+        <form class="g-2">
+          <div class="row">
+          <div class="col-4">
+            <label for="inputId" class="form-label text-secondary">Code</label>
+            <input type="text" class="form-control" pattern="[a-fA-F0-9]{2}"
+              placeholder="Code" id="inputId" ng-model="$ctrl.code">
+          </div>
+          
+          <div class="col-8">
+            <label for="inputDescription" class="form-label text-secondary">
+              Description
+            </label>
+            <input type="text" class="form-control" id="inputDescription" 
+              placeholder="Description" ng-model="$ctrl.description">
+          </div>
+          
+          
+          </div>
+          <div class="row mt-2">
+          
+          <div class="col-4">
+            <label for="inputSctid", class="form-label text-secondary">
+              Snomed CT ID
+            </label>
+            <input type="text" class="form-control" id="inputSctid"
+              placeholder="Snomed CT Id" ng-model="$ctrl.sctid">
+          </div>
+          
+          <div class="col-4">
+            <label for="inputUnit" class="form-label text-secondary">Unit</label>
+            <select id="inputUnit" class="form-select" ng-model="$ctrl.unit">
+              <option>-</option>
+              <option>mL</option>
+              <option>mL/mbar</option>
+              <option>mL/min</option>             
+              <option>L</option>
+              <option>kPa</option>
+              <option>mmHg</option>
+              <option>%</option>
+              <option>mbar</option>
+              <option>%</option>
+              <option>sec</option>
+              <option>1/min</option>
+              <option>10mL/min</option>
+              <option>a</option>
+            </select>
+          </div>
+
+
+          </div>
+          <div class="row mt-2">
+
+
+          <div class="col-4">
+            <label for="inputFormat" class="form-label text-secondary">Format</label>
+            <select id="inputFormat" class="form-select" ng-model="$ctrl.format">
+              <option>XXXX</option>
+              <option>XXX_</option>
+              <option>XX.X</option>
+              <option>X.XXX</option>
+              <option>XX__</option>              
+              <option>_X.X</option>
+              <option>_XXX</option>
+              <option>_XXX_</option>
+              <option>_XX.X</option>
+              <option>__XXX</option>
+              <option>*_XX_</option>
+              <option>*_XXX</option>
+            </select>
+          </div>
+          
+          <div class="col-4">
+            <label for="inputFormat" class="form-label text-secondary">M</label>
+            <select id="inputFormat" class="form-select" ng-model="$ctrl.m">
+              <option selected>X</option>
+              <option> </option>
+            </select>
+          </div>
+          
+          <div class="col-2 form-check d-flex align-self-end py-2">
+            <input class="form-check-input mx-1" type="checkbox" value="" 
+              id="editInputLL" ng-model="$ctrl.ll">
+            <label class="form-check-label" for="editInputLL">
+              LL
+            </label>
+          </div>
+          
+          <div class="col-2 form-check d-flex align-self-end py-2">
+            <input class="form-check-input mx-1" type="checkbox" value="" 
+              id="editInputHL" ng-model="$ctrl.hl">
+            <label class="form-check-label" for="editInputHL">
+              HL
+            </label>
+          </div>
+        
+        
+        </div>
+        </form>
+
+
+        
+        
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" ng-click="$ctrl.onClose()">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" ng-click="$ctrl.onSave()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

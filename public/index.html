@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Medibus</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <!--- See: app.js 'app.use' entries -->    
+  <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+  <script src="/jquery/jquery.min.js"></script>
+  <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/angular/angular.min.js"></script>
+  <script src="/socket/socket.io.min.js"></script>
+  
+  <script>
+    var app = angular.module('globalModule', []);
+    
+    app.controller('globalCtrl', function($scope, $rootScope, $http, PortService, MedibusService) {
+      const ctrl = this;
+
+      $scope.getTempData = MedibusService.getTempData;
+      
+      $scope.getData = function() {
+        MedibusService.getDateTime();
+        MedibusService.getVentData();
+        MedibusService.getAlarmData();
+      }
+      
+      $scope.socket = io.connect();
+      
+      // Message format: { time, action, message, data }
+      ctrl.messages = [];
+
+      $scope.socket.on('io:port', function(msg) {
+        PortService.setPortStatus(msg.data);
+        $scope.$apply(function() { ctrl.messages.unshift(msg); });
+      });
+      
+      $scope.socket.on('io:com', function(msg) {
+        PortService.setComStatus(msg.data);
+      });     
+
+      $scope.socket.on('io:data', function(msg) {
+        if(msg.action == 'cycle'){
+          $scope.$apply(() => { MedibusService.setVentData(msg.data) });
+        } else if(msg.action == 'datetime'){
+          MedibusService.setDateTime(msg.data);
+        }
+      });
+      
+      $scope.socket.on('io:device', function(msg) {
+        MedibusService.setDeviceData(msg.data);
+      });
+      
+      
+      ctrl.temp = MedibusService.getTemp();
+      $scope.getTempData = function() {
+        MedibusService.getTempData();
+        //console.log(ctrl.temp);
+      }
+    })
+
+  </script>
+  <script src="port.service.js"></script>
+  <script src="medibus.service.js"></script>
+</head>
+
+<body ng-app="globalModule" ng-controller='globalCtrl as global'>
+<!--- Navbar header --->
+<div class="container-fluid">
+  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="pills-contact-tab" data-bs-toggle="pill" 
+        data-bs-target="#pills-anaesth" type="button" role="tab" 
+          aria-controls="pills-three" aria-selected="false">
+          Anae
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" 
+        data-bs-target="#pills-evita" type="button" role="tab" 
+          aria-controls="pills-three" aria-selected="false">
+          Evita
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" 
+        data-bs-target="#pills-messages" type="button" role="tab" 
+        aria-controls="pills-two" aria-selected="false">
+        Messages
+      </button>
+    </li>
+    
+  </ul>
+  
+  
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-6">
+        
+        <control-button-group></control-button-group>
+        
+        <div class="accordion mt-1" id="bodyAccordion">
+          <div class="accordion-item">
+            <div class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+               Port &nbsp; <port-open-indicator></port-open-indicator>
+              </button>
+            </div>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#bodyAccordion">
+              <div class="accordion-body row">
+                <div class="col-sm-6">
+                  <serial-port-config></serial-port-config>
+                </div>
+                <div class="col-sm-6">
+                  <port-status-indicator></port-status-indicator>
+                  <bus-status-indicator></bus-status-indicator>       
+                </div>
+
+              </div>
+            </div>
+          </div> <!--- accordion-item --->
+
+          <div class="accordion-item">
+            <div class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Device: &nbsp; <device-name-indicator></device-name-indicator>
+              </button>
+
+            </div>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#bodyAccordion">
+              <div class="accordion-body">
+                <device-status-indicator></device-status-indicator>
+              </div>
+            </div>
+          </div> <!--- accordion-item --->
+      
+
+        </div> <!--- accordion --->
+      </div> <!--- col-sm-6 --->
+
+      <div class="col-sm-6">
+        <div class="tab-content mt-1" id="pills-tabContent">
+          <div class="tab-pane fade  show active" id="pills-anaesth" role="tabpanel" aria-labelledby="pills-three-tab">
+            <anaesth-param></anaesth-param>    
+          </div>
+          <div class="tab-pane fade" id="pills-evita" role="tabpanel" aria-labelledby="pills-three-tab">
+             <evita-param></evita-param>
+          </div>
+          <div class="tab-pane fade" id="pills-messages" role="tabpanel" aria-labelledby="pills-two-tab">
+            <status-message-table messages="global.messages"></status-message-table>
+          </div>        
+        </div> <!--- Tab-content ---> 
+      </div> <!--- col-sm-6" --->
+      
+    </div> <!--- row     --->
+  </div> <!--- container --->
+</div>   <!--- container --->
+
+
+
+</body>
+
+</html>

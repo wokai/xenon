@@ -1,0 +1,59 @@
+<div class="card shadow-sm mt-2">
+  <div class="card-header">
+    Evita
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-4">F<sub>i</sub>O<sub>2</sub></div>
+      <div class="col-4">{{ data.vent.gas.fio2.value }}</div>
+      <div class="col-4">%</div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-4">V<sub>minute</sub></div>
+      <div class="col-4">{{ data.vent.respiration.minutevolume.value }} </div>
+      <div class="col-4">L</div>
+    </div>
+
+    <div class="row">
+      <div class="col-4">V<sub>Tidal</sub></div>
+      <div class="col-4">{{ data.vent.respiration.tidalvolume.value }}</div>
+      <div class="col-4">ml</div>
+    </div>
+    
+  
+    <div class="row mt-2">
+      <div class="col-4" parse-html='P<sub>max</sub>'></div>
+      <div class="col-4">{{ data.vent.respiration.peak.value }}</div>
+      <div class="col-4">mbar</div>
+    </div>
+  
+      <div class="row">
+      <div class="col-4">PEEP</div>
+      <div class="col-4">{{ data.vent.respiration.peep.value }}</div>
+      <div class="col-4">mbar</div>
+    </div>
+    
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col-4"></div>
+      <div class="col-4"></div>
+    </div>
+  
+    
+  </div> 
+  
+  <div class="card-footer">
+    <div class="row">
+      <div class="col-4">
+        -
+      </div>
+      <div class="col-4">
+        {{ data.vent.time.date }}
+      </div>
+      <div class="col-4">
+        {{ data.vent.time.time }}
+      </div>
+    </div>
+  </div>
+</div>

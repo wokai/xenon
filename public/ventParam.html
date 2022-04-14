@@ -1,0 +1,87 @@
+<div class="card shadow-sm mt-2">
+   <table class="table table-hover text-secondary" style="font-size:small;">
+    <thead>
+      <tr class="d-flex table-light">
+        <th class="col-12" scope="col">
+          Ventilation
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="d-flex">
+        <td class="col-4">Timestamp</td>
+        <td class="col-4">{{ data.vent.time }}</td>
+        <td class="col-4">{{ data.vent.date }}</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-4">Patient</td>
+        <td class="col-4">{{ data.vent.patient.compliance }} ml/mbar Compliance</td>
+        <td class="col-4">Age {{ data.vent.patient.age }} Years</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-4">O<sub>2</sub></td>
+        <td class="col-4">
+            {{ data.vent.o2.fio2 }}% F<sub>i</sub>O<sub>2</sub><br>
+            {{ data.vent.o2.uptake }} ml/min Uptake
+        </td>
+        <td class="col-4">{{ data.vent.o2.feo2 }}% F<sub>e</sub>O<sub>2</sub></td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-4">CO<sub>2</sub></td>
+        <td class="col-4">{{ data.vent.co2.insp }} mmHg F<sub>i</sub>CO<sub>2</sub></td>
+        <td class="col-4">{{ data.vent.co2.exp  }} mmHg E<sub>t</sub>CO<sub>2</sub></td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-4">Pressure</td>
+        <td class="col-4">
+            {{ data.vent.pressure.peak }} mbar P<sub>peak</sub><br>
+            {{ data.vent.pressure.plateau}} mbar P<sub>plateau</sub> 
+        </td>
+        <td class="col-4">PEEP {{ data.vent.pressure.peep}} mbar </td>
+      </tr>
+      
+      <tr class="d-flex">
+        <td class="col-4">Respiration</td>
+        <td class="col-4">
+            {{ data.vent.resp.rate }} /min Rate<br>
+            {{ data.vent.resp.minutevolume }} L V<sub>minute</sub><br>
+        </td>
+        <td class="col-4">{{ data.vent.resp.tidalVolume  }} ml V<sub>T</sub></td>
+      </tr>
+
+      <tr class="d-flex table-light">
+        <td class="col-6">Inhalational Anaesthetics</td>
+        <td class="col-6">Mac {{ data.vent.inhal.mac }}</td>
+      </tr>
+      
+      <tr class="d-flex">
+        <td class="col-4">Desflurane</td>
+        <td class="col-4">
+            {{ data.vent.inhal.desflurane.insp }} % F<sub>i</sub><br>
+            {{ data.vent.inhal.desflurane.cons }} ml Consumption
+        </td>
+        <td class="col-4">{{ data.vent.inhal.desflurane.exp }} % F<sub>e</sub></td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-4">Sevoflurane</td>
+        <td class="col-4">
+          {{ data.vent.inhal.sevoflurane.insp }} % F<sub>i</sub><br>
+          {{ data.vent.inhal.sevoflurane.cons }} ml Consumption
+        </td>
+        <td class="col-4">
+          {{ data.vent.inhal.sevoflurane.exp }} % F<sub>e</sub>
+        </td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-4">Isoflurane</td>
+        <td class="col-4">
+          {{ data.vent.inhal.isoflurane.insp }} % F<sub>i</sub><br>
+          {{ data.vent.inhal.isoflurane.cons }} ml Consumption
+        </td>
+        <td class="col-4">
+          {{ data.vent.inhal.isoflurane.exp }} % F<sub>e</sub>
+        </td>
+      </tr> 
+    </tbody>
+  </table>
+</div>

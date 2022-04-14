@@ -1,0 +1,42 @@
+<div class="card shadow-sm mt-2">
+   <table class="table table-hover text-secondary" style="font-size:small;">
+    <thead>
+      <tr class="d-flex">
+        <th class="col-12" scope="col">
+          Serial port
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr  class="d-flex">
+        <td class="col-6">Path</td>
+        <td class="col-6">{{ portStatus.path.path }}</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Port status</td>
+        <td class="col-6 text-success" ng-if="portStatus.open" >{{ portStatus.openText }}</td>
+        <td class="col-6 text-danger"  ng-if="!portStatus.open">{{ portStatus.openText }}</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Com status</td>
+        <td class="col-6" >{{ comStatus.label }}</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Baud rate</td>
+        <td class="col-6">{{ portStatus.baudRate }}</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Data bits</td>
+        <td class="col-6">{{ portStatus.dataBits }}</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Parity</td>
+        <td class="col-6">{{ portStatus.parity }}</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Stop bits</td>
+        <td class="col-6">{{ portStatus.stopBits }}</td>
+      </tr>
+      
+    </tbody>
+</div>

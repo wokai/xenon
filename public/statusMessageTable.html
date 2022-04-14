@@ -1,0 +1,25 @@
+<div class="card shadow-sm">
+  <div class="card-header">
+    Message table
+  </div>
+  <div class="card-body border-top">
+    
+    <table class="table table-hover">
+      <thead>
+        <tr class="d-flex">
+          <th scope="col" class="col-2">Time</th>
+          <th scope="col" class="col-2">Action</th>
+          <th scope="col" class="col-8">Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr  ng-repeat="m in $ctrl.messages" class="d-flex">
+          <td class="col-2">{{ m.time }}</td>
+          <td class="col-2">{{ m.action }}</td>
+          <td class="col-8">{{ m.message }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+

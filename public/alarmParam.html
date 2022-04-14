@@ -1,0 +1,53 @@
+<div class="card shadow-sm mt-2">
+   <table class="table table-hover text-secondary" style="font-size:small;">
+    <thead>
+      <tr class="d-flex table-light">
+        <th class="col-12" scope="col">
+          Alarm
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="d-flex">
+        <td class="col-4">Timestamp</td>
+        <td class="col-4">{{ data.alarm.time }}</td>
+        <td class="col-4">{{ data.alarm.date }}</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-4">O<sub>2</sub></td>
+        <td class="col-4">{{ data.alarm.ll.o2.fi}} LL</td>
+        <td class="col-4">{{ data.vent.patient.age }} HL</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-4">CO<sub>2</sub></td>
+        <td class="col-4">HL{{ data.alarm.co2.et_kPa }} E<sub>t</sub> kPa</td>
+        <td class="col-4">HL{{ data.alarm.hl.co2.fi_kPa  }} F<sub>i</sub>kPa</td>
+      </tr>
+       <tr class="d-flex">
+        <td class="col-4">P<sub>aw</sub></td>
+        <td class="col-4">LL{{ data.alarm.ll.resp.pressure }} mbar</td>
+        <td class="col-4">HL{{ data.alarm.hl.resp.pressure }} mbar</td>
+      </tr>
+       <tr class="d-flex">
+        <td class="col-4">V<sub>minute</sub></td>
+        <td class="col-4">LL{{ data.alarm.ll.resp.minutevolume }} mbar</td>
+        <td class="col-4">HL{{ data.alarm.hl.resp.minutevolume }} mbar</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-4">Desflurane</td>
+        <td class="col-4">LL {{ data.alarm.ll.inhal.desflurane_pct }} %</td>
+        <td class="col-4">HL {{ data.alarm.hl.inhal.desflurane_pct }} %</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-4">Isoflurane</td>
+        <td class="col-4">LL {{ data.alarm.ll.inhal.isoflurane_pct }} %</td>
+        <td class="col-4">HL {{ data.alarm.hl.inhal.isoflurane_pct }} %</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-4">Sevoflurane</td>
+        <td class="col-4">LL {{ data.alarm.ll.inhal.sevoflurane_pct }} %</td>
+        <td class="col-4">HL {{ data.alarm.hl.inhal.sevoflurane_pct }} %</td>
+      </tr>
+    </tbody>
+    </table>
+</div>

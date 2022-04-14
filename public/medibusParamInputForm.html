@@ -1,0 +1,99 @@
+
+
+<form class="row g-2">
+  <div class="col-2">
+    <label for="inputId" class="form-label text-secondary">Code</label>
+    <input type="text" class="form-control" pattern="[a-fA-F0-9]{2}"
+      placeholder="Code" id="inputId" ng-model="code">
+  </div>
+  
+  <div class="col-8">
+    <label for="inputDescription" class="form-label text-secondary">
+      Description
+    </label>
+    <input type="text" class="form-control" id="inputDescription" 
+      placeholder="Description" ng-model="description">
+  </div>
+  
+  <div class="col-2">
+    <label for="inputSctid", class="form-label text-secondary">
+      Snomed CT ID
+    </label>
+    <input type="text" class="form-control" id="inputSctid"
+      placeholder="Snomed CT Id" ng-model="sctid">
+  </div>
+  
+  
+  
+  <div class="col-2">
+    <label for="inputUnit" class="form-label text-secondary">Unit</label>
+    <select id="inputUnit" class="form-select" ng-model="unit">
+      <option>-</option>
+      <option>mL</option>
+      <option>mL/mbar</option>
+      <option>mL/min</option>
+      <option>L</option>
+      <option>kPa</option>
+      <option>mmHg</option>
+      <option>%</option>
+      <option>mbar</option>
+      <option>%</option>
+      <option>sec</option>
+      <option>1/min</option>
+      <option>10mL/min</option>
+      <option>a</option>
+    </select>
+  </div>
+
+  <div class="col-2">
+    <label for="inputFormat" class="form-label text-secondary">Format</label>
+    <select id="inputFormat" class="form-select" ng-model="format">
+      <option>XXXX</option>
+      <option>XXX_</option>
+      <option>XX.X</option>
+      <option>X.XXX</option>
+      <option>XX__</option>      
+      <option>_X.X</option>
+      <option>_XXX</option>
+      <option>_XXX_</option>
+      <option>_XX.X</option>
+      <option>__XXX</option>
+      <option>*_XX_</option>
+      <option>*_XXX</option>
+    </select>
+  </div>
+  
+  <div class="col-2">
+    <label for="inputFormat" class="form-label text-secondary">M</label>
+    <select id="inputFormat" class="form-select" ng-model="m">
+      <option selected>X</option>
+      <option> </option>
+    </select>
+  </div>
+  
+  <div class="col-2 form-check d-flex align-self-end py-1">
+    <input class="form-check-input mx-1" type="checkbox" value="" 
+      id="inputHL" ng-model="hl">
+    <label class="form-check-label" for="inputHL">
+      HL
+    </label>
+  </div>
+  
+  <div class="col-2 form-check d-flex align-self-end py-1">
+    <input class="form-check-input mx-1" type="checkbox" value="" 
+      id="inputLL" ng-model="ll">
+    <label class="form-check-label" for="inputLL">
+      LL
+    </label>
+  </div>
+  
+  <div class="col-2 d-flex align-items-end">
+    <button type="submit" class="btn btn-primary w-100" 
+        ng-click="submit()" ng-disabled="false">
+      Add
+    </button>
+  </div>
+  
+  
+</form>
+

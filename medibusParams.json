@@ -1,0 +1,686 @@
+[
+  {
+    "code": "1B",
+    "description": "Consumption Halothane (Liquid)",
+    "sctid": "",
+    "unit": "mL",
+    "format": "XXXX",
+    "m": "x",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "1C",
+    "description": "Consumption Enflurane (Liquid)",
+    "sctid": "",
+    "unit": "mL",
+    "format": "XXXX",
+    "m": "x",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "1D",
+    "description": "Consumption Isoflurane (Liquid)",
+    "sctid": "NN",
+    "unit": "mL",
+    "format": "XXXX",
+    "m": "x",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "1E",
+    "description": "Consumption Desflurane (Liquid)",
+    "sctid": "",
+    "unit": "mL",
+    "format": "XXXX",
+    "m": "x",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "1F",
+    "description": "Consumption Sevoflurane (Liquid)",
+    "sctid": "",
+    "unit": "mL",
+    "format": "XXXX",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "50",
+    "description": "Insp. Halothane",
+    "sctid": "425952009",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": true,
+    "hl": true
+  },
+  {
+    "code": "51",
+    "description": "Exp. Halothane",
+    "sctid": "427034007",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "52",
+    "description": "Insp. Enflurane",
+    "sctid": "427604003",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": true,
+    "hl": true
+  },
+  {
+    "code": "53",
+    "description": "Exp. Enflurane",
+    "sctid": "426524000",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "54",
+    "description": "Insp. Isoflurane",
+    "sctid": "426504004",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": true,
+    "hl": true
+  },
+  {
+    "code": "55",
+    "description": "Exp. Isoflurane",
+    "sctid": "425421000",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "56",
+    "description": "Insp. Desflurane",
+    "sctid": "426748007",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "57",
+    "description": "Exp. Desflurane",
+    "sctid": "425621006",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "58",
+    "description": "Insp. Sevoflurane",
+    "sctid": "425724007",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "59",
+    "description": "Exp. Sevoflurane",
+    "sctid": "427210008",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "5A",
+    "description": "Insp. Agent",
+    "sctid": "250804003",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "5B",
+    "description": "Exp. Agent",
+    "sctid": "250805002",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "5C",
+    "description": "2nd Insp. Agent",
+    "sctid": "",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "5D",
+    "description": "2nd Exp. Agent",
+    "sctid": "",
+    "unit": "kPa",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "AC",
+    "description": "Insp. MAC",
+    "sctid": "",
+    "unit": "-",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "AD",
+    "description": "Exp. MAC",
+    "sctid": "860940008",
+    "unit": "-",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "AE",
+    "description": "Insp. Desflurane",
+    "sctid": "426748007",
+    "unit": "%",
+    "format": "XX.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "AF",
+    "description": "Exp. Desflurane",
+    "sctid": "425621006",
+    "unit": "%",
+    "format": "XX.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "B0",
+    "description": "Insp. Sevoflurane",
+    "sctid": "425724007",
+    "unit": "%",
+    "format": "XX.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "B1",
+    "description": "Exp. Sevoflurane",
+    "sctid": "427210008",
+    "unit": "%",
+    "format": "XX.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "E9",
+    "description": "Insp. Agent",
+    "unit": "%",
+    "format": "XX.X",
+    "m": "X",
+    "ll": false,
+    "hl": false,
+    "sctid": "250804003"
+  },
+  {
+    "code": "EA",
+    "description": "Exp. Agent",
+    "sctid": "250805002",
+    "unit": "%",
+    "format": "XX.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "ED",
+    "description": "Insp. 2nd Agent",
+    "sctid": "",
+    "unit": "%",
+    "format": "XX.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "06",
+    "description": "Compliance",
+    "unit": "mL/mbar",
+    "format": "XX.X",
+    "m": "X",
+    "ll": false,
+    "hl": false,
+    "sctid": "3863008"
+  },
+  {
+    "code": "05",
+    "description": "Breathing Pressure",
+    "sctid": "",
+    "unit": "mbar",
+    "format": "*_XX_",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "64",
+    "description": "O2 Uptake",
+    "unit": "10mL/min",
+    "format": "XXXX",
+    "m": "X",
+    "ll": false,
+    "hl": false,
+    "sctid": "251832002"
+  },
+  {
+    "code": "73",
+    "description": "Mean Breathing Pressure",
+    "sctid": "698821009",
+    "unit": "mbar",
+    "format": "*_XX_",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "78",
+    "description": "PEEP Breathing Pressure",
+    "sctid": "250854009",
+    "unit": "mbar",
+    "format": "*_XX_",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "88",
+    "description": "Tidal Volume",
+    "sctid": "13621006",
+    "unit": "mL",
+    "format": "XXXX",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "04",
+    "description": "Insp. Tidalvolume Setting",
+    "sctid": "416811008",
+    "unit": "L",
+    "format": "X.XXX",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "74",
+    "description": "Plateau Pressure",
+    "unit": "mbar",
+    "format": "*_XX_",
+    "m": "X",
+    "ll": false,
+    "hl": false,
+    "sctid": "698822002"
+  },
+  {
+    "code": "EE",
+    "description": "Exp. 2nd Agent",
+    "sctid": "",
+    "unit": "%",
+    "format": "XX.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "F4",
+    "description": "Insp. Halothane",
+    "sctid": "",
+    "unit": "%",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "F5",
+    "description": "Exp. Halothane",
+    "sctid": "",
+    "unit": "%",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "F6",
+    "description": "Insp. Enflurane",
+    "sctid": "",
+    "unit": "%",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "F7",
+    "description": "Exp. Enflurane",
+    "sctid": "",
+    "unit": "%",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "F8",
+    "description": "Insp. Isoflurane",
+    "sctid": "",
+    "unit": "%",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "F9",
+    "description": "Exp. Isoflurane",
+    "sctid": "",
+    "unit": "%",
+    "format": "_X.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "FB",
+    "description": "Insp. N2O",
+    "sctid": "",
+    "unit": "%",
+    "format": "XXX_",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "FC",
+    "description": "Exp. N2O",
+    "sctid": "",
+    "unit": "%",
+    "format": "XXX_",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "6B",
+    "description": "Ambient pressure",
+    "sctid": "",
+    "unit": "mbar",
+    "format": "XXXX",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "B4",
+    "description": "Respiratory Rate (Pressure)",
+    "sctid": "",
+    "unit": "1/min",
+    "format": "XX__",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "B9",
+    "description": "Respiratory Minute Volume",
+    "sctid": "250811004",
+    "unit": "L",
+    "format": "XX.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "BD",
+    "description": "Apnea Duration",
+    "sctid": "",
+    "unit": "sec",
+    "format": "XXX_",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "D7",
+    "description": "Respiratory Rate (Volume/Flow)",
+    "sctid": "",
+    "unit": "1/min",
+    "format": "XX__",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "D9",
+    "description": "Respiratory Rate (derived)",
+    "sctid": "86290005",
+    "unit": "1/min",
+    "format": "XX__",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "D5",
+    "description": "Respiratory Rate (CO2)",
+    "sctid": "",
+    "unit": "1/min",
+    "format": "XX__",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "DA",
+    "description": "Insp. CO2",
+    "sctid": "",
+    "unit": "%",
+    "format": "XX.X",
+    "m": "X",
+    "ll": true,
+    "hl": false
+  },
+  {
+    "code": "DB",
+    "description": "Endtidal CO2",
+    "sctid": "",
+    "unit": "%",
+    "format": "XX.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "E3",
+    "description": "Endtidal CO2",
+    "unit": "kPa",
+    "format": "XX.X",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "E5",
+    "description": "Insp. CO2",
+    "sctid": "",
+    "unit": "mmHg",
+    "format": "XX__",
+    "m": "X",
+    "ll": true,
+    "hl": false
+  },
+  {
+    "code": "E6",
+    "description": "Endtidal CO2",
+    "sctid": "250790007",
+    "unit": "mmHg",
+    "format": "XX__",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "FF",
+    "description": "Insp. CO2",
+    "sctid": "",
+    "unit": "kPa",
+    "format": "XX.X",
+    "m": "X",
+    "ll": true,
+    "hl": false
+  },
+  {
+    "code": "C4",
+    "description": "Delta O2 (Insp. O2 - Exp. O2)",
+    "unit": "%",
+    "m": "X",
+    "format": "*_XXX",
+    "hl": false,
+    "ll": true
+  },
+  {
+    "code": "EF",
+    "description": "Exp O2",
+    "unit": "%",
+    "format": "XXX_",
+    "m": "X",
+    "hl": false,
+    "ll": false,
+    "sctid": "250775008"
+  },
+  {
+    "code": "F0",
+    "description": "Insp O2",
+    "sctid": "250774007",
+    "unit": "%",
+    "format": "XXX_",
+    "m": "X",
+    "ll": true,
+    "hl": true
+  },
+  {
+    "code": "B2",
+    "description": "Leakage",
+    "sctid": "",
+    "unit": "mL/min",
+    "m": "X",
+    "ll": false,
+    "hl": false,
+    "format": "_XXX"
+  },
+  {
+    "code": "DD",
+    "description": "N2O Flow",
+    "sctid": "",
+    "unit": "mL/min",
+    "format": "XXXX",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "DE",
+    "description": "Air Flow",
+    "unit": "mL/min",
+    "format": "XXXX",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "E2",
+    "description": "O2 Flow",
+    "sctid": "",
+    "unit": "mL/min",
+    "format": "XXXX",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  },
+  {
+    "code": "01",
+    "description": "O2",
+    "unit": "%",
+    "m": " ",
+    "ll": false,
+    "hl": false,
+    "format": "_XXX_"
+  },
+  {
+    "code": "4A",
+    "description": "Age",
+    "m": " ",
+    "ll": false,
+    "hl": false,
+    "unit": "a",
+    "format": "__XXX"
+  },
+  {
+    "code": "2E",
+    "description": "Slope time",
+    "unit": "sec",
+    "m": " ",
+    "ll": false,
+    "hl": false,
+    "format": "_XX.X"
+  },
+  {
+    "code": "7D",
+    "description": "Peak Breathing Pressure",
+    "sctid": "27913002",
+    "unit": "mbar",
+    "format": "*_XX_",
+    "m": "X",
+    "ll": false,
+    "hl": false
+  }
+]

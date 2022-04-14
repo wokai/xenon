@@ -1,0 +1,291 @@
+/*******************************************************************************
+ * The MIT License
+ * Copyright 2021, Wolfgang Kaisers
+ * Permission is hereby granted, free of charge, to any person obtaining a 
+ * copy of this software and associated documentation files (the "Software"), 
+ * to deal in the Software without restriction, including without limitation 
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+ * and/or sell copies of the Software, and to permit persons to whom the 
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included 
+ * in all copies or substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR 
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+ * USE OR OTHER DEALINGS IN THE SOFTWARE.
+ ******************************************************************************/
+
+(function(angular) {
+'use strict';
+
+var app = angular.module('globalModule');
+
+/// ////////////////////////////////////////////////////////////////////////////
+/// A Definition of Service
+/// ////////////////////////////////////////////////////////////////////////////
+
+/// ------------------------------------------------------------------------ ///
+/// A.1 MedibusService
+/// ------------------------------------------------------------------------ ///
+
+app.factory('MedibusService', function($http, $rootScope) {
+  
+  const data = {
+      device : {
+      id : 'Device id',
+      name : 'Device name',
+      device : '00.00',
+      medibus : '00.00',
+      date : 'dd.mmm.yy',
+      time : 'hh:mm:ss'
+    },
+    vent: {}
+  }
+  
+  const device = {
+    id : 'Device id',
+    name : 'Device name',
+    devRevision : '00.00',
+    busRevision : '00.00',
+    date : 'dd.mmm.yy',
+    time : 'hh:mm:ss'
+  };
+  
+  const busStatus = {
+    messageId: 0,
+    lastmessage: 'hh:mm:ss'
+  }
+  
+  const setDeviceData = function(data) {
+    device.id = data.id;
+    device.name = data.name;
+    device.devRevision = data.devRevision;
+    device.busRevision = data.busRevision;
+  }
+  
+  var getDeviceData = function() {
+    $http.get('/data/device')
+    .then(function(response) {
+        device.id = response.data.id;
+        device.name = response.data.name;
+        device.devRevision = response.data.devRevision;
+        device.busRevision = response.data.busRevision;
+      }, function(response) {
+        console.log('[MedibusService] getDeviceData: ', response.data.status, 'Message: ', response.data.message);
+      })
+    .catch(function(error){
+      console.log('[MedibusService] getDeviceData Error: ', error);
+    })
+  };
+  getDeviceData();
+  
+  const setDateTime = function(data) {
+    device.date = data.date;
+    device.time = data.time;
+  }
+  
+  var getDateTime = function() {
+    $http.get('/data/datetime')
+      .then(function(response) {
+          device.date = response.data.date;
+          device.time = response.data.time;
+        }, function(response) {
+          console.log('[MedibusService] getDateTime: ', response.data.status, 'Message: ', response.data.message);
+        })
+      .catch(function(error) {
+        console.log('[MedibusService] getDateTime Error: ', error);
+      });
+  }
+  getDateTime()
+  
+  /// Query ventilation data from server
+  var getVentData = function() {
+    $http.get('/data/vent')
+      .then(function(response) {
+          data.vent = response.data;
+          console.log('[MedibusService] getVentData. Date: ', response.data.time.date, ', Time: ', response.data.time.time);
+        }, function(response) {
+          console.log('[MedibusService] getVentData. Notification');
+        })
+      .catch(function(error){
+        console.log('[MedibusService] getVentData Error: ', error);
+      });
+  }
+  getVentData();
+  
+  /// Set ventilation data. Will be sent via socket together with notification.
+  const setVentData = function(vent) { 
+    
+    busStatus.messageId = vent.msgId;
+    busStatus.lastmessage = vent.time.time;
+    data.vent = vent;
+    
+    /*
+    temp.data.time.push(vent.time.time);
+    temp.data.tidalvolume.push(vent.respiration.tidalvolume);
+    temp.data.feco2.push(vent.gas.feco2.value);
+    temp.data.fio2.push(vent.gas.fio2.value);
+    temp.data.isoflurane.push(vent.inhalation.isoflurane.exp);
+    temp.data.desflurane.push(vent.inhalation.desflurane.exp);
+    $rootScope.$emit('data:temporal', temp.data);
+    */
+  }  
+  
+  var getAlarmData = function(){
+    $http.get('/data/alarm')
+      .then(function(response) {
+        data.alarm = response.data;
+        console.log('[MedibusService] getAlarmData. Date: ', response.data.date, ', Time: ', response.data.time);
+      }, function(response){
+         console.log('[MedibusService] getAlarmData. Notification');
+      }).catch(function(error) {
+        console.log('[MedibusService] getAlarmData Error: ', error);
+      });
+  }
+  getAlarmData();
+  
+  
+  /// ////////////////////////////////////////////////////////////////////// ///
+  /// Temporal datasets
+  /// ////////////////////////////////////////////////////////////////////// ///
+  var temp = {
+    data: {
+      time: [],
+      tidalvolume: [],
+      fio2: [],
+      feco2: [],
+      isoflurane: []
+    }
+  };
+
+  const getTempData = function() {
+    $http.get('/data/temporal')
+      .then(function(response) {
+        temp.data = response.data;
+        $rootScope.$emit('data:temporal', temp.data);
+      }, function(response) {
+        console.log(response);
+      }).catch(function(error) {
+        console.log(error);
+      });
+  }
+  getTempData();
+  
+  /// //////////////////////////////////////////////////////////////////////////
+  /// Exported object
+  /// //////////////////////////////////////////////////////////////////////////
+  
+  return {
+    data: data,
+    device: device,
+    busStatus: busStatus,
+    setDeviceData: setDeviceData,
+    getDeviceData: getDeviceData,
+    getDateTime: getDateTime,
+    setDateTime: setDateTime,
+    getVentData: getVentData,
+    getAlarmData: getAlarmData,
+    setVentData: setVentData,
+    getTemp: function() { return temp; },
+    getTempData: getTempData
+  }
+
+});  /// MedibusService
+
+
+/// ////////////////////////////////////////////////////////////////////////////
+/// B Components
+/// ////////////////////////////////////////////////////////////////////////////
+
+app.directive('parseHtml', function() {
+  return {
+    restrict: 'A',
+    scope: {},
+    link: function(scope, element, attr) {
+      element.append(angular.element(`<span>${attr.parseHtml}<span>`));
+    }
+  }
+});
+
+
+/// ------------------------------------------------------------------------ ///
+/// B.1 Device Status indicator
+/// ------------------------------------------------------------------------ ///
+
+app.component('deviceNameIndicator', {
+  template: '<span>{{ device.name }}</span>',
+  controller: function($scope, MedibusService) {
+    $scope.device =  MedibusService.device;
+  }
+});
+
+app.component('deviceStatusIndicator', {
+  templateUrl: 'deviceStatusIndicator.html',
+  controller: function($scope, MedibusService) {
+    $scope.device =  MedibusService.device;
+    $scope.title = 'Device status indicator';
+  }
+});
+
+
+app.component('busStatusIndicator', {
+  templateUrl: 'busStatusIndicator.html',
+  controller: function($scope, MedibusService) {
+    $scope.busStatus = MedibusService.busStatus;
+    $scope.title = 'Bus status: Last incoming message'
+  }
+});
+
+
+/// ------------------------------------------------------------------------ ///
+/// B.2 Ventilation parameters
+/// ------------------------------------------------------------------------ ///
+
+app.component('ventParam', {
+  templateUrl: 'ventParam.html',
+  controller: function($scope, MedibusService) {
+    $scope.data = MedibusService.data;
+  }
+});
+
+
+app.component('alarmParam', {
+  templateUrl: 'alarmParam.html',
+  controller: function($scope, MedibusService){
+    $scope.data = MedibusService.data;
+  }
+});
+
+
+app.component('paramLimited', {
+  templateUrl: 'paramLimited.html',
+  bindings: { param: '=', label: '@', unit: '@'},
+  controller: function($scope) {}
+});
+
+app.component('anaesthParam', {
+  templateUrl: 'anaesthParam.html',
+  controller: function($scope,  MedibusService){
+    $scope.data = MedibusService.data;
+  }
+});
+
+app.component('evitaParam', {
+  templateUrl: 'evitaParam.html',
+  controller: function($scope, MedibusService){
+    $scope.data = MedibusService.data;
+  }
+});
+
+
+
+
+
+})(window.angular); /// function(angular)
+
+
+
