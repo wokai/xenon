@@ -38,3 +38,24 @@ interface.
 
 This implementation still is preliminary and under construction.
 Suggestions for further development are welcome.
+
+Xenon can be installed on localhost or a second system, which should be
+reachable via network.
+The system is designed to work on a lightweight system (such as *Raspberry pi*). 
+
+
+## Setup instruction
+
+
+
+ - Download project
+ - Run `npm install`
+ - Connect your system to a Dräger Medibus (RS232) port 
+    - Use a standard USB to RS232 cable
+    - On a Linux system, the device will be visible on path `/dev/ttyUSB0`
+ - Running `npm start` will launch the system
+ - Per default, the system will listen to port 4000
+ - There are standard parameter sets for Dräger Primus and Dräger Evita configured
+ - Open port and watch the incoming data
+ - Close port in order to avoid `COM1 error` messages on the Dräger device
+
