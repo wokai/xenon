@@ -59,3 +59,16 @@ The system is designed to work on a lightweight system (such as *Raspberry pi*).
  - Open port and watch the incoming data
  - Close port in order to avoid `COM1 error` messages on the Dräger device
 
+
+<!--- --------------------------------------------------------------------- --->
+# See also
+<!--- --------------------------------------------------------------------- --->
+
+There are two other repositories which shall extend the functionality of
+this software package:
+
+ - [Thalas](https://github.com/wokai/thalas), a NodeJs backend which facilitates
+    remote control of multiple *Xenon* instances along with scheduled queries
+    and storage of data in a MySql database (under construction).
+ - [ngThalas](https://github.com/wokai/ngThalas), an Angular frontend for 
+  *Thalas* (under construction).
