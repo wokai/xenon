@@ -59,7 +59,9 @@ const logformat = winston.format.printf( ({ level, label, message, timestamp, fi
   if(!file)  { file = '-'; }
   if(!func)  { func = '-';  }
   if(!stack) { stack = '-'; }
-  return `[${timestamp}] Level: ${level} | File: ${file} | Function: ${func} | Message: ${message} | Stack: ${stack}`
+  
+  /// Can be parsed as csv-format with delimiter |
+  return `[${timestamp}] | Level: ${level} | File: ${file} | Function: ${func} | Message: ${message} | Stack: ${stack}`
 });
 
 
