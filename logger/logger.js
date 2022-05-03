@@ -20,7 +20,7 @@
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 
-
+const colors  = require('colors/safe');
 const winston = require('winston');
 const dateformat = require("dateformat");
 const { format } = winston;
@@ -74,10 +74,32 @@ const consTransport = new winston.transports.Console({
 /// Dayly rotating file log
 /// //////////////////////////////////////////////////////////////////////// ///
 
+
+/// ------------------------------------------------------------------------ ///
+/// Check and eventually create directory for logfiles
+/// ------------------------------------------------------------------------ ///
+
+let logdir = path.join(__dirname, '..', 'logfiles');
+
+if (!fs.existsSync(logdir)){
+  console.log(colors.yellow(`[logger.js] Logging directory '${logdir}' does not exist (will be created).`))
+  fs.mkdirSync(logdir);
+}
+
 const logfile = 'win_' + dateformat(new Date(), 'yyyy-mm-dd') + '.log';
-const logpath = path.join(__dirname, '..', 'logfiles', logfile);
+const logpath = path.join(logdir, logfile);
 
 const flog = fs.createWriteStream(logpath, { flags: 'a' })
+flog.on('error', function(err) {
+  console.log(colors.brightRed(`[logger/logger] createWriteStream Error on file (flag: ${fflag}): ${logpath} `))
+  flog.end();
+});
+
+
+/// //////////////////////////////////////////////////////////////////////// ///
+/// Winston logger
+/// //////////////////////////////////////////////////////////////////////// ///
+
 const fileTransport = new winston.transports.Stream({ stream: flog });
 
  
