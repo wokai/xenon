@@ -47,6 +47,10 @@ const config = {
   temporal: {
     highWaterMark: 7200,
     truncation: 3600
+  },
+  dataRepo: {
+    highWaterMark: 7200,
+    truncation: 3600
   }
 }
 

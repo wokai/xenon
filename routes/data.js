@@ -23,11 +23,11 @@
 const express = require('express');
 const path    = require('path');
 
-const { ventilation } = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));
+const { ventilation } = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));exi
 const { device }      = require(path.join(__dirname, '..', 'model', 'data', 'device'));
 const { dateTime }    = require(path.join(__dirname, '..', 'model', 'data', 'dateTime'));
 const { alarm }       = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
-const { temporal }    = require(path.join(__dirname, '..', 'model', 'data', 'temporal'));
+const { cache }        = require(path.join(__dirname, '..', 'model', 'data', 'cache'));
 
 const router = express.Router();
 
@@ -47,15 +47,9 @@ router.get('/alarm', function(request, result, next){
   result.status(200).json(alarm.dataObject);
 });
 
-router.get('/temporal', function(request, result, next){
-  result.status(200).json(temporal.dataObject);
+router.get('/cache', function(request, result, next) {
+  result.status(200).json(cache.consumeVentData());
 });
-
-router.get('/temporal/extract', function(request, result, next){
-  result.status(200).json(temporal.extractData());
-});
-
-
 
 
 
