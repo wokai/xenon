@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2021, Wolfgang Kaisers
+ * Copyright 2022, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -21,13 +21,13 @@
  ******************************************************************************/
 
 const path = require('path');
-const win     = require(path.join(__dirname, '..', 'logger', 'logger'));
-const status  = require(path.join(__dirname, 'statusController'));
-const config  = require(path.join(__dirname, '..', 'config', 'medibus'));
-const action  = require(path.join(__dirname, '..', 'bus', 'action'));
-const monitor = require(path.join(__dirname, '..', 'monitor', 'monitor'));
+const win             = require(path.join(__dirname, '..', 'logger', 'logger'));
+const status          = require(path.join(__dirname, 'statusController'));
+const config          = require(path.join(__dirname, '..', 'config', 'medibus'));
+const action          = require(path.join(__dirname, '..', 'bus', 'action'));
+const monitor         = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 const { ventilation } = require(path.join(__dirname, '..','model', 'data', 'ventilation'));
-const { cache }    = require(path.join(__dirname, '..','model', 'data', 'cache'));
+const { cache }       = require(path.join(__dirname, '..','model', 'data', 'cache'));
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Manages scheduled messages

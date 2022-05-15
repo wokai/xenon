@@ -103,6 +103,84 @@ const bus = {
     [ 0x2b, 'CUR_DATA_CP2'  ],
     [ 0x2e, 'CUR_ALARM_CP2' ],  /// p.7
     [ 0x52, 'DEV_ID'        ]
+  ]),
+  alarms: {
+    cp1 : new Map([
+      /// Agent related alarms: Codepage 1
+      [ '09', 'Insp. Halothane > high Limit' ],
+      [ '0B', 'Insp. Enflurane > high Limit' ],
+      [ '0C', 'Insp. Isoflurane > high Limit' ],
+      [ '1F', 'Insp. Sevoflurane > high Limit' ],
+      [ '24', 'Insp. Desflurane > high Limit' ],
+      [ '29', 'Insp. Halothane < low Limit' ],
+      [ '2A', 'Insp. Enflurane < low Limit' ],
+      [ '2B', 'Insp. Isoflurane < low Limit'],
+      [ '2C', 'Insp. Desflurane < low Limit' ],
+      [ '32', 'Insp. Sevoflurane < low Limit' ],
+      [ '66', 'Mixed Agent detected' ],
+      [ '67', 'Multi-Gas Monitor Device Failure' ],
+      [ '69', 'N2O-Measurement inoperable' ],
+      [ '6E', 'Agent-Measurement inoperable' ],
+      [ 'EE', 'Two Agents detected' ],
+
+      /// Airway related alarms: Codepage 1
+      [ '00', 'Apnea combined source' ],
+      [ '0E', 'Apnea - No Volume exhaled for 30 Seconds' ],
+      [ '0F', 'Apnea - Pressure absent for 15 Seconds' ],
+      [ '10', 'Airway Pressure > high Limit' ],
+      [ '19', 'Minute Volume < low Limit' ],
+      [ '9B', 'Minute Volume > high Limit' ],
+      [ 'A3', 'Mean Airway Pressure < -2 mbar' ],
+      [ 'AC', 'Minute volume alarms off' ],
+      [ 'AD', 'Pressure Measurement inoperable' ],
+      [ 'BA', 'Airway Temperature > high Limit' ],
+      [ 'C1', 'Flow Measurement inoperable' ],
+      [ 'DA', 'PEEP > high Limit' ],
+      [ 'F8', 'PEEP > Pressure Threshold for 15 sec' ],
+      
+      /// CO2 related alarms: Codepage 1
+      [ '0D', 'Apnea - No CO2 Fluct. for 30 Seconds' ],
+      [ '27', 'Endtidal CO2 < low Limit' ],
+      [ '28', 'Endtidal CO2 > high Limit' ],
+      [ '3C', 'Inspiratory CO2 > high Limit' ],
+      [ '3D', 'CO2 Patient Sensor Line blocked' ],
+      [ '57', 'CO2 Alarm disabled' ],
+      [ '6A', 'CO2 Device Failure' ],
+      [ 'F7', 'Insp. CO2 alarms off' ],
+
+      /// O2 related alarms: Codepage 1
+      [ '08', 'Insp. Oxygen < low Limit' ],
+      [ '37', '% Oxygen > high Limit' ],
+      [ 'BE', 'O2 Measurement inoperable']
+
+      /// Miscellaneous alarms: Codepage1
+      /// SpO2 related alarms: Codepage 1
+      /// Ventilator related alarms: Codepage 1
+    ]),
+    cp2 : new Map([
+      /// Agent related alarms: Codepage 2
+      [ '3A', 'Insp. N2O high' ],
+      [ 'A2', 'Exp.Hal.>high limit' ],
+      [ 'A3', 'Exp.Enf.>high limit' ],
+      [ 'A4', 'Exp.Iso.>high limit' ],
+      [ 'A5', 'Exp.Des.>high limit' ],
+      [ 'A6', 'Exp.Sev.>high limit' ],
+      [ 'D2', 'Calculated MAC value decreasing' ],
+
+      /// Airway related alarms: Codepage 2
+      [ 'A8', 'Insp. Flow sensor inoperable' ],
+      [ '67', 'Minute volume low alarm off' ],
+      
+      /// Miscellaneous alarms: Codepage2
+    ])
+  },
+  /// ToDo: Not yet complete ...
+  textMessages: new Map([
+    [ '01', 'Ventilationmode IPPV' ],
+    [ '06', 'Ventilationmode SIMV' ],
+    [ '1E', 'Ventilator is in Standby-Mode' ],
+    [ '2B', 'Ventilationmode man./spont.' ],
+    [ '54', 'Device is in Standby-Mode' ]
   ])
 };
 

@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2021, Wolfgang Kaisers
+ * Copyright 2022, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -26,7 +26,7 @@ const path    = require('path');
 const { ventilation } = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));
 const { device }      = require(path.join(__dirname, '..', 'model', 'data', 'device'));
 const { dateTime }    = require(path.join(__dirname, '..', 'model', 'data', 'dateTime'));
-const { alarm }       = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
+const { alarmLimits, currentAlarms } = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
 const { cache }        = require(path.join(__dirname, '..', 'model', 'data', 'cache'));
 
 const router = express.Router();
@@ -43,9 +43,14 @@ router.get('/vent', function(request, result, next){
   result.status(200).json(ventilation.getValueObject());
 });
 
-router.get('/alarm', function(request, result, next){
-  result.status(200).json(alarm.dataObject);
+router.get('/alarm/limits', function(request, result, next){
+  result.status(200).json(alarmLimits.dataObject);
 });
+
+router.get('/alarm/current', function(request, result, next){
+  result.status(200).json(currentAlarms.getCurrentAlarms());
+});
+
 
 router.get('/cache', function(request, result, next) {
   result.status(200).json(cache.consumeVentData());

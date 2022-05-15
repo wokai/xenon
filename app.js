@@ -96,6 +96,7 @@ const io_router     = require(path.join(__dirname, 'routes', 'socket'));
 const data_router   = require(path.join(__dirname, 'routes', 'data'));
 const com_router    = require(path.join(__dirname, 'routes', 'com'));
 const system_router = require(path.join(__dirname, 'routes', 'system'));
+const param_router  = require(path.join(__dirname, 'routes', 'param'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -108,6 +109,7 @@ app.use('/data', data_router);
 app.use('/io', io_router);
 app.use('/com', com_router);
 app.use('/system', system_router);
+app.use('/param', param_router);
 
 /// Bootstrap
 app.use('/jquery',    express.static(path.join(__dirname, 'node_modules', 'jquery', 'dist')));

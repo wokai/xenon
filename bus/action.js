@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2021, Wolfgang Kaisers
+ * Copyright 2022, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -33,7 +33,7 @@ const DataResponse      = require(path.join(__dirname, '..', 'model', 'medibus',
 const { device }        = require(path.join(__dirname, '..', 'model', 'data', 'device'));
 const { dateTime }      = require(path.join(__dirname, '..', 'model', 'data', 'dateTime'));
 const { ventilation }   = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));
-const { alarm }         = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
+const { alarmLimits, currentAlarms }         = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
 
 const monitor           = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 
@@ -118,7 +118,7 @@ module.exports = {
       }),
     cp1 : new Action(commands.alarm.cp1, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp1', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
-        /// ToDo: Action ??
+        currentAlarms.extractAlarmCp1(msg);
       }),
     cp2 : new Action(commands.alarm.cp2, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp2', message: `Msg id: ${msg.id} | Code: ${msg.code}`})

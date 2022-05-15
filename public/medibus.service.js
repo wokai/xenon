@@ -123,20 +123,10 @@ app.factory('MedibusService', function($http, $rootScope) {
     busStatus.messageId = vent.msgId;
     busStatus.lastmessage = vent.time.time;
     data.vent = vent;
-    
-    /*
-    temp.data.time.push(vent.time.time);
-    temp.data.tidalvolume.push(vent.respiration.tidalvolume);
-    temp.data.feco2.push(vent.gas.feco2.value);
-    temp.data.fio2.push(vent.gas.fio2.value);
-    temp.data.isoflurane.push(vent.inhalation.isoflurane.exp);
-    temp.data.desflurane.push(vent.inhalation.desflurane.exp);
-    $rootScope.$emit('data:temporal', temp.data);
-    */
   }  
   
   var getAlarmData = function(){
-    $http.get('/data/alarm')
+    $http.get('/data/alarm/limits')
       .then(function(response) {
         data.alarm = response.data;
         console.log('[MedibusService] getAlarmData. Date: ', response.data.date, ', Time: ', response.data.time);

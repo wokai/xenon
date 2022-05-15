@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2021, Wolfgang Kaisers
+ * Copyright 2022, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -20,15 +20,19 @@
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
  
-const win = require('../../logger/logger');
+const path = require('path'); 
 
-const DataResponse = require('../medibus/dataResponse');
+const win           = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
+const medibus       = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
+const DataResponse  = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
+
  
- 
-class Alarm {
+class AlarmLimits {
   
   #obj
   
+  
+  /// See: this.extractLowLimits
   setLowLimits = (res) => {
     try {
       /// Time and date set by Medibus message constructor
@@ -47,6 +51,7 @@ class Alarm {
     }
   }
   
+  /// See: this.extractHighLimits
   setHighLimits = (res) => {
     try {
       /// Time and date set by Medibus message constructor
@@ -84,6 +89,7 @@ class Alarm {
       console.log(this.#obj);
     }
   }
+  
   
   setDefaultObject = () => {
     this.#obj = {
@@ -165,18 +171,51 @@ class Alarm {
   
   get dataObject ()  { return this.#obj; }
   
-  extractLowLimits = (msg) => {
-    this.setLowLimits(new DataResponse(msg));
-  }
-  
-  extractHighLimits = (msg) => { 
-    this.setHighLimits(new DataResponse(msg));
-  }
+  extractLowLimits  = (msg) => { this.setLowLimits( new DataResponse(msg)); }
+  extractHighLimits = (msg) => { this.setHighLimits(new DataResponse(msg)); }
 }
 
-const alarm = new Alarm();
+/// //////////////////////////////////////////////////////////////////////// ///
+/// Keeps a map with current alarms
+/// //////////////////////////////////////////////////////////////////////// ///
+
+class CurrentAlarms {
+  
+  #cur
+  
+  constructor() { this.#cur = new Map(); }
+  
+  setAlarmCp1 = (res) => {
+    let alarm;
+    medibus.alarm.cp1.keys().forEach((code) => {
+      alarm = res. res.getSegment(code);
+      if(alarm === null){
+        /// Currently not reported
+        this.#cur.delete(code);
+      } else {
+        /// Device reports alarm
+        this.#cur.set(code, {
+          code: code,
+          msg: alarm
+        });
+      }
+    });
+  }
+  
+  extractAlarmCp1 = (msg) => { this.setAlarmCp1( new DataResponse(msg)); }
+
+  getCurrentAlarms = () => {
+    return [...this.#cur];
+  }
+
+}
+
+
+const alarmLimits = new AlarmLimits();
+const currentAlarms = new CurrentAlarms();
 
 
 module.exports = { 
-  alarm: alarm
+  alarmLimits: alarmLimits,
+  currentAlarms: currentAlarms
 };

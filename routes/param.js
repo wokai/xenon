@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2021, Wolfgang Kaisers
+ * Copyright 2022, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -19,14 +19,27 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
-
-
+ 
 const express = require('express');
+const path    = require('path');
+
+const medibus = require(path.join(__dirname, '..', 'config', 'medibus'));
+
+
 const router = express.Router();
 
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Xenon' });
+router.get('/alarms/cp1', function(request, result, next){
+  result.status(200).json([...medibus.alarms.cp1]);
 });
+
+router.get('/alarms/cp2', function(request, result, next){
+  result.status(200).json([...medibus.alarms.cp2]);
+});
+
+router.get('/text', function(request, result, next) {
+  result.status(200).json([...medibus.textMessages]);
+});
+
 
 
 module.exports = router;

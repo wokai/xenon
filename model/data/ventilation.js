@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2021, Wolfgang Kaisers
+ * Copyright 2022, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -160,8 +160,8 @@ class Ventilation {
     this.#val.msgId = msg.id;
     this.#val.time  = msg.dateTime;
     
-                                                                          /// Snomed CT identifier
-    this.#val.patient.compliance                = res.getSegment('06');   ///   3863008
+                                                                    /// Snomed CT identifier
+    this.#val.patient.compliance          = res.getSegment('06');   ///   3863008
     
     this.#val.respiration.peak            = res.getSegment('7D');   ///  27913002
     this.#val.respiration.plateau         = res.getSegment('74');   /// 698822002

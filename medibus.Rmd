@@ -19,7 +19,12 @@ output:
 <!--- --------------------------------------------------------------------- --->
 
 
+## Medibus protocol
+
  - [Evita V800 / V600](https://www.draeger.com/Library/Content/9055601_04_IfU_Evita_V800_V600_SW1_n_en.pdf)
+ - [Medibus Procol Definition](https://hit.healthsystem.virginia.edu/index.cfm/_api/render/file/?fileID=DC02EE3A-17A4-77A0-3E1CF4BE2E1B9EA8&fileEXT=.pdf)
+ - [Medibus for Primus](https://www.draeger.com/Products/Content/IfU_SP_Primus_MEDIBUS_for_Primus__Primus_IE__Apollo_and_Pallas_9037426.pdf)
+
 
  - Find Raspberry in network: `arp -a`
  - Primus password: 8056
@@ -32,14 +37,14 @@ output:
 <!--- --------------------------------------------------------------------- --->
 
 In order to get access to the serial port on a linux system, it may be 
-neccessary to add the current user to the `dialout` group via
+necessary to add the current user to the `dialout` group via
 `usermod -aG dialout $USER` command (in root environment: su -).
 
 
 
 ## Communication via USB to Serial/UART/RS232 
 
-Status of USB adapter inferface can be monitored using dmesg `dmesg | grep tty`
+Status of USB adapter interface can be monitored using dmesg `dmesg | grep tty`
 indicates connection and disconnection of cable:
 
 ```
@@ -49,7 +54,7 @@ indicates connection and disconnection of cable:
 [ 5636.457821] usb 1-1: pl2303 converter now attached to ttyUSB0
 ```
 
-For prolific chipset, `dmesg | grep pl2303` or `dmesg | grep 1-1` provides
+For prolific chip set, `dmesg | grep pl2303` or `dmesg | grep 1-1` provides
 additional information.
 
 
@@ -57,7 +62,7 @@ additional information.
 
  - Starting Minicom with `sudo minicom -s` prevents a program exit when error occur.
  - Set communication parameters `9600 8M1`
- - Turn on echo wich  `Ctrl-a & e`
+ - Turn on echo with  `Ctrl-a & e`
  - End session, with `Ctrl+a` followed `Ctrl+x`.
 
 ## Use Linux terminal commands
