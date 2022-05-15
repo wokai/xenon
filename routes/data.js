@@ -23,7 +23,7 @@
 const express = require('express');
 const path    = require('path');
 
-const { ventilation } = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));exi
+const { ventilation } = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));
 const { device }      = require(path.join(__dirname, '..', 'model', 'data', 'device'));
 const { dateTime }    = require(path.join(__dirname, '..', 'model', 'data', 'dateTime'));
 const { alarm }       = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));

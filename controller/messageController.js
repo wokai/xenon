@@ -27,7 +27,7 @@ const config  = require(path.join(__dirname, '..', 'config', 'medibus'));
 const action  = require(path.join(__dirname, '..', 'bus', 'action'));
 const monitor = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 const { ventilation } = require(path.join(__dirname, '..','model', 'data', 'ventilation'));
-const { repo }    = require(path.join(__dirname, '..','model', 'data', 'datarepo'));
+const { cache }    = require(path.join(__dirname, '..','model', 'data', 'cache'));
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Manages scheduled messages
@@ -74,7 +74,7 @@ class MessageController {
     if(status.controller.sending) {
       if(!this.#schedule.length) {
         monitor.dataMsg('cycle', `Message cycle finished. Message id ${id}.`, ventilation.getValueObject());
-        repo.pushVentData(ventilation.getValueObject());
+        cache.pushVentData(ventilation.getValueObject());
         this.loadCycle();
       }
       this.#schedule.pop().sendCommand()

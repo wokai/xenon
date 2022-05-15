@@ -56,7 +56,7 @@ class DataCache {
     this.#vent.push(vent);
   }
 
-  consumeVentData() => {
+  consumeVentData = () => {
     let res = this.#vent;
     this.#vent = [];
     return res;
