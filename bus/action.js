@@ -33,7 +33,7 @@ const DataResponse      = require(path.join(__dirname, '..', 'model', 'medibus',
 const { device }        = require(path.join(__dirname, '..', 'model', 'data', 'device'));
 const { dateTime }      = require(path.join(__dirname, '..', 'model', 'data', 'dateTime'));
 const { ventilation }   = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));
-const { alarmLimits, currentAlarms }         = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
+const { alarmLimits, reportedAlarms }         = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
 
 const monitor           = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 
@@ -118,11 +118,11 @@ module.exports = {
       }),
     cp1 : new Action(commands.alarm.cp1, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp1', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
-        currentAlarms.extractAlarmCp1(msg);
+        reportedAlarms.extractAlarm(msg);
       }),
     cp2 : new Action(commands.alarm.cp2, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp2', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
-        /// ToDo: Action ??
+        reportedAlarms.extractAlarm(msg);
       })
     
   }

@@ -179,43 +179,116 @@ class AlarmLimits {
 /// Keeps a map with current alarms
 /// //////////////////////////////////////////////////////////////////////// ///
 
-class CurrentAlarms {
+class ReportedAlarms {
   
-  #cur
+  #alarms
+  #exspiredAlarms
   
-  constructor() { this.#cur = new Map(); }
+  static get emptyMsg() {
+    return {
+      id  : 0,
+      time: null,
+      msg : ''
+    }
+  }
   
-  setAlarmCp1 = (res) => {
-    let alarm;
-    medibus.alarm.cp1.keys().forEach((code) => {
-      alarm = res. res.getSegment(code);
-      if(alarm === null){
-        /// Currently not reported
-        this.#cur.delete(code);
-      } else {
-        /// Device reports alarm
-        this.#cur.set(code, {
-          code: code,
-          msg: alarm
-        });
+  
+  clear = () => {
+    this.#alarms = new Map();
+    this.#exspiredAlarms.length = 0;
+    
+    medibus.alarms.forEach(a => {
+      this.#alarms[a.code] = {
+        id: a.id,
+        code: a.code,
+        label: a.label,
+        /// First message with alarm
+        firstMsg: Object.assign({}, ReportedAlarms.emptyMsg),
+        /// Last message in a row with alarm
+        lastMsg: Object.assign({}, ReportedAlarms.emptyMsg)
       }
     });
   }
   
-  extractAlarmCp1 = (msg) => { this.setAlarmCp1( new DataResponse(msg)); }
+  constructor() {
+    this.#exspiredAlarms = []
+    this.clear();
+  }
+  
+  /// ---------------------------------------------------------------------- ///
+  /// Check for exspired alarms:
+  /// - Have been observed in previous message(s)
+  /// - Are no more present in current message
+  ///
+  /// Then:
+  /// - Shift dataset to exspiredAlarms
+  /// - Clear up record in alarm.cpx Map
+  /// ---------------------------------------------------------------------- ///
+  checkReportedAlarms(msg){
+    for(let [key, value] of this.#alarms){
+      
+      if(value.lastMsg.id != msg.id){
+        
+        /// Create exspired-alarm record
+        let target = {};
+        Object.assign(target, value);
+        target.past = {
+          id: msg.id,
+          time: msg.dateTime
+        }
+        this.#exspiredAlarms.push(target);
+        
+        /// Reset alarm record
+        value.firstMsg = Object.assign({}, ReportedAlarms.emptyMsg);
+        value.lastMsg  = Object.assign({}, ReportedAlarms.emptyMsg);
+      }
+    }
+  }
+  
+  
+  
+  extractAlarm = (msg) => { 
+    let resp = new DataResponse(msg);
+    
+    for(let [key, value] of resp.map){
+      let alarm = this.#alarms.get(key);
+      if(alarm !== undefined){
+        if(alarm.firstMsg.id == 0){
+          /// This alarm has been observed for the first time
+          alarm.firstMsg.id = msg.id;
+          alarm.firstMsg.time = msg.dateTime;
+          alarm.firstMsg.msg = value;
+        } 
+        /// Maybe, this alarm has been present in a previous message
+        alarm.lastMsg.id = msg.id;
+        alarm.lastMsg.time = msg.dateTime;
+        alarm.lastMsg.msg = value;
+        
+        this.checkReportedAlarms(msg);
+      } else {
+        /// Key for alarm not found ...
+        win.def.log({ level: 'warn', file: 'alarm', func: 'extractAlarmCp1', message:  `Alarm key ${key} not found (value: ${value}).`});
+        console.log(`[model/data/alarm] ReportedAlarms.extractAlarmCp1: Alarm key ${key} not found (value: ${value})`)
+      }
+    }
+  }
 
-  getCurrentAlarms = () => {
-    return [...this.#cur];
+  getReportedAlarms = () => {
+    return [...this.#alarms.values()].filter(alarm => alarm.firstMsg.id != 0);
+  }
+  
+  getExspiredAlarms = () => { return this.#exspiredAlarms; }
+  consumeExspiredAlarms = () => {
+    const alarms = this.#exspiredAlarms;
+    this.#exspiredAlarms.length = 0;
   }
 
 }
 
-
 const alarmLimits = new AlarmLimits();
-const currentAlarms = new CurrentAlarms();
-
+const reportedAlarms = new ReportedAlarms();
 
 module.exports = { 
   alarmLimits: alarmLimits,
-  currentAlarms: currentAlarms
+  reportedAlarms: reportedAlarms
 };
