@@ -31,7 +31,6 @@ class AlarmLimits {
   
   #obj
   
-  
   /// See: this.extractLowLimits
   setLowLimits = (res) => {
     try {
@@ -245,8 +244,11 @@ class ReportedAlarms {
     }
   }
   
-  
-  
+  /// ---------------------------------------------------------------------- ///
+  /// - Iterates payload segments of Alarm (cp1 and cp2) reply messages
+  /// - Updates alarm message segments
+  /// - Initiates re-check of all current and exspiring alarms
+  /// ---------------------------------------------------------------------- ///
   extractAlarm = (msg) => { 
     let resp = new DataResponse(msg);
     
@@ -281,6 +283,7 @@ class ReportedAlarms {
   consumeExspiredAlarms = () => {
     const alarms = this.#exspiredAlarms;
     this.#exspiredAlarms.length = 0;
+    return alarms;
   }
 
 }
