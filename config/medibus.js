@@ -246,14 +246,17 @@ const bus = {
     { id: 248, code: 'CB', label: 'No N2O Supply'},
     { id: 249, code: 'D0', label: 'Pressure relief valve opened'}
   ],
-  /// ToDo: Not yet complete ...
-  textMessages: new Map([
-    [ '01', 'Ventilationmode IPPV' ],
-    [ '06', 'Ventilationmode SIMV' ],
-    [ '1E', 'Ventilator is in Standby-Mode' ],
-    [ '2B', 'Ventilationmode man./spont.' ],
-    [ '54', 'Device is in Standby-Mode' ]
-  ])
+  text: {
+    /// ToDo: Not yet complete ...
+    messages: new Map([
+      [ '01', 'Ventilationmode IPPV' ],
+      [ '06', 'Ventilationmode SIMV' ],
+      [ '1E', 'Ventilator is in Standby-Mode' ],
+      [ '2B', 'Ventilationmode man./spont.' ],
+      [ '54', 'Device is in Standby-Mode' ]
+    ]),
+    etx: 0x03
+  }
 };
 
 
