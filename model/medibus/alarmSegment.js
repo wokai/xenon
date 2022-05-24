@@ -42,8 +42,6 @@ class AlarmSegment {
   #code
   #phrase
   
-  
-  
   constructor(dataResponse, index) {
     
     var p = dataResponse.payload;

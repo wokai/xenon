@@ -77,7 +77,7 @@ const bus = {
         cp2: 0x2e, 
         cp3: 0x23,
       },
-      text: 0x24
+      text: 0x2a
     }, /// cur
     lim: {
       alarm: {
