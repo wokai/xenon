@@ -25,6 +25,7 @@ const path = require('path');
 const win           = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const medibus       = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const DataResponse  = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
+const AlarmStatusResponse  = require(path.join(__dirname, '..', 'medibus', 'alarmResponse'));
 
  
 class AlarmLimits {
@@ -250,7 +251,7 @@ class ReportedAlarms {
   /// - Initiates re-check of all current and exspiring alarms
   /// ---------------------------------------------------------------------- ///
   extractAlarm = (msg) => { 
-    let resp = new DataResponse(msg);
+    let resp = new AlarmStatusResponse(msg);
     
     for(let [key, value] of resp.map){
       let alarm = this.#alarms.get(key);
@@ -265,7 +266,8 @@ class ReportedAlarms {
         alarm.lastMsg.id = msg.id;
         alarm.lastMsg.time = msg.dateTime;
         alarm.lastMsg.msg = value;
-        
+        console.log(alarm.lastMsg);
+        win.def.log({ level: 'info', file: 'alarm', func: 'extractAlarmCp1', message:  `Alarm time ${msg.dateTime} (value: ${value}).`});
         this.checkReportedAlarms(msg);
       } else {
         /// Key for alarm not found ...
