@@ -22,9 +22,9 @@
 
 
 /// //////////////////////////////////////////////////////////////////////// ///
-///  1 byte  alarm priority
-///  2 bytes alarm code
-/// 12 bytes alarm phrase
+///  1 byte  alarm priority: Number in the range 1-31 (highest = 31)
+///  2 bytes alarm code    : Two byte ASCII HEX
+/// 12 bytes alarm phrase  : Character string.
 /// //////////////////////////////////////////////////////////////////////// ///
 
 const AsciiHex = require('./asciiHex');
@@ -51,14 +51,11 @@ class AlarmSegment {
     
     this.#priority = p.slice(begin    , begin +  1);   /// One  byte  priority
     this.#code     = p.slice(begin + 1, begin +  3);   /// two  bytes alarm code
-    this.#data     = p.slice(begin + 3, begin + 18);   /// 12   bytes alarm phrase
-    
-    /// Get parameter details from stored Parameter list
-    this.#parameter = parameters.get(this.#dataCode.toString());
+    this.#phrase   = p.slice(begin + 3, begin + 18);   /// 12   bytes alarm phrase
     
     this.#msgid = dataResponse.id;
-    this.#time = dataResponse.time;
-    this.#date = dataResponse.date;
+    this.#time  = dataResponse.time;
+    this.#date  = dataResponse.date;
   }
   
   static from(d, i){
@@ -75,7 +72,7 @@ class AlarmSegment {
   get messageId       () { return this.#msgid; }
   
   get priority        () { return parseInt(this.#priority); }
-  get code            () { return AsciiHex.hexArrayToString(this.#Code); }
+  get code            () { return AsciiHex.hexArrayToString(this.#code); }
   get phrase          () { return this.#phrase; }
 
   
@@ -84,7 +81,7 @@ class AlarmSegment {
       id: this.messageId,
       date: this.date,
       time: this.time,
-      priority: this.
+      priority: this.priority,
       code: this.codeString,
       phrase: this.value
     };

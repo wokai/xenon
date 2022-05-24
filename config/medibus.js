@@ -76,7 +76,8 @@ const bus = {
         cp1: 0x27,
         cp2: 0x2e, 
         cp3: 0x23,
-      }
+      },
+      text: 0x24
     }, /// cur
     lim: {
       alarm: {
@@ -86,7 +87,8 @@ const bus = {
     },
     date: 0x28
   },
-  /// Back-translation code -> label 
+  /// Back-translation code -> label (Message.get code + getInfo)
+  /// See: page 8 RS232_Medibus (Commands Codes)
   codes : new Map([
     [ 0x51, 'ICC'           ],
     [ 0x30, 'NOP'           ],
@@ -100,6 +102,7 @@ const bus = {
     [ 0x27, 'CUR_ALARM'     ],
     [ 0x29, 'SET_DEV'       ],
     [ 0x28, 'DATE_TIME'     ],
+    [ 0x2a, 'CUR_TEXT_MSG'  ],
     [ 0x2b, 'CUR_DATA_CP2'  ],
     [ 0x2e, 'CUR_ALARM_CP2' ],  /// p.7
     [ 0x52, 'DEV_ID'        ]

@@ -22,10 +22,10 @@
  
 const path = require('path'); 
 
-const win           = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
-const medibus       = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
-const DataResponse  = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
-const AlarmStatusResponse  = require(path.join(__dirname, '..', 'medibus', 'alarmResponse'));
+const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
+const medibus             = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
+const DataResponse        = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
+const AlarmStatusResponse = require(path.join(__dirname, '..', 'medibus', 'alarmStatusResponse'));
 
  
 class AlarmLimits {

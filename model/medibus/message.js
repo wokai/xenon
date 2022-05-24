@@ -121,6 +121,8 @@ class Message {
   get cmd  ()    { return this.isCmd(); }
   get type ()    { return bus.message.types.get(this.#type); }
   get typestr()  { return bus.message.typestr.get(this.#type); }
+  
+  /// Translate binary message code into text
   get code ()    { return bus.codes.get(this.#code) }
   get nop  ()    { return this.#code === bus.command.nop; }
   get nak  ()    { return this.#code === bus.command.nak; }

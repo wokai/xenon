@@ -33,6 +33,7 @@ const DataResponse      = require(path.join(__dirname, '..', 'model', 'medibus',
 const { device }        = require(path.join(__dirname, '..', 'model', 'data', 'device'));
 const { dateTime }      = require(path.join(__dirname, '..', 'model', 'data', 'dateTime'));
 const { ventilation }   = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));
+
 const { alarmLimits, reportedAlarms }         = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
 
 const monitor           = require(path.join(__dirname, '..', 'monitor', 'monitor'));
@@ -124,7 +125,6 @@ module.exports = {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp2', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
         reportedAlarms.extractAlarm(msg);
       })
-    
   }
 }
 

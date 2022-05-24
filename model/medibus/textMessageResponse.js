@@ -37,7 +37,7 @@ const AlarmSegment = require('./alarmSegment');
 
 
 
-class AlarmStatusResponse {
+class TextMessageResponse {
 
   #msgid
   #date
@@ -59,14 +59,16 @@ class AlarmStatusResponse {
 
     if(msg.hasPayload()) {
       
-      if(this.#hexPayload.length % 15 != 0){
-        win.def.log({level: 'error', file: 'alarmStatusResponse', func: 'construct', message: `Incompatible length of data segment: ${this.#hexPayload.length}` });
+      
+      /// See p. 18 for 
+      if(this.#hexPayload.length > 3840){
+        win.def.log({level: 'error', file: 'TextMessageResponse', func: 'construct', message: `Text message response field is too long (${this.#hexPayload.length} bytes)` });
       } else {
         /// Each alarm segment is of 15 Bytes length
         var segments = this.#hexPayload.length / 15;
         var s;
         
-        win.def.log({ level: 'debug', file: 'alarmStatusResponse', func: 'construct', message: `MSG id: ${msg.id} | Reading ${segments} from payload size ${this.#hexPayload.length}.`});
+        win.def.log({ level: 'debug', file: 'TextMessageResponse', func: 'construct', message: `MSG id: ${msg.id} | Reading ${segments} from payload size ${this.#hexPayload.length}.`});
         
         for(var i = 0; i < segments; ++i){
           s = AlarmSegment.from(this, i);
@@ -74,7 +76,7 @@ class AlarmStatusResponse {
         }
       }
     }
-    win.def.log({ level: 'debug', file: 'alarmStatusResponse', func: 'construct', message: `ID: ${msg.id}, Segments: ${this.#map.size}`});
+    win.def.log({ level: 'debug', file: 'TextMessageResponse', func: 'construct', message: `ID: ${msg.id}, Segments: ${this.#map.size}`});
   }
 
   
@@ -86,7 +88,7 @@ class AlarmStatusResponse {
   get payload   () { return this.#hexPayload; }
   get array     () { return [...this.#map.values()]; }
   get map       () { return this.#map; }
-  static from = (msg) => { return new AlarmStatusResponse(msg); }
+  static from = (msg) => { return new TextMessageResponse(msg); }
   
   getSegment = (s) => {
     const r = this.#map.get(s);
@@ -95,11 +97,11 @@ class AlarmStatusResponse {
   
   logSegments = () => {
     this.#map.forEach(function(value, key) {
-      win.def.log({level: 'debug', file: 'alarmStatusResponse', func: 'logSegments', message: `[Segment] Key: ${key}` })
+      win.def.log({level: 'debug', file: 'TextMessageResponse', func: 'logSegments', message: `[Segment] Key: ${key}` })
     })
   }
 
 }
 
 
-module.exports = AlarmStatusResponse;
+module.exports = TextMessageResponse;
