@@ -123,7 +123,8 @@ module.exports = {
       }),
     cp2 : new Action(commands.alarm.cp2, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp2', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
-        reportedAlarms.extractAlarm(msg);
+        // ToDo: Activate this part of alarm recognition
+        //reportedAlarms.extractAlarm(msg);
       })
   }
 }

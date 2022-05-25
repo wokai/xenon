@@ -23,7 +23,7 @@
 const path = require('path'); 
 
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
-const medibus             = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
+const bus             = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const DataResponse        = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
 const AlarmStatusResponse = require(path.join(__dirname, '..', 'medibus', 'alarmStatusResponse'));
 
@@ -177,10 +177,15 @@ class AlarmLimits {
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Keeps a map with current alarms
+/// Alarms from codepage 1 and codepage 2 must be separated because the
+/// following codes:
+///   A3 67 32 35 37 6A A0 AC AD C8 C9 CA
+/// are (ambiguously) defined in both codepages.
 /// //////////////////////////////////////////////////////////////////////// ///
 
 class ReportedAlarms {
   
+  #alarmDefinition
   #alarms
   #exspiredAlarms
   
@@ -194,23 +199,31 @@ class ReportedAlarms {
   
   
   clear = () => {
-    this.#alarms = new Map();
+
     this.#exspiredAlarms.length = 0;
-    
-    medibus.alarms.forEach(a => {
-      this.#alarms[a.code] = {
-        id: a.id,
-        code: a.code,
-        label: a.label,
-        /// First message with alarm
-        firstMsg: Object.assign({}, ReportedAlarms.emptyMsg),
-        /// Last message in a row with alarm
-        lastMsg: Object.assign({}, ReportedAlarms.emptyMsg)
-      }
+
+    /// Fill map with codepage 1 alarm definitions
+    this.#alarms = new Map();    
+    this.#alarmDefinition.forEach(a => {
+        this.#alarms.set(a.code, {
+          id: a.id,
+          code: a.code,
+          label: a.label,
+          /// First message with alarm
+          firstMsg: Object.assign({}, ReportedAlarms.emptyMsg),
+          /// Last message in a row with alarm
+          lastMsg: Object.assign({}, ReportedAlarms.emptyMsg)
+        });
     });
+    
+    win.def.log({ level: 'info', file: 'model/data/alarm', func: 'ReportedAlarms.clear', message:  `Extracted ${this.#alarms.size} alarm definitions.`});
   }
   
+  
+  // ToDo: Two constructor arguments for both codepages:
+  // alarm definition and list of active alarms
   constructor() {
+    this.#alarmDefinition = bus.alarms.cp1;
     this.#exspiredAlarms = []
     this.clear();
   }
@@ -252,7 +265,7 @@ class ReportedAlarms {
   /// ---------------------------------------------------------------------- ///
   extractAlarm = (msg) => { 
     let resp = new AlarmStatusResponse(msg);
-    win.def.log({ level: 'info', file: 'alarm', func: 'extractAlarm', message:  `MsgId: ${msg.id}. Alarm-Resp.length: ${resp.length}`});
+    win.def.log({ level: 'info', file: 'model/data/alarm', func: 'extractAlarm', message:  `MsgId: ${msg.id}. Alarm-Resp.length: ${resp.length}`});
     
     
     for(let [key, value] of resp.map){
