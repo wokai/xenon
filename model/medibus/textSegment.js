@@ -31,16 +31,32 @@ const AsciiHex = require('./asciiHex');
 
 const win = require('../../logger/logger');
 const { parameters } = require('../parameters');
- 
-class AlarmSegment {
+
+
+class TextMessage {
+  
+  
+}
+
+/// //////////////////////////////////////////////////////////////////////// ///
+/// Represents the inner structure of a Medibus Text-Message-Response
+/// //////////////////////////////////////////////////////////////////////// ///
+
+
+class TextSegment {
   
   #msgid
   #time
   #date
   
+  #messages = []
+  
   #priority
   #code
   #phrase
+  
+  
+  
   
   constructor(dataResponse, index) {
     
@@ -59,10 +75,10 @@ class AlarmSegment {
   static from(d, i){
     var p = d.payload;
     if(p.length < (i + 1) * 15){
-      win.def.log({ level: 'error', file: 'AlarmSegment', func: 'static from', message: `Out of range error: Array length: ${p.length}, Index: ${i}`});
+      win.def.log({ level: 'error', file: 'TextSegment', func: 'static from', message: `Out of range error: Array length: ${p.length}, Index: ${i}`});
       return null;
     }
-    return new AlarmSegment(d, i);
+    return new TextSegment(d, i);
   }
   
   get time            () { return this.#time; }
@@ -87,4 +103,4 @@ class AlarmSegment {
   
 }
 
-module.exports = AlarmSegment;
+module.exports = TextSegment;
