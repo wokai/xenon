@@ -66,15 +66,17 @@ class AlarmStatusResponse {
         var segments = this.#hexPayload.length / 15;
         var s;
         
-        win.def.log({ level: 'debug', file: 'alarmStatusResponse', func: 'construct', message: `MSG id: ${msg.id} | Reading ${segments} from payload size ${this.#hexPayload.length}.`});
+        // ToDo: Decrease log level
+        win.def.log({ level: 'info', file: 'alarmStatusResponse', func: 'construct', message: `MSG id: ${msg.id} | Reading ${segments} from payload size ${this.#hexPayload.length}.`});
         
         for(var i = 0; i < segments; ++i){
           s = AlarmSegment.from(this, i);
-          this.#map.set(s.codeString, s);
+          this.#map.set(s.code, s);
         }
       }
     }
-    win.def.log({ level: 'debug', file: 'alarmStatusResponse', func: 'construct', message: `ID: ${msg.id}, Segments: ${this.#map.size}`});
+    // ToDo: Decrease log level
+    win.def.log({ level: 'info', file: 'alarmStatusResponse', func: 'construct', message: `ID: ${msg.id}, Segments: ${this.#map.size}`});
   }
 
   
@@ -95,7 +97,7 @@ class AlarmStatusResponse {
   
   logSegments = () => {
     this.#map.forEach(function(value, key) {
-      win.def.log({level: 'debug', file: 'alarmStatusResponse', func: 'logSegments', message: `[Segment] Key: ${key}` })
+      win.def.log({level: 'info', file: 'alarmStatusResponse', func: 'logSegments', message: `[Segment] Key: ${key}` })
     })
   }
 

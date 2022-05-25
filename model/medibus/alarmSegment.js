@@ -54,6 +54,9 @@ class AlarmSegment {
     this.#msgid = dataResponse.id;
     this.#time  = dataResponse.time;
     this.#date  = dataResponse.date;
+    
+    // ToDo: Remove
+    win.def.log({ level: 'info', file: 'AlarmSegment', func: 'constructor', message: `[AlarmSegment] msgid: ${this.#msgid}, priority: ${this.#priority}, code: ${this.#code}, phrase: ${this.#phrase}`});
   }
   
   static from(d, i){
@@ -80,7 +83,7 @@ class AlarmSegment {
       date: this.date,
       time: this.time,
       priority: this.priority,
-      code: this.codeString,
+      code: this.code,
       phrase: this.value
     };
   }

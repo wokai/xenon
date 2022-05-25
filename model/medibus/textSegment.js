@@ -31,16 +31,33 @@ const AsciiHex = require('./asciiHex');
 
 const win = require('../../logger/logger');
 const { parameters } = require('../parameters');
- 
+
+
+class TextMessage {
+  
+  
+}
+
+/// //////////////////////////////////////////////////////////////////////// ///
+/// Represents the inner structure of a Medibus Text-Message-Response
+/// //////////////////////////////////////////////////////////////////////// ///
+
+
+>>>>>>> 8c1540be0c1a40b5894e21080453ae9677576b01
 class TextSegment {
   
   #msgid
   #time
   #date
   
+  #messages = []
+  
   #priority
   #code
   #phrase
+  
+  
+  
   
   constructor(dataResponse, index) {
     

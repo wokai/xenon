@@ -252,6 +252,8 @@ class ReportedAlarms {
   /// ---------------------------------------------------------------------- ///
   extractAlarm = (msg) => { 
     let resp = new AlarmStatusResponse(msg);
+    win.def.log({ level: 'info', file: 'alarm', func: 'extractAlarm', message:  `MsgId: ${msg.id}. Alarm-Resp.length: ${resp.length}`});
+    
     
     for(let [key, value] of resp.map){
       let alarm = this.#alarms.get(key);
@@ -267,12 +269,13 @@ class ReportedAlarms {
         alarm.lastMsg.time = msg.dateTime;
         alarm.lastMsg.msg = value;
         console.log(alarm.lastMsg);
-        win.def.log({ level: 'info', file: 'alarm', func: 'extractAlarmCp1', message:  `Alarm time ${msg.dateTime} (value: ${value}).`});
+        win.def.log({ level: 'info', file: 'alarm', func: 'extractAlarm', message:  `Alarm time ${msg.dateTime} (value: ${value}).`});
         this.checkReportedAlarms(msg);
       } else {
         /// Key for alarm not found ...
-        win.def.log({ level: 'warn', file: 'alarm', func: 'extractAlarmCp1', message:  `Alarm key ${key} not found (value: ${value}).`});
-        console.log(`[model/data/alarm] ReportedAlarms.extractAlarmCp1: Alarm key ${key} not found (value: ${value})`)
+        win.def.log({ level: 'warn', file: 'alarm', func: 'extractAlarm', message:  `MsgId: ${msg.id}. AlarmStatusResponse.length: ${resp.length}. AlarmSegment undefined.`});
+        console.log(value);
+        console.log(`[model/data/alarm] ReportedAlarms.extractAlarm: MsgId: ${msg.id}. AlarmSegment undefined.`)
       }
     }
   }
