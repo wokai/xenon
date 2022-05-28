@@ -175,6 +175,16 @@ class AlarmLimits {
   extractHighLimits = (msg) => { this.setHighLimits(new DataResponse(msg)); }
 }
 
+
+class ExspiredAlarms {
+  
+  #alarms
+  
+  constructor(){
+  }
+  
+}
+
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Keeps a map with current alarms
 /// Alarms from codepage 1 and codepage 2 must be separated because the
@@ -263,6 +273,10 @@ class ReportedAlarms {
   /// - Updates alarm message segments
   /// - Initiates re-check of all current and exspiring alarms
   /// ---------------------------------------------------------------------- ///
+  
+  /**
+   * @param msg: Message | model/medibus/message
+   */
   extractAlarm = (msg) => { 
     let resp = new AlarmStatusResponse(msg);
     win.def.log({ level: 'info', file: 'model/data/alarm', func: 'extractAlarm', message:  `MsgId: ${msg.id}. Alarm-Resp.length: ${resp.length}`});
@@ -273,9 +287,9 @@ class ReportedAlarms {
       if(alarm !== undefined){
         if(alarm.firstMsg.id == 0){
           /// This alarm has been observed for the first time
-          alarm.firstMsg.id = msg.id;
-          alarm.firstMsg.time = msg.dateTime;
-          alarm.firstMsg.msg = value;
+          alarm.firstMsg.id   = msg.id;             /// number
+          alarm.firstMsg.time = msg.dateTime;       /// Date
+          alarm.firstMsg.msg  = value;              /// alarmSegment
         } 
         /// Maybe, this alarm has been present in a previous message
         alarm.lastMsg.id = msg.id;

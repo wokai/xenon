@@ -39,8 +39,9 @@ const DataSegment = require('./dataSegment');
 class DataResponse {
 
   #msgid
-  #date
-  #time
+  #date     /// date-string
+  #time     /// Time string 
+  #dateTime /// Date-object
   #code
   #hexPayload
   #map      /// Map with data segments
@@ -50,6 +51,7 @@ class DataResponse {
     this.#msgid = msg.id;
     this.#time  = msg.time;
     this.#date  = msg.date;
+    this.#dateTime = msg.dateTime; 
     
     this.#code = msg.code;
     this.#hexPayload = msg.hexPayload;
@@ -80,6 +82,7 @@ class DataResponse {
   get id        () { return this.#msgid; }
   get time      () { return this.#time; }
   get date      () { return this.#date; }
+  
   get rawLength () { return this.#hexPayload.length; }
   get length    () { return this.#map.length; }
   get payload   () { return this.#hexPayload; }

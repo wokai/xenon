@@ -34,13 +34,14 @@ const { parameters } = require('../parameters');
  
 class AlarmSegment {
   
-  #msgid
-  #time
-  #date
+  #msgid    /// {number}
+  #time     /// {string}
+  #date     /// {string}
+  #dateTime /// {Date}
   
-  #priority
-  #code
-  #phrase
+  #priority /// {number}
+  #code     /// {string} - ascii-hex
+  #phrase   /// {string} - 12 bytes
   
   constructor(dataResponse, index) {
     
@@ -51,9 +52,10 @@ class AlarmSegment {
     this.#code     = p.slice(begin + 1, begin +  3);   /// two  bytes alarm code
     this.#phrase   = p.slice(begin + 3, begin + 18);   /// 12   bytes alarm phrase
     
-    this.#msgid = dataResponse.id;
-    this.#time  = dataResponse.time;
-    this.#date  = dataResponse.date;
+    this.#msgid     = dataResponse.id;
+    this.#time      = dataResponse.time;
+    this.#date      = dataResponse.date;
+    this.#dateTime  = dataResponse.dateTime;
     
     // ToDo: Remove
     win.def.log({ level: 'info', file: 'AlarmSegment', func: 'constructor', message: `[AlarmSegment] msgid: ${this.#msgid}, priority: ${this.#priority}, code: ${this.#code}, phrase: ${this.#phrase}`});
@@ -70,6 +72,7 @@ class AlarmSegment {
   
   get time            () { return this.#time; }
   get date            () { return this.#date; } 
+  get dateTime        () { return this.#dateTime; }
   get messageId       () { return this.#msgid; }
   
   get priority        () { return parseInt(this.#priority); }
