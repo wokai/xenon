@@ -48,15 +48,19 @@ class Alarm {
   #priority  /// @ number | range 1-31
   #code      /// @ string | ascii-hex
   #phrase    /// @ string | 12 bytes
+  
   #time      /// @ PeriodPoint | Message-ID and Time of observation
-  #label   /// @ string - Content of bus.alarm.cpx -> label
+  
+  #label     /// @ string - Content of bus.alarm.cpx -> label
   
   constructor() {
     this.#priority = 1;
     this.#code     = '';
     this.#phrase   = '';
-    this.#label  = '';
-    this.#time    = new PeriodPoint();
+    
+    this.#label    = '';
+    
+    this.#time     = new PeriodPoint();
   }
   
   set id(i)       { this.#id       = i; }
@@ -93,13 +97,15 @@ class AlarmPeriod extends Alarm {
   toString() { return `${Alarm.prototype.toString.apply(this)} Back Id: ${this.#back.id}. `; }
   
   /**
-   * @param {id:number, code: string, label: string} obj - from bus.alarms.cpx
+   * Data comming from Medibus Alarm Messages
+   * @param {id:number, date: Date, priority: number, code: string, phrase: string} 
    */
-  static from(obj){
+  static from(alarm){
     let a = new AlarmPeriod();
-    a.id    = obj.id;
-    a.code  = obj.code;
-    a.label = obj.label;
+    a.priority  = alarm.priority;   /// number 1-31
+    a.phrase    = alarm.phrase;     /// string
+    a.time.id   = alarm.id;         /// number: Message-id
+    a.time.time = alarm.date;       /// Date: Time of Medibus message creation
     return a;
   }
 }
@@ -145,6 +151,12 @@ class ExspiredAlarms {
   
 }
 
+/// //////////////////////////////////////////////////////////////////////// ///
+/// CurrentAlarms
+///  - Instance where lists of current are inserted into
+///  - Maintains a list of all current alarms
+///  - Checks for alarms which have become exspired 
+/// //////////////////////////////////////////////////////////////////////// ///
 
 class CurrentAlarms {
   
@@ -169,9 +181,10 @@ class CurrentAlarms {
   }
   
   /**
-   * @param{[]
+   * Inserts a single alarm into alarm list.
+   * @param{id:number, date: Date, priority: number, code: string, phrase: string} alarm
+   * 
    */
-  
   set(alarm) {
     
   }
@@ -189,7 +202,7 @@ class CurrentAlarms {
       phrase: this.value
     };
  * 
- * 
+ */
 
 
 const ex = new ExspiredAlarms(bus.alarms.cp1);
