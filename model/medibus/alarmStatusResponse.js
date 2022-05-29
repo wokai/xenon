@@ -44,18 +44,20 @@ const AlarmSegment = require('./alarmSegment');
 
 class AlarmStatusResponse {
 
-  #msgid
-  #date
-  #time
-  #code
+  #msgid      /// {number}
+  #date       /// {string} (model/medibus/message)
+  #time       /// {string} (model/medibus/message)
+  #dateTime   /// {Date}
+  #code       /// {string}
   #hexPayload
-  #map      /// Map key-value pairs: keys=codeString, value = AlarmSegment object
+  #map        /// Map key-value pairs: keys=codeString, value = AlarmSegment object
 
   constructor(msg) {
 
-    this.#msgid = msg.id;
-    this.#time  = msg.time;
-    this.#date  = msg.date;
+    this.#msgid    = msg.id;
+    this.#time     = msg.time;
+    this.#date     = msg.date;
+    this.#dateTime = msg.dateTime;
     
     this.#code = msg.code;
     this.#hexPayload = msg.hexPayload;

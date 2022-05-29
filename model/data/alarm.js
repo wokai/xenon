@@ -176,6 +176,16 @@ class AlarmLimits {
   extractHighLimits = (msg) => { this.setHighLimits(new DataResponse(msg)); }
 }
 
+
+class ExspiredAlarms {
+  
+  #alarms
+  
+  constructor(){
+  }
+  
+}
+
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Keeps a map with current alarms
 /// Alarms from codepage 1 and codepage 2 must be separated because the
@@ -259,6 +269,7 @@ class ReportedAlarms {
     }
   }
   
+<<<<<<< HEAD
   
   /**
    * @param msg: Message model/medibus/message
@@ -267,6 +278,16 @@ class ReportedAlarms {
    *    - Iterates payload segments of Alarm (cp1 and cp2) reply messages
    *    - Updates alarm message segments
    *    - Initiates re-check of all current and exspiring alarms
+=======
+  /// ---------------------------------------------------------------------- ///
+  /// - Iterates payload segments of Alarm (cp1 and cp2) reply messages
+  /// - Updates alarm message segments
+  /// - Initiates re-check of all current and exspiring alarms
+  /// ---------------------------------------------------------------------- ///
+  
+  /**
+   * @param msg: Message | model/medibus/message
+>>>>>>> 24820626f99eefd0351728b0fb420c8dd3d60950
    */
   extractAlarm = (msg) => { 
     let resp = new AlarmStatusResponse(msg);
@@ -278,9 +299,9 @@ class ReportedAlarms {
       if(alarm !== undefined){
         if(alarm.firstMsg.id == 0){
           /// This alarm has been observed for the first time
-          alarm.firstMsg.id = msg.id;
-          alarm.firstMsg.time = msg.dateTime;
-          alarm.firstMsg.msg = value;
+          alarm.firstMsg.id   = msg.id;             /// number
+          alarm.firstMsg.time = msg.dateTime;       /// Date
+          alarm.firstMsg.msg  = value;              /// alarmSegment
         } 
         /// Maybe, this alarm has been present in a previous message
         alarm.lastMsg.id = msg.id;
