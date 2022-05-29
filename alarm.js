@@ -49,7 +49,7 @@ class Alarm {
   #code      /// @ string | ascii-hex
   #phrase    /// @ string | 12 bytes
   
-  #time      /// @ PeriodPoint | Message-ID and Time of observation
+  #begin     /// @ PeriodPoint | Message-ID and Time of observation
   
   #label     /// @ string - Content of bus.alarm.cpx -> label
   
@@ -60,7 +60,7 @@ class Alarm {
     
     this.#label    = '';
     
-    this.#time     = new PeriodPoint();
+    this.#begin     = new PeriodPoint();
   }
   
   set id(i)       { this.#id       = i; }
@@ -75,10 +75,10 @@ class Alarm {
   get phrase()    { return this.#phrase;    }
   get label()     { return this.#label;     }
   
-  get time()      { return this.#time;     }
+  get begin()      { return this.#begin;     }
   
   toString() { 
-   return `[Alarm] Priority: ${this.#priority} | Code: ${this.#code} | Phrase: ${this.#phrase} | Label: ${this.#label} | Time Id: ${this.#time.id}. `;
+   return `[Alarm] Priority: ${this.#priority} | Code: ${this.#code} | Phrase: ${this.#phrase} | Label: ${this.#label} | Time Id: ${this.#begin.id}. `;
   }
   
 }
@@ -102,10 +102,15 @@ class AlarmPeriod extends Alarm {
    */
   static from(alarm){
     let a = new AlarmPeriod();
-    a.priority  = alarm.priority;   /// number 1-31
-    a.phrase    = alarm.phrase;     /// string
-    a.time.id   = alarm.id;         /// number: Message-id
-    a.time.time = alarm.date;       /// Date: Time of Medibus message creation
+    a.priority   = alarm.priority;   /// number 1-31
+    a.phrase     = alarm.phrase;     /// string
+    a.code       = alarm.code        /// string
+    
+    a.begin.id   = alarm.id;         /// number: Message-id
+    a.begin.time = alarm.date;       /// Date: Time of Medibus message creation
+    
+    a.back.id    = alarm.id;         /// During time of creation, the first observation
+    a.back.time  = alarm.date        /// is also the last observation
     return a;
   }
 }
@@ -115,27 +120,24 @@ class AlarmPeriod extends Alarm {
 class ExspiredAlarms {
   
   #periods = [];
-  #messages;
-  
-  /**
-   * @param {Object[]} msg - source: bus.alarms.cp1 or .cp2
-   */
-  constructor(msg){
-    this.#messages = new Map(msg.map(m => [m.code, m]));
-  }
-  
-  clear = () => { this.#periods = []; }
-  
+
+  constructor(){}
+   
   /**
    * @param {alarmPeriod} period
    */
   push(period) { this.#periods.push(period); }
   
+  consume = () => {
+    let res = this.#periods;
+    this.#periods = [];
+    return res;
+  }
   
   /**
    * Add alarm label from bus.alarms, return 
    * and clear alarm list
-   */
+
   consume() {
     let res = this.#periods
       .sort((l,r) => { l.time.msgId > r.time.msgId ? 1 : 0 })
@@ -146,38 +148,49 @@ class ExspiredAlarms {
     this.clear();
     return res;
   }
+   */  
   
   
+  print = () => {
+    console.log(`[ExspiredAlarms] Size: ${this.#periods.length}.`)
+  }
   
 }
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// CurrentAlarms
-///  - Instance where lists of current are inserted into
-///  - Maintains a list of all current alarms
+///  - Instance where lists of current are inserted into.
+///  - Maintains a list of all current alarms: Must be done in current alarms
+///    because only one instance of ExspiredAlarms can exist (for downstream
+///    reasons). Thus, alarm code ambiguities must be resolved before 
+///    i.e. in CurrentAlarms.
 ///  - Checks for alarms which have become exspired 
 /// //////////////////////////////////////////////////////////////////////// ///
 
 class CurrentAlarms {
   
-  #exspired
-  #alarms
+  #exspired         /// {ExspiredAlarms}
+  #definedAlarms    /// Map with defined alarms (key = alarm.code)
+  #alarms           /// Map with AlarmPeriod : current alarms
   
-  setupAlarms(alarms){
-    this.#alarms = new Map();
+  setupDefinedAlarms(alarms){
+    this.#definedAlarms = new Map();
     alarms.forEach(a => {
-      this.#alarms.set(a.code, AlarmPeriod.from(a)); 
+      this.#definedAlarms.set(a.code, AlarmPeriod.from(a)); 
     });
   }
   
   get size () { return this.#alarms.size; }
   
+  get definedAlarms () { return this.#definedAlarms; }
+  
   /**
-   * @param {ExspiredAlarms} ex
+   * @param {Object.array} alarms
    */
-  constructor(alarms) {
-    this.#exspired = new ExspiredAlarms(alarms); 
-    this.setupAlarms(alarms);
+  constructor(alarms, exspired) {
+    this.#exspired = new ExspiredAlarms(alarms);
+    this.setupDefinedAlarms(alarms);
+    this.#alarms = new Map();
   }
   
   /**
@@ -185,44 +198,60 @@ class CurrentAlarms {
    * @param{id:number, date: Date, priority: number, code: string, phrase: string} alarm
    * 
    */
-  set(alarm) {
-    
+  insertAlarm = (alarm) => {
+    /// Check whether alarm code is already present in current list
+    let a = this.#alarms.get(alarm.code);
+    if(a !== undefined){
+      /// Update time of last observation
+      a.back.id = alarm.id;
+      a.back.time = alarm.time;
+    } else {
+      /// Create AlarmPeriod object
+      a = AlarmPeriod.from(alarm);
+      this.#alarms.set(a.code, a);
+    }
+  }
+  
+  print = () => {
+    console.log('[CurrentAlarms]');
+    console.log(`DefinedAlarms: ${this.#definedAlarms.size}`);
+    console.log(`CurrentAlarms: ${this.#alarms.size}`);
   }
   
 }
 
-/**
- * 
- * {
-      id: this.messageId,
-      date: this.date,
-      time: this.time,
-      priority: this.priority,
-      code: this.code,
-      phrase: this.value
-    };
- * 
- */
+
+const ex = new ExspiredAlarms();
+const cp1 = new CurrentAlarms(bus.alarms.cp1, ex);
 
 
-const ex = new ExspiredAlarms(bus.alarms.cp1);
-const cp1 = new CurrentAlarms(bus.alarms.cp1);
+let first = {
+   id: 1,
+   time : Date.now(),
+   code : '08',     /// 08H = Insp Oxygen < low Limit
+   phrase : 'Insp O2 low',
+   priority: 31
+}
 
-const al = new AlarmPeriod();
+let second = {
+   id: 2,
+   time : Date.now(),
+   code : '10',     /// 08H = Insp Oxygen < low Limit
+   phrase : 'Airway Pressure > high Limit',
+   priority: 31
+}
 
 
-al.priority = 31;
-al.code     = '08'        /// 08H = Insp Oxygen < low Limit
-al.phrase   = 'Insp O2 low ';
-al.time.id  = 1;
-al.time.time  = new Date();
-al.back.id  = 2;
+cp1.insertAlarm(first);
+first.id = 2;
+cp1.insertAlarm(first);
 
-ex.push(al);
+cp1.insertAlarm(second);
 
-console.log(`${al}`);
+cp1.print();
+ex.print();
 
-ex.consume().forEach(a => { console.log(`${a}`); });
 
-console.log(cp1.size);
+
+
 
