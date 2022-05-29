@@ -35,6 +35,11 @@ const AlarmSegment = require('./alarmSegment');
 /// 12 bytes alarm phrase
 /// //////////////////////////////////////////////////////////////////////// ///
 
+/**
+ * @def   Handles data-segment of Medibus Alarm-Status-Response (27H)
+ * 
+ * @use   model/data/alarm  ReportedAlarms.extractAlarm
+ */
 
 
 class AlarmStatusResponse {

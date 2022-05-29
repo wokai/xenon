@@ -171,6 +171,7 @@ class AlarmLimits {
   
   get dataObject ()  { return this.#obj; }
   
+  /// Wrapper functions for obtaining data from  
   extractLowLimits  = (msg) => { this.setLowLimits( new DataResponse(msg)); }
   extractHighLimits = (msg) => { this.setHighLimits(new DataResponse(msg)); }
 }
@@ -258,11 +259,15 @@ class ReportedAlarms {
     }
   }
   
-  /// ---------------------------------------------------------------------- ///
-  /// - Iterates payload segments of Alarm (cp1 and cp2) reply messages
-  /// - Updates alarm message segments
-  /// - Initiates re-check of all current and exspiring alarms
-  /// ---------------------------------------------------------------------- ///
+  
+  /**
+   * @param msg: Message model/medibus/message
+   * 
+   * @descr 
+   *    - Iterates payload segments of Alarm (cp1 and cp2) reply messages
+   *    - Updates alarm message segments
+   *    - Initiates re-check of all current and exspiring alarms
+   */
   extractAlarm = (msg) => { 
     let resp = new AlarmStatusResponse(msg);
     win.def.log({ level: 'info', file: 'model/data/alarm', func: 'extractAlarm', message:  `MsgId: ${msg.id}. Alarm-Resp.length: ${resp.length}`});

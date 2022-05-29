@@ -31,6 +31,13 @@ const AsciiHex = require('./asciiHex');
 
 const win = require('../../logger/logger');
 const { parameters } = require('../parameters');
+
+
+/**
+ * @desc  Each instance handles content of one 
+ * @use   /model/medibus/alarmStatusResponse (constructor)
+ * 
+ */
  
 class AlarmSegment {
   

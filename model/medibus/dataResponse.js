@@ -36,6 +36,15 @@ const DataSegment = require('./dataSegment');
 /// available on the responding device.
 /// //////////////////////////////////////////////////////////////////////// ///
 
+/**
+ * @class 
+ * @see   model/medibus/message: Message class
+ * @desc    Handles internal structure of payload in Medibus message
+ *          in responses to data requests
+ * 
+ * @use   model/data/ventilation : Ventilation.setVentilation
+ */
+
 class DataResponse {
 
   #msgid
@@ -45,6 +54,10 @@ class DataResponse {
   #hexPayload
   #map      /// Map with data segments
 
+
+  /**
+   * @param   msg: Message | model/medibus/message | Medibus message
+   */
   constructor(msg) {
 
     this.#msgid = msg.id;
