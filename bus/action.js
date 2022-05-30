@@ -34,7 +34,7 @@ const { device }        = require(path.join(__dirname, '..', 'model', 'data', 'd
 const { dateTime }      = require(path.join(__dirname, '..', 'model', 'data', 'dateTime'));
 const { ventilation }   = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));
 
-const { alarmLimits, reportedAlarms }         = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
+const { alarmLimits, cp1Alarms }         = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
 
 const monitor           = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 
@@ -53,8 +53,13 @@ class Action {
   #timeout
   #timeoutId
   
+  /**
+   * @param{Message, function, number}: 
+   */
+  
+  
   constructor(msg, callback, timeout = 0){
-    this.#message = msg;
+    this.#message = msg;        /// Message (model/medibus/message)
     this.#callback = callback;
     this.#timeout = timeout;
     this.#timeoutId = 0;
@@ -68,12 +73,12 @@ class Action {
           this.#callback(msg);
         })
         .catch((err) => {
-          /// May be due to 1) timeout or 2) Sending of command failed.
+          /// Promise will be rejected when timout is exceeded or command has failed
           if(err.message){
             monitor.dataMsg('Action', `Rejection of command: id ${err.message.id} | code: ${err.message.code} | Status: ${err.status}`);
             win.def.log({ level: 'warn', file: 'action', func: 'Action.sendCommand', message: `Rejected promise: Message: id ${err.message.id} | Code: ${err.code} | Status: ${err.status}`});
           } else {
-             win.def.log({ level: 'warn', file: 'action', func: 'Action.sendCommand', message: `Rejected promise: ${err.status}`});
+            win.def.log({ level: 'warn', file: 'action', func: 'Action.sendCommand', message: `Rejected promise: ${err.status}`});
           }
         })
         /// Reset timeoutId
@@ -119,12 +124,12 @@ module.exports = {
       }),
     cp1 : new Action(commands.alarm.cp1, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp1', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
-        reportedAlarms.extractAlarm(msg);
+        cp1Alarms.extractAlarm(msg);
       }),
     cp2 : new Action(commands.alarm.cp2, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp2', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
         // ToDo: Activate this part of alarm recognition
-        //reportedAlarms.extractAlarm(msg);
+        //currentAlarms.extractAlarm(msg);
       })
   }
 }

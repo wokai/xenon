@@ -37,28 +37,25 @@ const AlarmSegment = require('./alarmSegment');
 
 /**
  * @def   Handles data-segment of Medibus Alarm-Status-Response (27H)
- * 
- * @use   model/data/alarm  ReportedAlarms.extractAlarm
+ * @use   model/data/alarm  CurrentAlarms.extractAlarm
  */
 
 
 class AlarmStatusResponse {
 
   #msgid      /// {number}
-  #date       /// {string} (model/medibus/message)
-  #time       /// {string} (model/medibus/message)
-  #dateTime   /// {Date}
+  #time       /// {Date}   (model/medibus/message)
   #code       /// {string}
   #hexPayload
   #map        /// Map key-value pairs: keys=codeString, value = AlarmSegment object
 
+  /**
+   * @param{Message} (model/medibus/message)
+   */
   constructor(msg) {
 
     this.#msgid    = msg.id;
-    this.#time     = msg.time;
-    this.#date     = msg.date;
-    this.#dateTime = msg.dateTime;
-    
+    this.#time     = msg.dateTime;
     this.#code = msg.code;
     this.#hexPayload = msg.hexPayload;
     this.#map = new Map();
@@ -89,7 +86,6 @@ class AlarmStatusResponse {
   
   get id        () { return this.#msgid; }
   get time      () { return this.#time; }
-  get date      () { return this.#date; }
   get rawLength () { return this.#hexPayload.length; }
   get length    () { return this.#map.length; }
   get payload   () { return this.#hexPayload; }

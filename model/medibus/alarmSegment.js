@@ -34,35 +34,35 @@ const { parameters } = require('../parameters');
 
 
 /**
- * @desc  Each instance handles content of one 
+ * @desc  Each instance handles content of one AlarmStatusResponse message
+ *        payload segment.
  * @use   /model/medibus/alarmStatusResponse (constructor)
- * 
  */
  
 class AlarmSegment {
   
-  #msgid    /// {number}
-  #time     /// {string}
-  #date     /// {string}
-  #dateTime /// {Date}
+  #msgid    /// {number} @desc{Message.id | model/medibus/message}
+  #time     /// {Date}
   
   #priority /// {number}
   #code     /// {string} - ascii-hex
   #phrase   /// {string} - 12 bytes
   
-  constructor(dataResponse, index) {
+  /**
+   * @param {AlarmStatusResponse, number} (model/medibus/alarmStatusResponse)
+   */
+  
+  constructor(alarmStatusResponse, index) {
     
-    var p = dataResponse.payload;
+    var p = alarmStatusResponse.payload;
     var begin = index * 15;
     
     this.#priority = p.slice(begin    , begin +  1);   /// One  byte  priority
     this.#code     = p.slice(begin + 1, begin +  3);   /// two  bytes alarm code
     this.#phrase   = p.slice(begin + 3, begin + 18);   /// 12   bytes alarm phrase
     
-    this.#msgid     = dataResponse.id;
-    this.#time      = dataResponse.time;
-    this.#date      = dataResponse.date;
-    this.#dateTime  = dataResponse.dateTime;
+    this.#msgid     = alarmStatusResponse.id;
+    this.#time  = alarmStatusResponse.time;
     
     // ToDo: Remove
     win.def.log({ level: 'info', file: 'AlarmSegment', func: 'constructor', message: `[AlarmSegment] msgid: ${this.#msgid}, priority: ${this.#priority}, code: ${this.#code}, phrase: ${this.#phrase}`});
@@ -78,10 +78,7 @@ class AlarmSegment {
   }
   
   get time            () { return this.#time; }
-  get date            () { return this.#date; } 
-  get dateTime        () { return this.#dateTime; }
   get messageId       () { return this.#msgid; }
-  
   get priority        () { return parseInt(this.#priority); }
   get code            () { return AsciiHex.hexArrayToString(this.#code); }
   get phrase          () { return this.#phrase; }
@@ -90,7 +87,7 @@ class AlarmSegment {
   get dataObject      () {
     return {
       id: this.messageId,
-      time: this.dateTime,
+      time: this.time,
       priority: this.priority,
       code: this.code,
       phrase: this.value

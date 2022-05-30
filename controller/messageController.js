@@ -38,7 +38,7 @@ const { cache }       = require(path.join(__dirname, '..','model', 'data', 'cach
 
 class MessageController {
   
-  #schedule
+  #schedule    /// {Object.array} (bus/action/action) Action 
   
   constructor() {
     

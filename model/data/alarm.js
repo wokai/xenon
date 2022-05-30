@@ -177,14 +177,6 @@ class AlarmLimits {
 }
 
 
-class ExspiredAlarms {
-  
-  #alarms
-  
-  constructor(){
-  }
-  
-}
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Keeps a map with current alarms
@@ -194,145 +186,232 @@ class ExspiredAlarms {
 /// are (ambiguously) defined in both codepages.
 /// //////////////////////////////////////////////////////////////////////// ///
 
-class ReportedAlarms {
+
+
+/// //////////////////////////////////////////////////////////////////////// ///
+/// RS232 Medibus 6.0.0 | p.15 | Alarm Status Response
+///  1 byte  alarm priority: One Byte. Number in the range 1-31 (highest = 31)
+///  2 bytes alarm code    : Two byte ASCII HEX
+/// 12 bytes alarm phrase  : Character string.
+/// //////////////////////////////////////////////////////////////////////// ///
+
+
+class PeriodPoint {
   
-  #alarmDefinition
-  #alarms
-  #exspiredAlarms
-  
-  static get emptyMsg() {
-    return {
-      id  : 0,
-      time: null,
-      msg : ''
-    }
+  #id     /// @ number | Medibus-Message-Id
+  #time   /// @ Date
+   
+  /// There is no type checking, because this would mess up the code
+  /// This class mainly exists in order to have clean accessors...
+  constructor(id, time){
+    this.#id = id;
+    this.#time = new Date('2000-01-01T00:00:00');
   }
   
+  set id(i)   { this.#id   = i;    }
+  set time(t) { this.#time = t;    }
   
-  clear = () => {
+  get id()    { return this.#id;   }
+  get time()  { return this.#time; }
+}
 
-    this.#exspiredAlarms.length = 0;
 
-    /// Fill map with codepage 1 alarm definitions
-    this.#alarms = new Map();    
-    this.#alarmDefinition.forEach(a => {
-        this.#alarms.set(a.code, {
-          id: a.id,
-          code: a.code,
-          label: a.label,
-          /// First message with alarm
-          firstMsg: Object.assign({}, ReportedAlarms.emptyMsg),
-          /// Last message in a row with alarm
-          lastMsg: Object.assign({}, ReportedAlarms.emptyMsg)
-        });
-    });
-    
-    win.def.log({ level: 'info', file: 'model/data/alarm', func: 'ReportedAlarms.clear', message:  `Extracted ${this.#alarms.size} alarm definitions.`});
-  }
+class Alarm {
   
+  #id        /// @ number | Content of bus.alarm.cpx -> id
+  #priority  /// @ number | range 1-31
+  #code      /// @ string | ascii-hex
+  #phrase    /// @ string | 12 bytes
   
-  // ToDo: Two constructor arguments for both codepages:
-  // alarm definition and list of active alarms
+  #begin     /// @ PeriodPoint | Message-ID and Time of observation
+  
+  #label     /// @ string - Content of bus.alarm.cpx -> label
+  
   constructor() {
-    this.#alarmDefinition = bus.alarms.cp1;
-    this.#exspiredAlarms = []
-    this.clear();
+    this.#priority = 1;
+    this.#code     = '';
+    this.#phrase   = '';
+    
+    this.#label    = '';
+    
+    this.#begin     = new PeriodPoint();
   }
   
-  /// ---------------------------------------------------------------------- ///
-  /// Check for exspired alarms:
-  /// - Have been observed in previous message(s)
-  /// - Are no more present in current message
-  ///
-  /// Then:
-  /// - Shift dataset to exspiredAlarms
-  /// - Clear up record in alarm.cpx Map
-  /// ---------------------------------------------------------------------- ///
-  checkReportedAlarms(msg){
-    for(let [key, value] of this.#alarms){
-      
-      if(value.lastMsg.id != msg.id){
-        
-        /// Create exspired-alarm record
-        let target = {};
-        Object.assign(target, value);
-        target.past = {
-          id: msg.id,
-          time: msg.dateTime
-        }
-        this.#exspiredAlarms.push(target);
-        
-        /// Reset alarm record
-        value.firstMsg = Object.assign({}, ReportedAlarms.emptyMsg);
-        value.lastMsg  = Object.assign({}, ReportedAlarms.emptyMsg);
-      }
+  set id(i)       { this.#id       = i; }
+  set priority(p) { this.#priority = p; }
+  set code(c)     { this.#code     = c; }
+  set phrase(p)   { this.#phrase   = p; }
+  set label(l)    { this.#label    = l; }
+  
+  get id()        { return this.#id;        }
+  get priority()  { return this.#priority;  }
+  get code()      { return this.#code;      }
+  get phrase()    { return this.#phrase;    }
+  get label()     { return this.#label;     }
+  
+  get begin()      { return this.#begin;     }
+  
+  toString() { 
+   return `[Alarm] Priority: ${this.#priority} | Code: ${this.#code} | Phrase: ${this.#phrase} | Label: ${this.#label} | Time Id: ${this.#begin.id}. `;
+  }
+  
+}
+
+class AlarmPeriod extends Alarm {
+  
+             /// @ time: PeriodPoint | first observation
+  #back      /// @ PeriodPoint       | last observation
+  
+  constructor() {
+    super();
+    this.#back     = new PeriodPoint();
+  }
+  get back()      { return this.#back;      }
+  
+  toString() { return `${Alarm.prototype.toString.apply(this)} Back Id: ${this.#back.id}. `; }
+  
+  /**
+   * Data comming from Medibus Alarm Messages
+   * @param {id:number, date: Date, priority: number, code: string, phrase: string} 
+   */
+  static from(alarm){
+    let a = new AlarmPeriod();
+    a.priority   = alarm.priority;   /// number 1-31
+    a.phrase     = alarm.phrase;     /// string
+    a.code       = alarm.code        /// string
+    
+    a.begin.id   = alarm.id;         /// number: Message-id
+    a.begin.time = alarm.date;       /// Date: Time of Medibus message creation
+    
+    a.back.id    = alarm.id;         /// During time of creation, the first observation
+    a.back.time  = alarm.date        /// is also the last observation
+    return a;
+  }
+}
+
+
+
+class ExspiredAlarms {
+  
+  #periods = [];
+
+  constructor(){}
+   
+  /**
+   * @param {alarmPeriod} period
+   */
+  push(period) { this.#periods.push(period); }
+  
+  consume = () => {
+    let res = this.#periods;
+    this.#periods = [];
+    return res;
+  }  
+  
+  print = () => {
+    console.log(`[ExspiredAlarms] Size: ${this.#periods.length}.`)
+    this.#periods.forEach((ap) => {console.log(`${ap}`); });
+  }
+  
+}
+
+
+/**
+ * @use   {bus/alarm/action.js} alarm object
+ */
+
+/// //////////////////////////////////////////////////////////////////////// ///
+/// CurrentAlarms
+///  - Instance where lists of current are inserted into.
+///  - Maintains a list of all current alarms: Must be done in current alarms
+///    because only one instance of ExspiredAlarms can exist (for downstream
+///    reasons). Thus, alarm code ambiguities must be resolved before 
+///    i.e. in CurrentAlarms.
+///  - Checks for alarms which have become exspired 
+/// //////////////////////////////////////////////////////////////////////// ///
+
+
+class CurrentAlarms {
+  
+  #exspired         /// {ExspiredAlarms}
+  #definedAlarms    /// Map with defined alarms (key = alarm.code)
+  #alarms           /// Map with AlarmPeriod : current alarms
+  
+  setupDefinedAlarms(alarms){
+    this.#definedAlarms = new Map();
+    alarms.forEach(a => {
+      this.#definedAlarms.set(a.code, AlarmPeriod.from(a)); 
+    });
+  }
+  
+  get size () { return this.#alarms.size; }
+  
+  get definedAlarms () { return this.#definedAlarms; }
+  
+  /**
+   * @param {Map[code, ]} alarms | {ExspiredAlarms} exspired
+   */
+  constructor(alarms, exspired) {
+    this.#exspired = exspired;
+    this.setupDefinedAlarms(alarms);
+    this.#alarms = new Map();
+  }
+  
+  /**
+   * Inserts a single alarm into alarm list.
+   * @see: {model/medibus} getDataObject
+   *        Message-Id
+   * @param{id:number, date: Date, priority: number, code: string, phrase: string} alarm
+   */
+  pushAlarm = (alarm) => {
+    /// Check whether alarm code is already present in current list
+    let a = this.#alarms.get(alarm.code);
+    if(a !== undefined){
+      /// Update time of last observation
+      a.back.id = alarm.id;
+      a.back.time = alarm.time;
+    } else {
+      /// Create AlarmPeriod object
+      a = AlarmPeriod.from(alarm);
+      this.#alarms.set(a.code, a);
     }
   }
   
   /**
-   * @param msg: Message model/medibus/message
-   * 
-   * @descr 
-   *    - Iterates payload segments of Alarm (cp1 and cp2) reply messages
-   *    - Updates alarm message segments
-   *    - Initiates re-check of all current and exspiring alarms
+   *        Message-Id
+   * @param{number}
    */
-  /// ---------------------------------------------------------------------- ///
-  /// - Iterates payload segments of Alarm (cp1 and cp2) reply messages
-  /// - Updates alarm message segments
-  /// - Initiates re-check of all current and exspiring alarms
-  /// ---------------------------------------------------------------------- ///
+  checkExspiration = (id) => {
+    this.#alarms.forEach((alarm) => {
+      if(alarm.back.id < id){
+        this.#exspired.push(alarm);
+        this.#alarms.delete(alarm.code);
+      }
+    });
+  }
   
   /**
-   * @param msg: Message | model/medibus/message
+   * @param{[alarms]}
    */
+  insertAlarms = (alarms) => {
+    alarms.forEach((alarm) => { this.pushAlarm(alarm); });
+  }
+  
   extractAlarm = (msg) => { 
     let resp = new AlarmStatusResponse(msg);
     win.def.log({ level: 'info', file: 'model/data/alarm', func: 'extractAlarm', message:  `MsgId: ${msg.id}. Alarm-Resp.length: ${resp.length}`});
-    
-    
-    for(let [key, value] of resp.map){
-      let alarm = this.#alarms.get(key);
-      if(alarm !== undefined){
-        if(alarm.firstMsg.id == 0){
-          /// This alarm has been observed for the first time
-          alarm.firstMsg.id   = msg.id;             /// number
-          alarm.firstMsg.time = msg.dateTime;       /// Date
-          alarm.firstMsg.msg  = value;              /// alarmSegment
-        } 
-        /// Maybe, this alarm has been present in a previous message
-        alarm.lastMsg.id = msg.id;
-        alarm.lastMsg.time = msg.dateTime;
-        alarm.lastMsg.msg = value;
-        console.log(alarm.lastMsg);
-        win.def.log({ level: 'info', file: 'alarm', func: 'extractAlarm', message:  `Alarm time ${msg.dateTime} (value: ${value}).`});
-        this.checkReportedAlarms(msg);
-      } else {
-        /// Key for alarm not found ...
-        win.def.log({ level: 'warn', file: 'alarm', func: 'extractAlarm', message:  `MsgId: ${msg.id}. AlarmStatusResponse.length: ${resp.length}. AlarmSegment undefined.`});
-        console.log(value);
-        console.log(`[model/data/alarm] ReportedAlarms.extractAlarm: MsgId: ${msg.id}. AlarmSegment undefined.`)
-      }
-    }
+    resp.map.forEach((as) => { this.pushAlarm(as.dataObject); });
+    this.checkExpiration(msg.id);
+    win.def.log({ level: 'info', file: 'model/data/alarm', func: 'extractAlarm', message:  `MsgId: ${msg.id}. CurrentAlarms.size: ${this.size}`});
   }
-
-  getReportedAlarms = () => {
-    return [...this.#alarms.values()].filter(alarm => alarm.firstMsg.id != 0);
-  }
-  
-  getExspiredAlarms = () => { return this.#exspiredAlarms; }
-  consumeExspiredAlarms = () => {
-    const alarms = this.#exspiredAlarms;
-    this.#exspiredAlarms.length = 0;
-    return alarms;
-  }
-
 }
 
 const alarmLimits = new AlarmLimits();
-const reportedAlarms = new ReportedAlarms();
+
+const ex  = new ExspiredAlarms();
+const cp1Alarms = new CurrentAlarms(bus.alarms.cp1, ex);
 
 module.exports = { 
   alarmLimits: alarmLimits,
-  reportedAlarms: reportedAlarms
+  cp1Alarms: cp1Alarms
 };
