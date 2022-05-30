@@ -1,7 +1,6 @@
 'use strict';
 
 const path = require('path');
-
 const bus = require(path.join(__dirname, '.', 'medibus'));
 
 
@@ -132,24 +131,7 @@ class ExspiredAlarms {
     let res = this.#periods;
     this.#periods = [];
     return res;
-  }
-  
-  /**
-   * Add alarm label from bus.alarms, return 
-   * and clear alarm list
-
-  consume() {
-    let res = this.#periods
-      .sort((l,r) => { l.time.msgId > r.time.msgId ? 1 : 0 })
-      .map(p => {
-        p.label = this.#messages.get(p.code).label;
-        return p;
-      });
-    this.clear();
-    return res;
-  }
-   */  
-  
+  }  
   
   print = () => {
     console.log(`[ExspiredAlarms] Size: ${this.#periods.length}.`)
@@ -195,10 +177,10 @@ class CurrentAlarms {
   
   /**
    * Inserts a single alarm into alarm list.
+   *        Message-Id
    * @param{id:number, date: Date, priority: number, code: string, phrase: string} alarm
-   * 
    */
-  insertAlarm = (alarm) => {
+  pushAlarm = (alarm) => {
     /// Check whether alarm code is already present in current list
     let a = this.#alarms.get(alarm.code);
     if(a !== undefined){
@@ -212,6 +194,27 @@ class CurrentAlarms {
     }
   }
   
+  /**
+   *        Message-Id
+   * @param{number}
+   */
+  checkExspiration = (id) => {
+    this.#alarms.forEach((alarm) => {
+      if(alarm.back.id < id){
+        this.#exspired.push(alarm);
+        this.#alarms.delete(alarm.code);
+      }
+    });
+  }
+  
+  /**
+   * @param{[alarms]}
+   */
+  insertAlarms = (alarms) => {
+    alarms.forEach((alarm) => { this.pushAlarm(alarm); });
+  }
+  
+
   print = () => {
     console.log('[CurrentAlarms]');
     console.log(`DefinedAlarms: ${this.#definedAlarms.size}`);
@@ -225,28 +228,53 @@ const ex = new ExspiredAlarms();
 const cp1 = new CurrentAlarms(bus.alarms.cp1, ex);
 
 
-let first = {
-   id: 1,
-   time : Date.now(),
-   code : '08',     /// 08H = Insp Oxygen < low Limit
-   phrase : 'Insp O2 low',
-   priority: 31
-}
+let alarms1 = [
+  {
+     id: 1,
+     time : Date.now(),
+     code : '08',     /// 08H = Insp Oxygen < low Limit
+     phrase : 'Insp O2 low',
+     priority: 31
+  },
+  {
+     id: 1,
+     time : Date.now(),
+     code : '10',     /// 08H = Insp Oxygen < low Limit
+     phrase : 'Airway Pressure > high Limit',
+     priority: 31
+  },
+  {
+    id: 1,
+    time: Date.now(),
+    code: '24',
+    phrase: 'Insp. Desflurane > high Limit',
+    priority: 31
+  }
+];
 
-let second = {
-   id: 2,
-   time : Date.now(),
-   code : '10',     /// 08H = Insp Oxygen < low Limit
-   phrase : 'Airway Pressure > high Limit',
-   priority: 31
-}
+cp1.insertAlarms(alarms1);
+cp1.print();
 
 
-cp1.insertAlarm(first);
-first.id = 2;
-cp1.insertAlarm(first);
+let alarms2 = [
+  {
+     id: 2,
+     time : Date.now(),
+     code : '08',     /// 08H = Insp Oxygen < low Limit
+     phrase : 'Insp O2 low',
+     priority: 31
+  },
+  {
+     id: 2,
+     time : Date.now(),
+     code : '10',     /// 08H = Insp Oxygen < low Limit
+     phrase : 'Airway Pressure > high Limit',
+     priority: 31
+  }
+];
 
-cp1.insertAlarm(second);
+cp1.insertAlarms(alarms2)
+cp1.checkExspiration(2);
 
 cp1.print();
 ex.print();

@@ -269,8 +269,6 @@ class ReportedAlarms {
     }
   }
   
-<<<<<<< HEAD
-  
   /**
    * @param msg: Message model/medibus/message
    * 
@@ -278,7 +276,7 @@ class ReportedAlarms {
    *    - Iterates payload segments of Alarm (cp1 and cp2) reply messages
    *    - Updates alarm message segments
    *    - Initiates re-check of all current and exspiring alarms
-=======
+   */
   /// ---------------------------------------------------------------------- ///
   /// - Iterates payload segments of Alarm (cp1 and cp2) reply messages
   /// - Updates alarm message segments
@@ -287,7 +285,6 @@ class ReportedAlarms {
   
   /**
    * @param msg: Message | model/medibus/message
->>>>>>> 24820626f99eefd0351728b0fb420c8dd3d60950
    */
   extractAlarm = (msg) => { 
     let resp = new AlarmStatusResponse(msg);
