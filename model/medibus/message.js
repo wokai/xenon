@@ -112,8 +112,8 @@ class Message {
     if(!this.#payload) return '';
     return AsciiHex.hexArrayToString([...this.#payload])
   }
-  hasPayload = () => { return this.#payload != null }
-  
+  hasPayload = () => { return (this.#payload !== null); }
+  noPayload  = () => { return (this.#payload === null); }
   
   isCmd   = () => { return this.#type === bus.message.esc };
   isReply = () => { return this.#type === bus.message.soh };

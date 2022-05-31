@@ -61,8 +61,8 @@ class AlarmSegment {
     this.#code     = p.slice(begin + 1, begin +  3);   /// two  bytes alarm code
     this.#phrase   = p.slice(begin + 3, begin + 18);   /// 12   bytes alarm phrase
     
-    this.#msgid     = alarmStatusResponse.id;
-    this.#time  = alarmStatusResponse.time;
+    this.#msgid    = alarmStatusResponse.id;
+    this.#time     = alarmStatusResponse.time;
     
     // ToDo: Remove
     win.def.log({ level: 'info', file: 'AlarmSegment', func: 'constructor', message: `[AlarmSegment] msgid: ${this.#msgid}, priority: ${this.#priority}, code: ${this.#code}, phrase: ${this.#phrase}`});
@@ -79,9 +79,9 @@ class AlarmSegment {
   
   get time            () { return this.#time; }
   get messageId       () { return this.#msgid; }
-  get priority        () { return parseInt(this.#priority); }
+  get priority        () { return parseInt(this.#priority, 16); }
   get code            () { return AsciiHex.hexArrayToString(this.#code); }
-  get phrase          () { return this.#phrase; }
+  get phrase          () { return this.#phrase.toString(); }
 
   
   get dataObject      () {
@@ -90,7 +90,7 @@ class AlarmSegment {
       time: this.time,
       priority: this.priority,
       code: this.code,
-      phrase: this.value
+      phrase: this.phrase
     };
   }
   

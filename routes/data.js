@@ -28,7 +28,7 @@ const medibus       = require(path.join(__dirname, '..', 'config', 'medibus'));
 const { ventilation } = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));
 const { device }      = require(path.join(__dirname, '..', 'model', 'data', 'device'));
 const { dateTime }    = require(path.join(__dirname, '..', 'model', 'data', 'dateTime'));
-const { alarmLimits, exspiredAlarms, currentAlarms } = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
+const { alarmLimits, exspiredAlarms, cp1Alarms } = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
 const { cache }        = require(path.join(__dirname, '..', 'model', 'data', 'cache'));
 
 const router = express.Router();
@@ -57,10 +57,9 @@ router.get('/alarm/exspired', function(request, result, next){
   result.status(200).json(exspiredAlarms.getArray());
 });
 
-router.get('/alarm/current', function(request, result, next){
-  result.status(200).json(currentAlarms.getAlarmArray()());
+router.get('/alarm/cp1', function(request, result, next){
+  result.status(200).json(cp1Alarms.getAlarmArray());
 });
-
 
 router.get('/cache', function(request, result, next) {
   result.status(200).json(cache.consumeVentData());

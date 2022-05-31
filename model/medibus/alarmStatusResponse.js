@@ -71,7 +71,7 @@ class AlarmStatusResponse {
         var s;
         
         // ToDo: Decrease log level
-        win.def.log({ level: 'info', file: 'alarmStatusResponse', func: 'construct', message: `MSG id: ${msg.id} | Reading ${segments} from payload size ${this.#hexPayload.length}.`});
+        win.def.log({ level: 'info', file: 'alarmStatusResponse', func: 'construct', message: `MSG id: ${msg.id} | Reading ${segments} segments from payload size ${this.#hexPayload.length}.`});
         
         for(var i = 0; i < segments; ++i){
           s = AlarmSegment.from(this, i);

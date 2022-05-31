@@ -281,12 +281,29 @@ class AlarmPeriod extends Alarm {
     a.code       = alarm.code        /// string
     
     a.begin.id   = alarm.id;         /// number: Message-id
-    a.begin.time = alarm.date;       /// Date: Time of Medibus message creation
+    a.begin.time = alarm.time;       /// Date: Time of Medibus message creation
     
     a.back.id    = alarm.id;         /// During time of creation, the first observation
-    a.back.time  = alarm.date        /// is also the last observation
+    a.back.time  = alarm.time        /// is also the last observation
     return a;
   }
+  
+  get dataObject      () {
+    return {
+      id: this.id,
+      priority: this.priority,
+      code: this.code,
+      phrase: this.phrase,
+      begin: {
+        id: this.begin.id,
+        time: this.begin.time.toLocaleTimeString()
+      },
+      back: {
+        id: this.back.id,
+        time: this.back.time.toLocaleTimeString()
+      }
+    };
+  } 
 }
 
 
@@ -294,10 +311,10 @@ class AlarmPeriod extends Alarm {
 class ExspiredAlarms {
   
   #periods = [];
-
   constructor(){}
   
-  get array() { return this.#array; };
+  get size () { return this.#periods.length; }
+  getArray() { return this.#periods.map((a) => (a.dataObject)); };
    
   /**
    * @param {alarmPeriod} period
@@ -309,12 +326,6 @@ class ExspiredAlarms {
     this.#periods = [];
     return res;
   }  
-  
-  print = () => {
-    console.log(`[ExspiredAlarms] Size: ${this.#periods.length}.`)
-    this.#periods.forEach((ap) => {console.log(`${ap}`); });
-  }
-  
 }
 
 
@@ -366,6 +377,7 @@ class CurrentAlarms {
    */
   pushAlarm = (alarm) => {
     /// Check whether alarm code is already present in current list
+    /// alarmPeriod
     let a = this.#alarms.get(alarm.code);
     if(a !== undefined){
       /// Update time of last observation
@@ -374,7 +386,7 @@ class CurrentAlarms {
     } else {
       /// Create AlarmPeriod object
       a = AlarmPeriod.from(alarm);
-      this.#alarms.set(a.code, a);
+      this.#alarms.set(a.code, a); 
     }
   }
   
@@ -390,20 +402,18 @@ class CurrentAlarms {
       }
     });
   }
-  
-  /**      
-   * @param{[alarms]} AlarmSegment.dataObject
-   */
-  insertAlarms = (alarms) => {
-    alarms.forEach((alarm) => { this.pushAlarm(alarm); });
+     
+  extractAlarm = (msg) => {
+    if(msg.hasPayload()){
+      let resp = new AlarmStatusResponse(msg);
+      resp.map.forEach((as) => { this.pushAlarm(as.dataObject) });
+    } else {
+    }
+    this.checkExspiration(msg.id);
   }
   
-  extractAlarm = (msg) => { 
-    let resp = new AlarmStatusResponse(msg);
-    win.def.log({ level: 'info', file: 'model/data/alarm', func: 'extractAlarm', message:  `MsgId: ${msg.id}. Alarm-Resp.length: ${resp.length}`});
-    resp.map.forEach((as) => { this.pushAlarm(as.dataObject); });
-    this.checkExpiration(msg.id);
-    win.def.log({ level: 'info', file: 'model/data/alarm', func: 'extractAlarm', message:  `MsgId: ${msg.id}. CurrentAlarms.size: ${this.size}`});
+  getAlarmArray() {
+    return Array.from(this.#alarms, ([key, value]) => (value.dataObject));
   }
 }
 
