@@ -296,6 +296,8 @@ class ExspiredAlarms {
   #periods = [];
 
   constructor(){}
+  
+  get array() { return this.#array; };
    
   /**
    * @param {alarmPeriod} period
@@ -345,7 +347,6 @@ class CurrentAlarms {
   }
   
   get size () { return this.#alarms.size; }
-  
   get definedAlarms () { return this.#definedAlarms; }
   
   /**
@@ -390,8 +391,8 @@ class CurrentAlarms {
     });
   }
   
-  /**
-   * @param{[alarms]}
+  /**      
+   * @param{[alarms]} AlarmSegment.dataObject
    */
   insertAlarms = (alarms) => {
     alarms.forEach((alarm) => { this.pushAlarm(alarm); });
@@ -407,11 +408,11 @@ class CurrentAlarms {
 }
 
 const alarmLimits = new AlarmLimits();
-
-const ex  = new ExspiredAlarms();
-const cp1Alarms = new CurrentAlarms(bus.alarms.cp1, ex);
+const exspiredAlarms  = new ExspiredAlarms();
+const cp1Alarms = new CurrentAlarms(bus.alarms.cp1, exspiredAlarms);
 
 module.exports = { 
+  exspiredAlarms: exspiredAlarms,
   alarmLimits: alarmLimits,
   cp1Alarms: cp1Alarms
 };
