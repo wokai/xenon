@@ -56,8 +56,6 @@ class Action {
   /**
    * @param{Message, function, number}: 
    */
-  
-  
   constructor(msg, callback, timeout = 0){
     this.#message = msg;        /// Message (model/medibus/message)
     this.#callback = callback;
@@ -65,6 +63,9 @@ class Action {
     this.#timeoutId = 0;
   }
 
+  /**
+   * @usedBy {MessageController.doNextAction} - /controller
+   */
   sendCommand () {
 
     this.#timeoutId = setTimeout(() => {
@@ -73,7 +74,7 @@ class Action {
           this.#callback(msg);
         })
         .catch((err) => {
-          /// Promise will be rejected when timout is exceeded or command has failed
+          /// Promise will be rejected when timout is exceeded or command fails
           if(err.message){
             monitor.dataMsg('Action', `Rejection of command: id ${err.message.id} | code: ${err.message.code} | Status: ${err.status}`);
             win.def.log({ level: 'warn', file: 'action', func: 'Action.sendCommand', message: `Rejected promise: Message: id ${err.message.id} | Code: ${err.code} | Status: ${err.status}`});
@@ -88,6 +89,9 @@ class Action {
 }
 
 
+/**
+ * @usedBy {MessageController.loadCycle} - /controller
+ */
 module.exports = {
   nop : new Action(commands.nop, (msg) => { /** No operation ... */ }, 1000),
   

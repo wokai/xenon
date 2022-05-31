@@ -347,8 +347,8 @@ class ExspiredAlarms {
 class CurrentAlarms {
   
   #exspired         /// {ExspiredAlarms}
-  #definedAlarms    /// Map with defined alarms (key = alarm.code)
-  #alarms           /// Map with AlarmPeriod : current alarms
+  #definedAlarms    /// {Map<AlarmPeriod>} - (key = alarm.code) - (config/medibus)
+  #alarms           /// {Map<AlarmPeriod>} - (key = alarm.code) - current alarms
   
   setupDefinedAlarms(alarms){
     this.#definedAlarms = new Map();
@@ -370,10 +370,9 @@ class CurrentAlarms {
   }
   
   /**
-   * Inserts a single alarm into alarm list.
-   * @see: {model/medibus} getDataObject
-   *        Message-Id
-   * @param{id:number, date: Date, priority: number, code: string, phrase: string} alarm
+   * @descr - inserts a single alarm into alarm list
+   * @see   {model/medibus} getDataObject
+   * @param {Object} - defined by {AlarmSegment.dataObject} (model/medibus/alarmSegment)
    */
   pushAlarm = (alarm) => {
     /// Check whether alarm code is already present in current list
@@ -391,9 +390,8 @@ class CurrentAlarms {
   }
   
   /**
-   *        Message-Id
-   * @param{number}
-   */
+   * @param {number} - Message-Id - {Medibus} (model/medibus/message)
+   **/
   checkExspiration = (id) => {
     this.#alarms.forEach((alarm) => {
       if(alarm.back.id < id){
@@ -402,16 +400,27 @@ class CurrentAlarms {
       }
     });
   }
-     
+  
+  /**
+   * @param  {Message} - (model/medibus/message)
+   * @usedBy {Action.constructor} - Callback - (/bus/action)
+   * @descr  Calls conversion of Alarm related payload content from Medibus
+   *         message into {AlarmStatusResponse} and further into separate
+   *         {AlarmPeriod} objects residin in a {Map}.
+   *         Finally, {checkExspiration} identifies Alarm types which are no more
+   *         current and move to {ExspiredAlarms}.
+   **/
   extractAlarm = (msg) => {
     if(msg.hasPayload()){
       let resp = new AlarmStatusResponse(msg);
       resp.map.forEach((as) => { this.pushAlarm(as.dataObject) });
-    } else {
     }
     this.checkExspiration(msg.id);
   }
   
+  /**
+   * @usedBy {router.get: data/alarm/cp1 } - (routes/data)
+   **/
   getAlarmArray() {
     return Array.from(this.#alarms, ([key, value]) => (value.dataObject));
   }
@@ -419,6 +428,11 @@ class CurrentAlarms {
 
 const alarmLimits = new AlarmLimits();
 const exspiredAlarms  = new ExspiredAlarms();
+
+/**
+ * @descr{Code-page 1 Alarms}
+ * @see  {MEDIBUS for Primus. p.14}
+ **/
 const cp1Alarms = new CurrentAlarms(bus.alarms.cp1, exspiredAlarms);
 
 module.exports = { 

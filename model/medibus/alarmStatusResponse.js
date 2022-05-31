@@ -54,11 +54,11 @@ class AlarmStatusResponse {
    */
   constructor(msg) {
 
-    this.#msgid    = msg.id;
-    this.#time     = msg.dateTime;
-    this.#code = msg.code;
+    this.#msgid      = msg.id;
+    this.#time       = msg.dateTime;
+    this.#code       = msg.code;
     this.#hexPayload = msg.hexPayload;
-    this.#map = new Map();
+    this.#map        = new Map();
 
 
     if(msg.hasPayload()) {

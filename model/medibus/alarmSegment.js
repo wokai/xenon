@@ -20,15 +20,7 @@
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 
-
-/// //////////////////////////////////////////////////////////////////////// ///
-///  1 byte  alarm priority: Number in the range 1-31 (highest = 31)
-///  2 bytes alarm code    : Two byte ASCII HEX
-/// 12 bytes alarm phrase  : Character string.
-/// //////////////////////////////////////////////////////////////////////// ///
-
 const AsciiHex = require('./asciiHex');
-
 const win = require('../../logger/logger');
 const { parameters } = require('../parameters');
 
@@ -36,6 +28,10 @@ const { parameters } = require('../parameters');
 /**
  * @desc  Each instance handles content of one AlarmStatusResponse message
  *        payload segment.
+ *        The segments consists of 
+ *        {priority} - Number in the range of 1-31 (one byte)
+ *        {code}     - Two byte AsciiHex
+ *        {phrase}   - Character string
  * @use   /model/medibus/alarmStatusResponse (constructor)
  */
  
@@ -49,9 +45,9 @@ class AlarmSegment {
   #phrase   /// {string} - 12 bytes
   
   /**
-   * @param {AlarmStatusResponse, number} (model/medibus/alarmStatusResponse)
+   * @param  {AlarmStatusResponse, number} (model/medibus/alarmStatusResponse)
+   * @usedBy {AlarmStatusResponse} constructor
    */
-  
   constructor(alarmStatusResponse, index) {
     
     var p = alarmStatusResponse.payload;
@@ -63,15 +59,13 @@ class AlarmSegment {
     
     this.#msgid    = alarmStatusResponse.id;
     this.#time     = alarmStatusResponse.time;
-    
-    // ToDo: Remove
-    win.def.log({ level: 'info', file: 'AlarmSegment', func: 'constructor', message: `[AlarmSegment] msgid: ${this.#msgid}, priority: ${this.#priority}, code: ${this.#code}, phrase: ${this.#phrase}`});
   }
   
   static from(d, i){
     var p = d.payload;
     if(p.length < (i + 1) * 15){
-      win.def.log({ level: 'error', file: 'AlarmSegment', func: 'static from', message: `Out of range error: Array length: ${p.length}, Index: ${i}`});
+      win.def.log({ level: 'error', file: 'AlarmSegment', func: 'static from',
+        message: `Out of range error: Array length: ${p.length}, Index: ${i}`});
       return null;
     }
     return new AlarmSegment(d, i);
@@ -82,8 +76,11 @@ class AlarmSegment {
   get priority        () { return parseInt(this.#priority, 16); }
   get code            () { return AsciiHex.hexArrayToString(this.#code); }
   get phrase          () { return this.#phrase.toString(); }
-
   
+  /**
+   * @descr   Output for transformed data content
+   * @usedBy {CurrentAlarms.extractAlarm} 
+   */
   get dataObject      () {
     return {
       id: this.messageId,
