@@ -181,6 +181,7 @@ app.factory('MedibusService', function($http, $rootScope) {
     }
   };
 
+  /*
   const getTempData = function() {
     $http.get('/data/temporal')
       .then(function(response) {
@@ -193,6 +194,7 @@ app.factory('MedibusService', function($http, $rootScope) {
       });
   }
   getTempData();
+  */
   
   /// //////////////////////////////////////////////////////////////////////////
   /// Exported object
@@ -209,8 +211,7 @@ app.factory('MedibusService', function($http, $rootScope) {
     getVentData: getVentData,
     getAlarmData: getAlarmData,
     setVentData: setVentData,
-    getTemp: function() { return temp; },
-    getTempData: getTempData
+    getTemp: function() { return temp; }
   }
 
 });  /// MedibusService
