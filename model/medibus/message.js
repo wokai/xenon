@@ -144,15 +144,17 @@ class Message {
     return this.#buffer;
   }
   
-  /// ////////////////////////////////////////////////////////////////////// ///
-  /// Creates a Medibus message from an incoming buffer
-  /// This function throws errors
-  /// ////////////////////////////////////////////////////////////////////// ///
+  
+  /**
+   * @usedBy {MessageParser} (/bus/messageParser)
+   * @descr  Instantiates a Message object from buffer content received
+   *         via RS232
+   * @throws {Error}(?)
+   **/
   
   static fromBuffer(buf) {
 
     var msg = new Message(buf);
-   
     /// Incoming checksum as provided as two bytes in buffer
     var inc = AsciiHex.hexChecksumToDecimal(msg.checksum)    
     /// Calculated checksum from leading bytes in buffer

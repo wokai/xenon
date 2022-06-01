@@ -28,10 +28,10 @@ const { react }         = require('./react');
 const { nextMessage }   = require('./nextMessage');
 
 
-
-/// //////////////////////////////////////////////////////////////////////// ///
-/// EventLoop
-/// //////////////////////////////////////////////////////////////////////// ///
+/**
+ * @usedBy {app.js}
+ * @descr  Defines the reaction-chain for incoming Medibus Messages via RS-232
+ **/
 
 class EventLoop {
   

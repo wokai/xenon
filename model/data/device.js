@@ -57,6 +57,9 @@ class Device {
     this.#obj.busRevision = _id[3];
   }
   
+  /**
+   * @param {Message} (/model/medibus/message)
+   **/
   static from = (msg) => {
     var d = new Device();
     var _id = msg.strPayload.split(/[':]/)

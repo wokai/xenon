@@ -222,9 +222,7 @@ class Alarm {
   #priority  /// @ number | range 1-31
   #code      /// @ string | ascii-hex
   #phrase    /// @ string | 12 bytes
-  
   #begin     /// @ PeriodPoint | Message-ID and Time of observation
-  
   #label     /// @ string - Content of bus.alarm.cpx -> label
   
   constructor() {
@@ -272,9 +270,10 @@ class AlarmPeriod extends Alarm {
   
   /**
    * Data comming from Medibus Alarm Messages
-   * @param {id:number, date: Date, priority: number, code: string, phrase: string} 
+   * @param {alarm} {id:number, date: Date, priority: number, code: string, phrase: string}
+   * @param {alarmDefinition} {Map<{id|code|label}>} - (key = alarm.code) - (config/medibus) 
    */
-  static from(alarm){
+  static from(alarm, alarmDefinition=null){
     let a = new AlarmPeriod();
     a.priority   = alarm.priority;   /// number 1-31
     a.phrase     = alarm.phrase;     /// string
@@ -285,12 +284,24 @@ class AlarmPeriod extends Alarm {
     
     a.back.id    = alarm.id;         /// During time of creation, the first observation
     a.back.time  = alarm.time        /// is also the last observation
+    
+    /// Eventually add data from stored alarm-definitions
+    /// This should almost always be present
+    if(alarmDefinition !== null){
+      let ad = alarmDefinition.get(a.code);
+      if(ad !== undefined){
+        a.id = ad.id;
+        a.label = ad.label;
+      }
+    }
+    
     return a;
   }
   
   get dataObject      () {
     return {
       id: this.id,
+      label: this.label,
       priority: this.priority,
       code: this.code,
       phrase: this.phrase,
@@ -347,13 +358,13 @@ class ExspiredAlarms {
 class CurrentAlarms {
   
   #exspired         /// {ExspiredAlarms}
-  #definedAlarms    /// {Map<AlarmPeriod>} - (key = alarm.code) - (config/medibus)
-  #alarms           /// {Map<AlarmPeriod>} - (key = alarm.code) - current alarms
+  #definedAlarms    /// {Map<{id|code|label}>} - (key = alarm.code) - (config/medibus) 
+  #alarms           /// {Map<AlarmPeriod>}     - (key = alarm.code) - current alarms
   
   setupDefinedAlarms(alarms){
     this.#definedAlarms = new Map();
     alarms.forEach(a => {
-      this.#definedAlarms.set(a.code, AlarmPeriod.from(a)); 
+      this.#definedAlarms.set(a.code, a); 
     });
   }
   
@@ -384,7 +395,7 @@ class CurrentAlarms {
       a.back.time = alarm.time;
     } else {
       /// Create AlarmPeriod object
-      a = AlarmPeriod.from(alarm);
+      a = AlarmPeriod.from(alarm, this.#definedAlarms);
       this.#alarms.set(a.code, a); 
     }
   }
@@ -413,7 +424,21 @@ class CurrentAlarms {
   extractAlarm = (msg) => {
     if(msg.hasPayload()){
       let resp = new AlarmStatusResponse(msg);
-      resp.map.forEach((as) => { this.pushAlarm(as.dataObject) });
+      resp.map.forEach((as) => {
+        
+        /// //////////////////////////////////////////////////////////////// ///
+        /// Add properties from matching alarm definition
+        let ad = this.#definedAlarms.get(as.code);
+        if(ad !== undefined){
+          let am = as.dataObject;
+          am.alarmId = ad.id;
+          am.label   = ad.label;
+          this.pushAlarm(am);
+        }
+        /// //////////////////////////////////////////////////////////////// ///
+        
+        this.pushAlarm(as.dataObject)
+      });
     }
     this.checkExspiration(msg.id);
   }
