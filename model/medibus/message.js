@@ -99,6 +99,11 @@ class Message {
   /// ////////////////////////////////////////////////////////////////////// ///
   
   get id        () { return this.#id; }
+  
+  /**
+   * @usedBy{Ventilation.setVentilation}
+   * @usedBy{AlarmStatusResponse.constructor}
+   **/
   get dateTime  () { return this.#dateTime; }
   get time      () { return this.#time; }
   get date      () { return this.#date; }

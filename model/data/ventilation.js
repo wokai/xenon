@@ -22,11 +22,12 @@
 
 const path = require('path');
 
-const general      = require(path.join(__dirname, '..', '..', 'config',  'general'));
-const win          = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
-const DataResponse = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
-const status       = require(path.join(__dirname, '..', '..', 'controller', 'statusController'));
-const { port }     = require(path.join(__dirname, '..', '..', 'controller', 'portController'));
+const general       = require(path.join(__dirname, '..', '..', 'config',  'general'));
+const win           = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
+const DataResponse  = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
+const status        = require(path.join(__dirname, '..', '..', 'controller', 'statusController'));
+const { port }      = require(path.join(__dirname, '..', '..', 'controller', 'portController'));
+const { cp1Alarms } = require(path.join(__dirname, 'alarm'));
 
 class Ventilation {
   
@@ -35,9 +36,14 @@ class Ventilation {
   #hilim
   
   constructor(){ this.setEmptyObject(); }
+  
+  /**
+   * @usedBy{MessageController.doNextAction}
+   **/
   getValueObject () {
     this.#val.episode = port.episode.uuid;
     this.#val.status  = status.controller.text;
+    this.#val.alarm.cp1 = cp1Alarms.getAlarmArray();
     return this.#val;
   }
   
@@ -83,7 +89,11 @@ class Ventilation {
           exp: '0',
           cons: '0'
         }
-      }      
+      },
+      alarm: {
+        cp1: [],
+        cp2: []
+      }
     }
 
     this.#lolim = {

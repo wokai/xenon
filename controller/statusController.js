@@ -74,6 +74,10 @@ class StatusController extends EventEmitter {
   
   get status () { return this.#status;       }
   get level  () { return this.#status.level; }
+  
+  /**
+   * @usedBy{Ventilation.getValueObject} (/model/data/ventilation)
+   **/
   get text   () { return this.#status.txt;   }
   get label  () { return this.#status.label; }
   toString   () { return this.#status.txt;   }

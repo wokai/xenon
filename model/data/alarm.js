@@ -444,7 +444,8 @@ class CurrentAlarms {
   }
   
   /**
-   * @usedBy {router.get: data/alarm/cp1 } - (routes/data)
+   * @usedBy {router.get: data/alarm/cp1} - (/routes/data)
+   * @usedBy {Ventilation.getValueObject} - (/model/data/ventilation)
    **/
   getAlarmArray() {
     return Array.from(this.#alarms, ([key, value]) => (value.dataObject));
