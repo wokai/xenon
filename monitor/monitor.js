@@ -70,6 +70,10 @@ class Monitor extends EventEmitter {
   
   portMsg   = (action, msg, data={}) => { this.emitMsg('port', action, msg, data); }
   comMsg    = (action, msg, data={}) => { this.emitMsg('com',  action, msg, data); }
+  
+  /**
+   * @usedBy{MessageController.doNextAction} (/controller)
+   **/
   dataMsg   = (action, msg, data={}) => { this.emitMsg('data', action, msg, data); }
   deviceMsg = (action, msg, data={}) => { this.emitMsg('device', action, msg, data); }
 }

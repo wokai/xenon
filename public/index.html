@@ -24,6 +24,7 @@
         MedibusService.getDateTime();
         MedibusService.getVentData();
         MedibusService.getAlarmData();
+        MedibusService.getCurrentCp1Alarms();
       }
       
       $scope.socket = io.connect();
@@ -52,13 +53,6 @@
         MedibusService.setDeviceData(msg.data);
       });
       
-      /*
-      ctrl.temp = MedibusService.getTemp();
-      $scope.getTempData = function() {
-        MedibusService.getTempData();
-        //console.log(ctrl.temp);
-      }
-      */
     })
 
   </script>

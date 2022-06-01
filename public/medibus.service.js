@@ -60,11 +60,33 @@ app.factory('MedibusService', function($http, $rootScope) {
     lastmessage: 'hh:mm:ss'
   }
   
+  const currentCp1Alarms = [];
+  
   const setDeviceData = function(data) {
     device.id = data.id;
     device.name = data.name;
     device.devRevision = data.devRevision;
     device.busRevision = data.busRevision;
+  }
+  
+  /**
+   * Request current codepage 1 alarms
+   * @source{CurrentAlarms.getAlarmArray} (/model/data/alarm) 
+   **/
+  let getCurrentCp1Alarms = function() {
+    $http.get('/data/alarm/cp1')
+    .then(function(response) {
+      currentCp1Alarms.length = 0;
+      currentCp1Alarms.push(...response);
+      // ToDo: Remove...
+      console.log(response);
+    }, function(response) {
+      currentCp1Alarms.length = 0;
+    })
+    .catch(function(error) {
+      currentCp1Alarms.length = 0;
+      console.log('[MedibusService] getCurrentCp1Alarms Error: ', error)
+    });
   }
   
   var getDeviceData = function() {
