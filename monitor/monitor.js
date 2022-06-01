@@ -81,6 +81,7 @@ class Monitor extends EventEmitter {
   
   /**
    * @usedBy{MessageController.doNextAction}  (/controller)
+   * @target{index.html} - (socket.on | io:data)
    **/
   dataMsg   = (action, msg, data={}) => { this.emitMsg('data', action, msg, data); }
   deviceMsg = (action, msg, data={}) => { this.emitMsg('device', action, msg, data); }

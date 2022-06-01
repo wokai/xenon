@@ -124,7 +124,11 @@ app.factory('MedibusService', function($http, $rootScope) {
   }
   getDateTime()
   
-  /// Query ventilation data from server
+  
+  /**
+   * @source{Monitor.dataMsg} - {Ventilation.getValueObject}
+   * @see   {http://localhost:4000/data/vent}
+   **/
   var getVentData = function() {
     $http.get('/data/vent')
       .then(function(response) {
@@ -139,9 +143,12 @@ app.factory('MedibusService', function($http, $rootScope) {
   }
   getVentData();
   
-  /// Set ventilation data. Will be sent via socket together with notification.
+  /**
+   * @used{index.html} - (socket.on | io.data)
+   * @source{Monitor.dataMsg} - {Ventilation.getValueObject}
+   * @see   {http://localhost:4000/data/vent}
+   **/
   const setVentData = function(vent) { 
-    
     busStatus.messageId = vent.msgId;
     busStatus.lastmessage = vent.time.time;
     data.vent = vent;
@@ -252,6 +259,14 @@ app.component('busStatusIndicator', {
   }
 });
 
+
+app.component('alarmStatusIndicator', {
+  templateUrl: 'alarmStatusIndicator.html',
+  controller: function($scope, MedibusService) {
+    $scope.title = 'Current alarms';
+    $scope.data = MedibusService.data;
+  }
+});
 
 /// ------------------------------------------------------------------------ ///
 /// B.2 Ventilation parameters

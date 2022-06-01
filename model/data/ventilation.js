@@ -43,7 +43,7 @@ class Ventilation {
   getValueObject () {
     this.#val.episode = port.episode.uuid;
     this.#val.status  = status.controller.text;
-    this.#val.alarm.cp1 = cp1Alarms.getAlarmArray();
+    this.#val.alarm.cp1 = cp1Alarms.getAlarmArray(); /// Array<AlarmPeriod.dataObject>
     return this.#val;
   }
   

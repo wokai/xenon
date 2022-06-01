@@ -298,7 +298,7 @@ class AlarmPeriod extends Alarm {
     return a;
   }
   
-  get dataObject      () {
+  get dataObject() {
     return {
       id: this.id,
       label: this.label,
@@ -444,8 +444,9 @@ class CurrentAlarms {
   }
   
   /**
-   * @usedBy {router.get: data/alarm/cp1} - (/routes/data)
-   * @usedBy {Ventilation.getValueObject} - (/model/data/ventilation)
+   * @usedBy  {router.get: data/alarm/cp1} - (/routes/data)
+   * @usedBy  {Ventilation.getValueObject} - (/model/data/ventilation)
+   * @source  {AlarmPeriod.dataObject}
    **/
   getAlarmArray() {
     return Array.from(this.#alarms, ([key, value]) => (value.dataObject));
