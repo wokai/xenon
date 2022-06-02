@@ -33,8 +33,8 @@ const DataResponse      = require(path.join(__dirname, '..', 'model', 'medibus',
 const { device }        = require(path.join(__dirname, '..', 'model', 'data', 'device'));
 const { dateTime }      = require(path.join(__dirname, '..', 'model', 'data', 'dateTime'));
 const { ventilation }   = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));
-
-const { alarmLimits, cp1Alarms }         = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
+const { alarmLimits, 
+          cp1Alarms }   = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
 
 const monitor           = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 

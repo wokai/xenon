@@ -2,18 +2,31 @@
    <table class="table table-hover text-secondary" style="font-size:small;">
     <thead>
       <tr class="d-flex table-light">
-        <th class="col-12" scope="col">
-          Current alarms: {{ data.alarm.cp1.length }}
+        <th class="col-2" scope="col">
+          ID
+        </th>
+        <th class="col-2" scope="col">
+          Priority
+        </th>
+        <th class="col-4" scope="col">
+          Label
+        </th>
+        <th class="col-2" scope="col">
+          Begin
+        </th>
+        <th class="col-2" scope="col">
+          Msg-ID
         </th>
       </tr>
     </thead>
     <tbody>
-      <!-- @source{AlarmPeriod} - (/model/data/alarm) -->
-      <tr ng-repeat="a in data.alarm.cp1" class="d-flex">
-        <td class="col-2">Id {{a.id}}</td>
-        <td class="col-2">Pr {{a.priority}}</td>
-        <td class="col-4">Lb {{a.label}}</td>
-        <td class="col-2">Ph {{a.phrase}}</td>
+      <!-- @source{AlarmPeriod.dataObject} - (/model/data/alarm) -->
+      <tr ng-repeat="a in data.vent.alarm.cp1" class="d-flex">
+        <td class="col-2">{{a.id}}</td>
+        <td class="col-2">{{a.priority}}</td>
+        <td class="col-4">{{a.label}}</td>
+        <td class="col-2">{{a.begin.time}}</td>
+        <td class="col-2">{{a.begin.id}}</td>
       </tr>
     </tbody>
     </table>

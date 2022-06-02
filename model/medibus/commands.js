@@ -49,6 +49,7 @@ module.exports = {
   nop,
   stop,
   dat1,
+  text,
   device: {
     id: devid,
     time: time,

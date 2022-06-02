@@ -42,8 +42,6 @@ class TextMessage {
 /// Represents the inner structure of a Medibus Text-Message-Response
 /// //////////////////////////////////////////////////////////////////////// ///
 
-
->>>>>>> 8c1540be0c1a40b5894e21080453ae9677576b01
 class TextSegment {
   
   #msgid

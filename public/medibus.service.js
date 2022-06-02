@@ -145,7 +145,7 @@ app.factory('MedibusService', function($http, $rootScope) {
   
   /**
    * @used{index.html} - (socket.on | io.data)
-   * @source{Monitor.dataMsg} - {Ventilation.getValueObject}
+   * @source{Monitor.dataMsg} - {Ventilation.getValueObject} - (/model/data/ventilation)
    * @see   {http://localhost:4000/data/vent}
    **/
   const setVentData = function(vent) { 
@@ -181,20 +181,6 @@ app.factory('MedibusService', function($http, $rootScope) {
     }
   };
 
-  /*
-  const getTempData = function() {
-    $http.get('/data/temporal')
-      .then(function(response) {
-        temp.data = response.data;
-        $rootScope.$emit('data:temporal', temp.data);
-      }, function(response) {
-        console.log(response);
-      }).catch(function(error) {
-        console.log(error);
-      });
-  }
-  getTempData();
-  */
   
   /// //////////////////////////////////////////////////////////////////////////
   /// Exported object
@@ -265,6 +251,24 @@ app.component('alarmStatusIndicator', {
   templateUrl: 'alarmStatusIndicator.html',
   controller: function($scope, MedibusService) {
     $scope.title = 'Current alarms';
+    
+    /**
+     * @content{data.vent.alarm.cp1}
+     * @source (data) {Ventilation.getValueObject()} - (/model/data/ventilation)
+     * @source (alarm){AlarmPeriod.dataObject}       - (/model/data/alarm)
+     **/
+    $scope.data = MedibusService.data;
+  }
+});
+
+app.component('currentAlarmNumber', {
+  template: '<span>{{ data.vent.alarm.cp1.length }}</span>',
+    controller: function($scope, MedibusService) {    
+    /**
+     * @content{data.vent.alarm.cp1}
+     * @source (data) {Ventilation.getValueObject()} - (/model/data/ventilation)
+     * @source (alarm){AlarmPeriod.dataObject}       - (/model/data/alarm)
+     **/
     $scope.data = MedibusService.data;
   }
 });
