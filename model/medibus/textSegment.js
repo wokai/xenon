@@ -32,6 +32,7 @@ const AsciiHex = require('./asciiHex');
 const win = require('../../logger/logger');
 const { parameters } = require('../parameters');
 
+const { TextMessageResponse } = require('./textMessageResponse');
 
 class TextMessage {
   
@@ -46,27 +47,24 @@ class TextSegment {
   
   #msgid
   #time
-  #date
-  
-  #messages = []
-  
-  #priority
   #code
-  #phrase
+  #length
+  #text
   
-  
-  
-  
-  constructor(dataResponse, index) {
+  /**
+   * @param{resp}  - (TextMessageResonse}
+   * @param{index} - (number) - 0-based index of current position in payload
+   **/
+  constructor(resp, index) {
     
-    var p = dataResponse.payload;
+    var p = resp.payload;
     var begin = index * 15;
     
-    this.#priority = p.slice(begin    , begin +  1);   /// One  byte  priority
-    this.#code     = p.slice(begin + 1, begin +  3);   /// two  bytes alarm code
+    this.#code     = p.slice(begin    , begin +  1);   /// One  byte  text-code
+    this.#length   = p.slice(begin + 1, begin +  2);   /// one  bytes text-length (1-32) : Add 30 to decimal length value
     this.#phrase   = p.slice(begin + 3, begin + 18);   /// 12   bytes alarm phrase
     
-    this.#msgid = dataResponse.id;
+    this.#msgid = resp.id;
     this.#time  = dataResponse.time;
     this.#date  = dataResponse.date;
   }

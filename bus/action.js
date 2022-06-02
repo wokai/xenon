@@ -33,8 +33,9 @@ const DataResponse      = require(path.join(__dirname, '..', 'model', 'medibus',
 const { device }        = require(path.join(__dirname, '..', 'model', 'data', 'device'));
 const { dateTime }      = require(path.join(__dirname, '..', 'model', 'data', 'dateTime'));
 const { ventilation }   = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));
-const { alarmLimits, 
-          cp1Alarms }   = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
+
+const { alarmLimits, cp1Alarms, cp2Alarms }
+                        = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
 
 const monitor           = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 
@@ -132,8 +133,7 @@ module.exports = {
       }),
     cp2 : new Action(commands.alarm.cp2, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp2', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
-        // ToDo: Activate this part of alarm recognition
-        //currentAlarms.extractAlarm(msg);
+        cp2Alarms.extractAlarm(msg);
       })
   }
 }

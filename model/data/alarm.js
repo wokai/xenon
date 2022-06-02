@@ -23,11 +23,11 @@
 const path = require('path'); 
 
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
-const bus             = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
+const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const DataResponse        = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
 const AlarmStatusResponse = require(path.join(__dirname, '..', 'medibus', 'alarmStatusResponse'));
 
- 
+/*
 class AlarmLimits {
   
   #obj
@@ -175,7 +175,7 @@ class AlarmLimits {
   extractLowLimits  = (msg) => { this.setLowLimits( new DataResponse(msg)); }
   extractHighLimits = (msg) => { this.setHighLimits(new DataResponse(msg)); }
 }
-
+*/
 
 
 /// //////////////////////////////////////////////////////////////////////// ///
@@ -453,7 +453,7 @@ class CurrentAlarms {
   }
 }
 
-const alarmLimits = new AlarmLimits();
+//const alarmLimits = new AlarmLimits();
 const exspiredAlarms  = new ExspiredAlarms();
 
 /**
@@ -461,9 +461,11 @@ const exspiredAlarms  = new ExspiredAlarms();
  * @see  {MEDIBUS for Primus. p.14}
  **/
 const cp1Alarms = new CurrentAlarms(bus.alarms.cp1, exspiredAlarms);
+const cp2Alarms = new CurrentAlarms(bus.alarms.cp2, exspiredAlarms);
 
 module.exports = { 
   exspiredAlarms: exspiredAlarms,
-  alarmLimits: alarmLimits,
-  cp1Alarms: cp1Alarms
+  //alarmLimits: alarmLimits,
+  cp1Alarms: cp1Alarms,
+  cp2Alarms: cp2Alarms
 };

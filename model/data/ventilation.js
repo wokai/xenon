@@ -206,6 +206,9 @@ class Ventilation {
     }
   }
   
+  /**
+   * @usedBy{Action} - (/bus/action/alarm) - (action.alarm.ll)
+   **/
   setAlarmLoLim = (msg) => {
     try{
       var res = new DataResponse(msg);
@@ -226,6 +229,9 @@ class Ventilation {
     }
   }
   
+  /**
+   * @usedBy{Action} - (/bus/action/alarm) - (action.alarm.hl)
+   **/
   setAlarmHiLim = (msg) => {
     try {
       var res = new DataResponse(msg);

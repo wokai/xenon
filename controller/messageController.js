@@ -69,6 +69,9 @@ class MessageController {
     this.#schedule.unshift(action.alarm.cp2);
   }
 
+  /**
+   * @usedBy{NextMessage._write} - (/bus/nextMessage)
+   **/
   doNextAction = (id) => {
     win.def.log({ level: 'debug', file: 'messageController', func: 'doNextAction', message: `Length: ${this.#schedule.length} | From Message: ${id}`});
     if(status.controller.sending) {
