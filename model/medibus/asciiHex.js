@@ -24,12 +24,23 @@
 
 class AsciiHex {
   
+  /**
+   * @descr{Converts Ascii-Hex into Number array: string}
+   * Example: '1P' -> [ '31', '50' ]
+   **/
   static from(str){
     /// 1) Expand string to char array
     /// 2) Convert characters to upper case
     /// 3) Extract ASCII code
     /// 3) Convert array elements to hexadecimal encoding
     return [...str].map(x => x.toUpperCase().charCodeAt(0).toString(16))
+  }
+  
+  /**
+   * @descr{Converts Ascii-Hex into number array}
+   **/
+  static asciiHexToIntArray (str) {
+    return AsciiHex.from(str).map((n) => (parseInt(n)));
   }
   
   /// ////////////////////////////////////////////////////////////////////// ///

@@ -27,7 +27,12 @@ const bus                 = require(path.join(__dirname, '..', '..', 'config', '
 const DataResponse        = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
 const AlarmStatusResponse = require(path.join(__dirname, '..', 'medibus', 'alarmStatusResponse'));
 
-/*
+
+
+/**
+ * @usecBy{router.get('/alarm/limits')} - (/routes/data)
+ **/
+
 class AlarmLimits {
   
   #obj
@@ -175,7 +180,7 @@ class AlarmLimits {
   extractLowLimits  = (msg) => { this.setLowLimits( new DataResponse(msg)); }
   extractHighLimits = (msg) => { this.setHighLimits(new DataResponse(msg)); }
 }
-*/
+
 
 
 /// //////////////////////////////////////////////////////////////////////// ///
@@ -453,7 +458,7 @@ class CurrentAlarms {
   }
 }
 
-//const alarmLimits = new AlarmLimits();
+const alarmLimits = new AlarmLimits();
 const exspiredAlarms  = new ExspiredAlarms();
 
 /**
@@ -465,7 +470,7 @@ const cp2Alarms = new CurrentAlarms(bus.alarms.cp2, exspiredAlarms);
 
 module.exports = { 
   exspiredAlarms: exspiredAlarms,
-  //alarmLimits: alarmLimits,
+  alarmLimits: alarmLimits,
   cp1Alarms: cp1Alarms,
   cp2Alarms: cp2Alarms
 };

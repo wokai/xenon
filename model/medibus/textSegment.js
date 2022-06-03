@@ -32,13 +32,6 @@ const AsciiHex = require('./asciiHex');
 const win = require('../../logger/logger');
 const { parameters } = require('../parameters');
 
-const { TextMessageResponse } = require('./textMessageResponse');
-
-class TextMessage {
-  
-  
-}
-
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Represents the inner structure of a Medibus Text-Message-Response
 /// //////////////////////////////////////////////////////////////////////// ///
@@ -51,6 +44,14 @@ class TextSegment {
   #length
   #text
   
+  
+  /**
+   * @descr Decodes length segment to message length
+   * @param{sgm}
+   **/
+  decodeLength = (sgm) => {
+  }
+  
   /**
    * @param{resp}  - (TextMessageResonse}
    * @param{index} - (number) - 0-based index of current position in payload
@@ -58,15 +59,18 @@ class TextSegment {
   constructor(resp, index) {
     
     var p = resp.payload;
-    var begin = index * 15;
+    var begin = index;
     
-    this.#code     = p.slice(begin    , begin +  1);   /// One  byte  text-code
-    this.#length   = p.slice(begin + 1, begin +  2);   /// one  bytes text-length (1-32) : Add 30 to decimal length value
-    this.#phrase   = p.slice(begin + 3, begin + 18);   /// 12   bytes alarm phrase
+    this.#code     = p.slice(begin    , begin +  2);   /// Two  bytes text-code
+    this.#length   = p.slice(begin + 2, begin +  3);   /// one  byte  text-length (1-32) : Add 30 to decimal length value
+    //this.#phrase   = p.slice(begin + 3, begin + 18);   /// ASCII character string.
+    /// ETX: End-of-text marker (ASCII-Code 03H)
     
     this.#msgid = resp.id;
-    this.#time  = dataResponse.time;
-    this.#date  = dataResponse.date;
+    this.#time  = resp.time;    /// Date
+    
+    console.log(`[TextSegment] MsgId: ${this.messageId}, Code: ${this.code}`);
+    console.log(AsciiHex.hexArrayToString(this.length));
   }
   
   static from(d, i){
@@ -79,22 +83,15 @@ class TextSegment {
   }
   
   get time            () { return this.#time; }
-  get date            () { return this.#date; } 
   get messageId       () { return this.#msgid; }
-  
-  get priority        () { return parseInt(this.#priority); }
   get code            () { return AsciiHex.hexArrayToString(this.#code); }
-  get phrase          () { return this.#phrase; }
+  get length          () { return this.#length; }
 
   
   get dataObject      () {
     return {
       id: this.messageId,
-      date: this.date,
-      time: this.time,
-      priority: this.priority,
-      code: this.codeString,
-      phrase: this.value
+      date: this.date
     };
   }
   

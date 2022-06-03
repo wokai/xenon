@@ -103,6 +103,7 @@ class Message {
   /**
    * @usedBy{Ventilation.setVentilation}
    * @usedBy{AlarmStatusResponse.constructor}
+   * @usedBy{TextMessageResponse.constructor}
    **/
   get dateTime  () { return this.#dateTime; }
   get time      () { return this.#time; }

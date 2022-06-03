@@ -36,6 +36,8 @@ const { ventilation }   = require(path.join(__dirname, '..', 'model', 'data', 'v
 
 const { alarmLimits, cp1Alarms, cp2Alarms }
                         = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
+                        
+const { text }          = require(path.join(__dirname, '..', 'model', 'data', 'text'));
 
 const monitor           = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 
@@ -122,10 +124,12 @@ module.exports = {
     ll : new Action(commands.alarm.ll, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.lolim', message: `Msg id: ${msg.id} | Code: ${msg.code} | Time: ${msg.time} | Date: ${msg.date}`})
         ventilation.setAlarmLoLim(msg);
+        alarmLimits.setLowLimits(new DataResponse(msg));
       }),
     hl : new Action(commands.alarm.hl, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.hilim', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
         ventilation.setAlarmHiLim(msg);
+        alarmLimits.setHighLimits(new DataResponse(msg));
       }),
     cp1 : new Action(commands.alarm.cp1, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp1', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
@@ -135,7 +139,12 @@ module.exports = {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp2', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
         cp2Alarms.extractAlarm(msg);
       })
-  }
+  },
+  
+  text: new Action(commands.text, (msg) => {
+    win.def.log({ level: 'info', file: 'action', func: 'text', message: `Msg id: ${msg.id} | Code: ${msg.code}`});
+    text.extractTextMessages(msg);
+  })
 }
 
 

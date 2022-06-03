@@ -85,7 +85,8 @@ const bus = {
         hi: 0x26
       }
     },
-    date: 0x28
+    date: 0x28,
+    text: 0x2a
   },
   /// Back-translation code -> label (Message.get code + getInfo)
   /// See: page 8 RS232_Medibus (Commands Codes)

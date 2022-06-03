@@ -21,7 +21,7 @@
  ******************************************************************************/
 
 const win = require('../../logger/logger');
-const AlarmSegment = require('./alarmSegment');
+const TextSegment = require('./textSegment');
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Response to Data Request Command:
@@ -36,53 +36,60 @@ const AlarmSegment = require('./alarmSegment');
 /// //////////////////////////////////////////////////////////////////////// ///
 
 
+// <Buffer 32 34 31 25 03 32 38 4a 41 6e 61 65 73 74 68 65 73 69 65 2d 47 61 73 20 44 45 53 46 4c 55 52 41 4e 45 03 32 43 37 64 65 75 74 73 63 68 03 33 37 3e 54 ... 63 more
 
 class TextMessageResponse {
 
   #msgid
-  #date
   #time
-  #code
-  #hexPayload
-  #map      /// Map key-value pairs: keys=codeString, value = AlarmSegment object
+  #code         /// Message.code
+  #hexPayload   /// Message.hexPayload
+  #map          /// Map key-value pairs: 
 
+  /**
+   * @param{Message} - (/model/medibus/message)
+   **/
   constructor(msg) {
-
-    this.#msgid = msg.id;
-    this.#time  = msg.time;
-    this.#date  = msg.date;
-    
-    this.#code = msg.code;
-    this.#hexPayload = msg.hexPayload;
     this.#map = new Map();
+    this.#msgid = msg.id;
+    this.#time  = msg.dateTime;
+     this.#code = msg.code;
+     
+    if(msg.hasPayload){
+      this.#hexPayload = msg.hexPayload;
+      console.log(`[TextMessageResponse] payload size: ${this.#hexPayload.length}`)
+      console.log(this.#hexPayload);
+      
+      let segm = new TextSegment(this, 0);
+    }
 
+
+    /*
+
+    
+
+
+    
+
+    console.log('[TextMessageResponse]')
 
     if(msg.hasPayload()) {
       
-      
-      /// See p. 18 for 
+      /// See p. 18 for description
       if(this.#hexPayload.length > 3840){
         win.def.log({level: 'error', file: 'TextMessageResponse', func: 'construct', message: `Text message response field is too long (${this.#hexPayload.length} bytes)` });
       } else {
-        /// Each alarm segment is of 15 Bytes length
-        var segments = this.#hexPayload.length / 15;
-        var s;
-        
-        win.def.log({ level: 'debug', file: 'TextMessageResponse', func: 'construct', message: `MSG id: ${msg.id} | Reading ${segments} from payload size ${this.#hexPayload.length}.`});
-        
-        for(var i = 0; i < segments; ++i){
-          s = AlarmSegment.from(this, i);
-          this.#map.set(s.codeString, s);
-        }
+        /// Extract first text segment for test purposes:
+        var segment = new TextSegment(this.#hexPayload, 0);
       }
     }
-    win.def.log({ level: 'debug', file: 'TextMessageResponse', func: 'construct', message: `ID: ${msg.id}, Segments: ${this.#map.size}`});
+    */
+    //win.def.log({ level: 'info', file: 'TextMessageResponse', func: 'construct', message: `ID: ${msg.id}, Segments: ${this.#map.size}`});
   }
 
   
   get id        () { return this.#msgid; }
   get time      () { return this.#time; }
-  get date      () { return this.#date; }
   get rawLength () { return this.#hexPayload.length; }
   get length    () { return this.#map.length; }
   get payload   () { return this.#hexPayload; }
@@ -100,7 +107,7 @@ class TextMessageResponse {
       win.def.log({level: 'debug', file: 'TextMessageResponse', func: 'logSegments', message: `[Segment] Key: ${key}` })
     })
   }
-
+  
 }
 
 
