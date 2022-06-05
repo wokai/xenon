@@ -35,8 +35,8 @@ const TextSegment = require('./textSegment');
 /// 12 bytes alarm phrase
 /// //////////////////////////////////////////////////////////////////////// ///
 
-
-// <Buffer 32 34 31 25 03 32 38 4a 41 6e 61 65 73 74 68 65 73 69 65 2d 47 61 73 20 44 45 53 46 4c 55 52 41 4e 45 03 32 43 37 64 65 75 74 73 63 68 03 33 37 3e 54 ... 63 more
+///                                                                                                               ETX
+/// <Buffer 32 34 31 25 03 32 38 4a 41 6e 61 65 73 74 68 65 73 69 65 2d 47 61 73 20 44 45 53 46 4c 55 52 41 4e 45 03 32 43 37 64 65 75 74 73 63 68 03 33 37 3e 54 ... 63 more
 
 class TextMessageResponse {
 
@@ -62,28 +62,6 @@ class TextMessageResponse {
       
       let segm = new TextSegment(this, 0);
     }
-
-
-    /*
-
-    
-
-
-    
-
-    console.log('[TextMessageResponse]')
-
-    if(msg.hasPayload()) {
-      
-      /// See p. 18 for description
-      if(this.#hexPayload.length > 3840){
-        win.def.log({level: 'error', file: 'TextMessageResponse', func: 'construct', message: `Text message response field is too long (${this.#hexPayload.length} bytes)` });
-      } else {
-        /// Extract first text segment for test purposes:
-        var segment = new TextSegment(this.#hexPayload, 0);
-      }
-    }
-    */
     //win.def.log({ level: 'info', file: 'TextMessageResponse', func: 'construct', message: `ID: ${msg.id}, Segments: ${this.#map.size}`});
   }
 

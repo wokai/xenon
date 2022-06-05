@@ -43,6 +43,7 @@ class TextSegment {
   #code
   #length
   #text
+  #etx
   
   
   /**
@@ -56,21 +57,30 @@ class TextSegment {
    * @param{resp}  - (TextMessageResonse}
    * @param{index} - (number) - 0-based index of current position in payload
    **/
-  constructor(resp, index) {
+  constructor(resp, begin) {
     
     var p = resp.payload;
-    var begin = index;
+
     
-    this.#code     = p.slice(begin    , begin +  2);   /// Two  bytes text-code
-    this.#length   = p.slice(begin + 2, begin +  3);   /// one  byte  text-length (1-32) : Add 30 to decimal length value
-    //this.#phrase   = p.slice(begin + 3, begin + 18);   /// ASCII character string.
+    /**
+     * @descr{First two bytes}  - (Text-code)
+     **/
+    this.#code     = p.slice(begin    , begin +  2);     
+    var index = begin + 2;
+    
+    /**
+     * @descr{Third byte}       - (Text length)
+     **/
+    this.#length   = p.slice(index, index +  1);   /// one  byte  text-length (1-32) : Add 30 to decimal length value
+    index = index + 1
+    
+    
+    this.#text     = p.slice(index, index + this.length);   /// ASCII character string.
     /// ETX: End-of-text marker (ASCII-Code 03H)
     
     this.#msgid = resp.id;
-    this.#time  = resp.time;    /// Date
-    
-    console.log(`[TextSegment] MsgId: ${this.messageId}, Code: ${this.code}`);
-    console.log(AsciiHex.hexArrayToString(this.length));
+    this.#time  = resp.time;   /// @type{Date}
+    win.def.log({ level: 'info', file: 'TextSegment', func: 'constructor', message: `[TextSegment] MsgId: ${this.messageId} | Code: ${this.code} | Size: ${this.length} | Text: ${this.text}`});
   }
   
   static from(d, i){
@@ -84,8 +94,9 @@ class TextSegment {
   
   get time            () { return this.#time; }
   get messageId       () { return this.#msgid; }
-  get code            () { return AsciiHex.hexArrayToString(this.#code); }
-  get length          () { return this.#length; }
+  get code            () { return this.#code.toString()}   /// [ 0x32, 0x33 ] -> '23'
+  get length          () { return this.#length.readUInt8(0) - 0x30; }
+  get text            () { return AsciiHex.hexArrayToString(this.#text) };
 
   
   get dataObject      () {

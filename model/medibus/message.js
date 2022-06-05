@@ -73,6 +73,7 @@ class Message {
       this.#type = data[0];
       this.#code = data[1];
       
+      /// Payload present
       if(data.byteLength > 5){
         this.#payload = data.slice(2, -3);
       } else {
