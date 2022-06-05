@@ -59,6 +59,7 @@ class TextSegment {
    **/
   constructor(resp, begin) {
     
+    /// Buffer
     var p = resp.payload;
 
     
@@ -106,6 +107,66 @@ class TextSegment {
     };
   }
   
+}
+
+
+class BufferTextSegment {
+  
+  #code
+  #length
+  #text
+  #etx
+  
+  #begin  /// Begin of buffer segment
+  #end    /// First element after buffer segment
+  
+  
+ 
+  /**
+   * @param{buf}   - (Buffer}
+   * @param{begin} - (number) - 0-based index of current position in buffer
+   **/
+  constructor(buf, begin) {
+    
+    let index = begin;
+    
+    /**
+     * @descr{First two bytes}  - (Text-code)
+     **/
+    this.#code = buf.slice(index , index + 2);
+    index += 2;
+    
+    /**
+     * @descr{Third byte}       - (Text length)
+     **/
+    this.#length = buf.slice(index, index + 1);   /// one  byte  text-length (1-32) : Add 30 to decimal length value
+    index += 1;
+    
+    /**
+     * @descr{Text segment}
+     **/
+    this.#text     = buf.slice(index, index + this.length);   /// ASCII character string.
+    index += this.length;
+    
+    
+    /**
+     * @descr{ETX} - (end-of-text)
+     **/
+    this.#etx = buf.slice(index, index + 1);
+    this.#end = index + 1;
+    
+    /// ETX: End-of-text marker (ASCII-Code 03H)
+
+    console.log(`[TextSegment] Buffer length: ${buf.length} | Code: ${this.code} | Size: ${this.length} | Text: ${this.text} | ETX: ${AsciiHex.hexString(this.#etx)}H | End: ${this.end}`.cyan);
+  }
+  
+
+  get code   () { return this.#code.toString()}   /// [ 0x32, 0x33 ] -> '23'
+  get length () { return this.#length.readUInt8(0) - 0x30; }
+  get text   () { return AsciiHex.hexArrayToString(this.#text) };
+  get begin  () { return this.#begin; };
+  get end    () { return this.#end;  };
+
 }
 
 module.exports = TextSegment;
