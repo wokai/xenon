@@ -62,7 +62,7 @@ class TextMessageResponse {
       
       let segm = new TextSegment(this, 0);
     }
-    //win.def.log({ level: 'info', file: 'TextMessageResponse', func: 'construct', message: `ID: ${msg.id}, Segments: ${this.#map.size}`});
+    win.def.log({ level: 'info', file: 'TextMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Code: ${segm.code} Text: ${segm.text}`});
   }
 
   
