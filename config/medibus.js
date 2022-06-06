@@ -256,8 +256,47 @@ const bus = {
       [ '01', 'Ventilationmode IPPV' ],
       [ '06', 'Ventilationmode SIMV' ],
       [ '1E', 'Ventilator is in Standby-Mode' ],
+      
+      [ '22', 'Selected CO2 Unit is mmHg' ],
+      [ '23', 'Selected CO2 Unit is kPa' ],
+      [ '24', 'Selected CO2 Unit is %' ],
+      
+      [ '25', 'Halothane detected'],
+      [ '26', 'Enflurane detected'],
+      [ '27', 'Isoflurane detected' ],
+      [ '28', 'Desflurane detected' ],
+      [ '29', 'Sevoflurane detected' ],
+      [ '2A', 'No Anaesthesia Gas detected'],
+      
       [ '2B', 'Ventilationmode man./spont.' ],
-      [ '54', 'Device is in Standby-Mode' ]
+      [ '34', 'Ventilationmode PCV' ],
+      [ '36', 'Ventilationmode FRESH GAS EXTERNAL'],
+      [ '53', 'Device is performing leakage test' ],
+      [ '54', 'Device is in Standby-Mode' ],
+      [ '59', 'Volume controlled Ventilation Mode' ],
+      [ '5A', 'Pressure controlled Ventilation Mode' ],
+      [ '5B', 'Pressure Support Mode' ],
+      [ '5C', 'Pressure Support added to intermittend Ventilation Mode' ],
+      [ '5D', 'Synchronized intermittend Ventilation' ],
+      [ '5E', 'AutoFlow added to Volume Mode' ]
+      
+      [ '58', 'HLM Mode active' ],
+      [ '2C', 'Selected Language' ],
+      
+      [ '37', 'Selected Carrier Gas is Air' ],
+      [ '38', 'Selected Carrier Gas is N2O' ],
+      
+      [ '4A', '2nd Agent Halothane detected' ],
+      [ '4B', '2nd Agent Enflurane detected' ],
+      [ '4C', '2nd Agent Isoflurane detected' ],
+      [ '4D', '2nd Agent Desflurane detected' ],
+      [ '4E', '2nd Agent Sevoflurne detected' ],
+      [ '4F', 'No 2nd Anesthesia Gas detected' ],
+      
+      [ '56', 'Selected Agent Unit is kPa' ],
+      [ '57', 'Selected Agent Unit is %' ],
+      
+      
     ]),
     etx: 0x03
   }
