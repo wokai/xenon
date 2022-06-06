@@ -37,67 +37,123 @@ const { parameters } = require('../parameters');
 /// //////////////////////////////////////////////////////////////////////// ///
 
 class TextSegment {
+
+  /**
+   * @source{Message} - (Medibus message object)
+   **/
+  #msgid  /** @descr{number} */
+  #time   /** @descr{Date}   */
   
-  #msgid
-  #time
-  #code
-  #length
-  #text
+  /**
+   * @source{extractSegmentFromBuffer}
+   **/
+  #code   /** @descr{Buffer} - (First 2 bytes - Code of text message) */
+  
+  /**
+   * @descr{Buffer} - (Ascii-code) - (length + 0x30 = Ascii-code)
+   * @see{get length()}
+   **/
+  #length 
+  #text   /** @descr{Buffer} - (Ascii-code) - (transmitted text)*/
   #etx
   
+  #begin  /** @descr{number} - (position of message in buffer. 0-based) */
+  #end    /** @descr{number} - (position of first element after buffer segment) */
   
-  /**
-   * @descr Decodes length segment to message length
-   * @param{sgm}
-   **/
-  decodeLength = (sgm) => {
+  
+  
+  
+  /**************************************************************************
+   * @param{buffer} - (Buffer) - (Message.payload)
+   * @param{begin}  - (number) - (position of message in buffer. 0-based)
+   * @see  {Medibus Protocol 6.0.0 - Text Message Response - p.18}
+   * @descr{Reads content of text-segment from buffer + sets #end position} 
+   * */
+  
+  readSegmentFromBuffer = (buffer, begin) => {
+    let index = begin;
+    
+    /**
+     * @descr{First two bytes}  - (Code of text message)
+     * @see{Medibus for Primus} - (Text Message - p.34)
+     **/
+    this.#code = buf.slice(index , index + 2);
+    index += 2;
+    
+    /**
+     * @descr{Third byte}                 - (Text length, Ascii-code)
+     * @descr{length + 0x30 = Ascii-code} - (Range: '1'=0x30 to 'P'=0x50)
+     **/
+    this.#length = buf.slice(index, index + 1);
+    index += 1;
+    
+    /**
+     * @descr{Transmitted text} - {Ascii encoded)
+     **/
+    this.#text     = buf.slice(index, index + this.length);
+    index += this.length;
+    
+    
+    /**
+     * @descr{ETX} - (end-of-text = 0x30)
+     **/
+    this.#etx = buf.slice(index, index + 1);
+    
+    /**
+     * @descr{End position} - (Start position of next text segment, 0-based)
+     **/
+    this.#end = index + 1;
+    
   }
-  
-  /**
-   * @param{resp}  - (TextMessageResonse}
-   * @param{index} - (number) - 0-based index of current position in payload
-   **/
-  constructor(resp, begin) {
-    
-    /// Buffer
-    var p = resp.payload;
 
-    
-    /**
-     * @descr{First two bytes}  - (Text-code)
-     **/
-    this.#code     = p.slice(begin    , begin +  2);     
-    var index = begin + 2;
-    
-    /**
-     * @descr{Third byte}       - (Text length)
-     **/
-    this.#length   = p.slice(index, index +  1);   /// one  byte  text-length (1-32) : Add 30 to decimal length value
-    index = index + 1
-    
-    
-    this.#text     = p.slice(index, index + this.length);   /// ASCII character string.
-    /// ETX: End-of-text marker (ASCII-Code 03H)
-    
-    this.#msgid = resp.id;
-    this.#time  = resp.time;   /// @type{Date}
+
+
+  
+  /**************************************************************************
+   * @param{txtMsgRes}  - (TextMessageResonse}
+   * @param{begin}      - (number: 0-based index of current position in payload)
+   **/
+  constructor(txtMsgRes, begin) {
+
+    this.#msgid = txtMsgRes.id;     /// number
+    this.#time  = txtMsgRes.time;   /// Date
+    this.readSegmentFromBuffer(txtMsgRes.payload, begin);
     win.def.log({ level: 'info', file: 'TextSegment', func: 'constructor', message: `[TextSegment] MsgId: ${this.messageId} | Code: ${this.code} | Size: ${this.length} | Text: ${this.text}`});
   }
   
-  static from(d, i){
-    var p = d.payload;
-    if(p.length < (i + 1) * 15){
-      win.def.log({ level: 'error', file: 'TextSegment', func: 'static from', message: `Out of range error: Array length: ${p.length}, Index: ${i}`});
-      return null;
-    }
-    return new TextSegment(d, i);
+  static from(txtMsgRes, begin){
+    return new TextSegment(txtMsgRes, begin);
   }
   
   get time            () { return this.#time; }
   get messageId       () { return this.#msgid; }
-  get code            () { return this.#code.toString()}   /// [ 0x32, 0x33 ] -> '23'
-  get length          () { return this.#length.readUInt8(0) - 0x30; }
-  get text            () { return AsciiHex.hexArrayToString(this.#text) };
+
+  /**
+   * @descr{Converts buffer to string 
+   **/
+
+  get code   () { return this.#code.toString()}   /// [ 0x32, 0x33 ] -> '23'
+  
+  /**
+   * @descr{Converts buffer to number and translates the ascii encoded value into text length}
+   * @see{Medibus 6.0.0 Text Message Response p.18} 
+   **/
+  get length () { return this.#length.readUInt8(0) - 0x30; }
+  
+  /**
+   * @descr{Converts buffer containing transmitted text to string}
+   **/
+  get text   () { return AsciiHex.toString(this.#text) };
+  
+  /**
+   * @descr{0-based index of first byte in incoming buffer}
+   **/
+  get begin  () { return this.#begin; };
+  
+  /**
+   * @descr{0-based index of first byte after this segment}
+   **/
+  get end    () { return this.#end;  };
 
   
   get dataObject      () {
@@ -107,66 +163,6 @@ class TextSegment {
     };
   }
   
-}
-
-
-class BufferTextSegment {
-  
-  #code
-  #length
-  #text
-  #etx
-  
-  #begin  /// Begin of buffer segment
-  #end    /// First element after buffer segment
-  
-  
- 
-  /**
-   * @param{buf}   - (Buffer}
-   * @param{begin} - (number) - 0-based index of current position in buffer
-   **/
-  constructor(buf, begin) {
-    
-    let index = begin;
-    
-    /**
-     * @descr{First two bytes}  - (Text-code)
-     **/
-    this.#code = buf.slice(index , index + 2);
-    index += 2;
-    
-    /**
-     * @descr{Third byte}       - (Text length)
-     **/
-    this.#length = buf.slice(index, index + 1);   /// one  byte  text-length (1-32) : Add 30 to decimal length value
-    index += 1;
-    
-    /**
-     * @descr{Text segment}
-     **/
-    this.#text     = buf.slice(index, index + this.length);   /// ASCII character string.
-    index += this.length;
-    
-    
-    /**
-     * @descr{ETX} - (end-of-text)
-     **/
-    this.#etx = buf.slice(index, index + 1);
-    this.#end = index + 1;
-    
-    /// ETX: End-of-text marker (ASCII-Code 03H)
-
-    console.log(`[TextSegment] Buffer length: ${buf.length} | Code: ${this.code} | Size: ${this.length} | Text: ${this.text} | ETX: ${AsciiHex.hexString(this.#etx)}H | End: ${this.end}`.cyan);
-  }
-  
-
-  get code   () { return this.#code.toString()}   /// [ 0x32, 0x33 ] -> '23'
-  get length () { return this.#length.readUInt8(0) - 0x30; }
-  get text   () { return AsciiHex.hexArrayToString(this.#text) };
-  get begin  () { return this.#begin; };
-  get end    () { return this.#end;  };
-
 }
 
 module.exports = TextSegment;

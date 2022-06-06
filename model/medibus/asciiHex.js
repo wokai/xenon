@@ -108,7 +108,11 @@ class AsciiHex {
   }
   
   
-  /// Convert array of hexadecimal into string: [ 0x45, 0x42 ] to EB
+  /**
+   * @descr{Converts array of hexadecimal values and Buffer to string} 
+   *         - (Example: [ 0x45, 0x42 ] -> 'EB')
+   * @usedBy{TextSegment - get text}
+   **/
   static hexArrayToString(array){
     if(!array) return null;
     
