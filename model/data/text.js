@@ -29,17 +29,20 @@ const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textM
 
 class TextData {
   
+  #resp
+  
   constructor() {}
   
   extractTextMessages = (msg) => {
-    
-
     if(msg.hasPayload){
       console.log(`Extract Message: ${msg.id}`)
-      let resp = new TextMessageResponse(msg);
+      this.#resp = new TextMessageResponse(msg);
     }
 
   }
+  
+  get dataObject () { return this.#resp.dataObject; }
+  
 }
 
 

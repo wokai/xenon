@@ -35,7 +35,7 @@ const TextSegment = require('./textSegment');
 /// 12 bytes alarm phrase
 /// //////////////////////////////////////////////////////////////////////// ///
 
-///                                                                                                               ETX
+///                     ETX                                                                                       ETX                              ETX
 /// <Buffer 32 34 31 25 03 32 38 4a 41 6e 61 65 73 74 68 65 73 69 65 2d 47 61 73 20 44 45 53 46 4c 55 52 41 4e 45 03 32 43 37 64 65 75 74 73 63 68 03 33 37 3e 54 ... 63 more
 
 class TextMessageResponse {
@@ -50,19 +50,26 @@ class TextMessageResponse {
    * @param{Message} - (/model/medibus/message)
    **/
   constructor(msg) {
-    this.#map = new Map();
+    this.#map   = new Map();
     this.#msgid = msg.id;
     this.#time  = msg.dateTime;
-     this.#code = msg.code;
+    this.#code  = msg.code;
      
     if(msg.hasPayload){
       this.#hexPayload = msg.hexPayload;
       console.log(`[TextMessageResponse] payload size: ${this.#hexPayload.length}`)
-      console.log(this.#hexPayload);
-      
-      let segm = new TextSegment(this, 0);
+      //console.log(this.#hexPayload);
+            
+      let ts;
+      let index = 0;
+
+      while(index < buf.length){
+        ts =  new TextSegment(buf, index);
+        index = ts.end;
+        this.#map.set(ts.code, ts);
+      }
     }
-    win.def.log({ level: 'info', file: 'TextMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Code: ${segm.code} Text: ${segm.text}`});
+    win.def.log({ level: 'info', file: 'TextMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Segments: ${this.#map.size}`});
   }
 
   
@@ -73,6 +80,7 @@ class TextMessageResponse {
   get payload   () { return this.#hexPayload; }
   get array     () { return [...this.#map.values()]; }
   get map       () { return this.#map; }
+  get size      () { return this.#map.size; }
   static from = (msg) => { return new TextMessageResponse(msg); }
   
   getSegment = (s) => {
@@ -84,6 +92,12 @@ class TextMessageResponse {
     this.#map.forEach(function(value, key) {
       win.def.log({level: 'debug', file: 'TextMessageResponse', func: 'logSegments', message: `[Segment] Key: ${key}` })
     })
+  }
+  
+  get dataObject () {
+    let res = [];
+     this.#map.forEach(function(value, key) { res.push(value.dataObject) });
+     return res;
   }
   
 }

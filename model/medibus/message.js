@@ -37,7 +37,7 @@ class Message {
   #id                 /// Message id (application unique)
   #buffer             /// Complete buffer or null (when not created from buffer)
   #body               /// Array where checksum is calculated from
-  #checksum           /// Array of two hexadecimal values
+  #checksum           /// {Buffer} - (Two hexadecimal values)
   #length             /// Length of complete message
   
   #type               /// Hexadecimal type  ( 0x1b  or 0x01)

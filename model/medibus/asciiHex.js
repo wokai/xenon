@@ -64,16 +64,17 @@ class AsciiHex {
   /// decimal value:
   /// '3A' -> 58 (p.45)
   /// ////////////////////////////////////////////////////////////////////// ///
+  
   static strCheckSumToDecimal(str) {
     var a = [...str].map(x => parseInt(x.toUpperCase(), 16));
     return a[0]*16 + a[1];
   }
   
-  /// ////////////////////////////////////////////////////////////////////// ///
-  /// Converts a Buffer representation of checksum (given as two byte value in
-  /// a message to decimal representation:
-  /// <Buffer 33 41> -> 58
-  /// ////////////////////////////////////////////////////////////////////// ///
+  
+  /**
+   * @param{Buffer} - (Converts a Buffer representation of checksum, given as two byte value in a message, to decimal representation)
+   * @example{<Buffer 33 41> -> 58}
+   **/
   static hexChecksumToDecimal(buf) {
     return AsciiHex.strCheckSumToDecimal(AsciiHex.hexArrayToString(buf));
   }
@@ -103,6 +104,12 @@ class AsciiHex {
   /// a message to decimal representation:
   /// <Buffer 33 41> -> 58
   /// ////////////////////////////////////////////////////////////////////// ///
+  
+  /**
+   * @descr{
+   * @usedBy{Message.fromBuffer}
+   * @param{Buffer
+   **/
   static hexChecksumToDecimal(buf) {
     return AsciiHex.strCheckSumToDecimal(AsciiHex.hexArrayToString(buf));
   }
