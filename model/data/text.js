@@ -31,11 +31,12 @@ class TextData {
   
   #resp
   
-  constructor() {}
+  constructor() {
+    this.#resp = null;
+  }
   
   extractTextMessages = (msg) => {
     if(msg.hasPayload){
-      console.log(`Extract Message: ${msg.id}`)
       this.#resp = new TextMessageResponse(msg);
     }
   }
@@ -43,7 +44,13 @@ class TextData {
   /**
    * @usedBy{router.get(/text)} - (/routes/data)
    **/
-  get dataObject () { return this.#resp.dataObject; }
+  get dataObject () {
+    if(this.#resp === null){
+      return { resp: null }
+    } else {
+      return this.#resp.dataObject;
+    }
+  }
 }
 
 

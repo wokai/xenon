@@ -24,10 +24,6 @@ const win         = require(path.join(__dirname, '..', '..', 'logger', 'logger')
 const TextSegment = require(path.join(__dirname, 'textSegment'));
 const bus         = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 
-
-//                     ETX                                                                                       ETX                              ETX
-// <Buffer 32 34 31 25 03 32 38 4a 41 6e 61 65 73 74 68 65 73 69 65 2d 47 61 73 20 44 45 53 46 4c 55 52 41 4e 45 03 32 43 37 64 65 75 74 73 63 68 03 33 37 3e 54 ... 63 more
-
 class TextMessageResponse {
 
   #msgid
@@ -47,19 +43,17 @@ class TextMessageResponse {
     this.#code  = msg.code;
      
     if(msg.hasPayload){
-      this.#hexPayload = msg.hexPayload;
-      //console.log(`[TextMessageResponse] payload size: ${this.#hexPayload.length}`)
-            
+      this.#hexPayload = msg.hexPayload;            
       let ts;
-      let index = 0;
+      let index = 0;    /// Start position of next segment. 0-based.
 
-      while(index < buf.length){
-        ts =  new TextSegment(buf, index);
+      while(index < this.#hexPayload.length){
+        ts =  TextSegment.from(msg, index);
         index = ts.end;
-        this.#map.set(ts.code, ts);
+        this.#map.set(ts.code, ts);      
       }
     }
-    win.def.log({ level: 'info', file: 'TextMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Segments: ${this.#map.size}`});
+    win.def.log({ level: 'debug', file: 'TextMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Segments: ${this.#map.size}`});
   }
 
   
@@ -94,7 +88,7 @@ class TextMessageResponse {
   get dataObject () {
     let res = [];
      this.#map.forEach(function(value, key) { res.push(value.dataObject) });
-     return res.map((r) => { r.def = bus.text.messages.get(r.code); return r; });
+     return res.map((r) =>  { r.def = bus.text.messages.get(r.code); return r; });
   }
   
 }
