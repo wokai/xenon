@@ -19,24 +19,14 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
+const path        = require('path');
+const win         = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
+const TextSegment = require(path.join(__dirname, 'textSegment'));
+const bus         = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 
-const win = require('../../logger/logger');
-const TextSegment = require('./textSegment');
 
-/// //////////////////////////////////////////////////////////////////////// ///
-/// Response to Data Request Command:
-/// - 27H: Request current Alarms (codepage 1)
-/// - 2EH: Request current Alarms (codepage 2)
-/// Message contains priority, code and message for all current alarms
-///
-/// Payload format:
-///  1 byte  alarm priority
-///  2 bytes alarm code
-/// 12 bytes alarm phrase
-/// //////////////////////////////////////////////////////////////////////// ///
-
-///                     ETX                                                                                       ETX                              ETX
-/// <Buffer 32 34 31 25 03 32 38 4a 41 6e 61 65 73 74 68 65 73 69 65 2d 47 61 73 20 44 45 53 46 4c 55 52 41 4e 45 03 32 43 37 64 65 75 74 73 63 68 03 33 37 3e 54 ... 63 more
+//                     ETX                                                                                       ETX                              ETX
+// <Buffer 32 34 31 25 03 32 38 4a 41 6e 61 65 73 74 68 65 73 69 65 2d 47 61 73 20 44 45 53 46 4c 55 52 41 4e 45 03 32 43 37 64 65 75 74 73 63 68 03 33 37 3e 54 ... 63 more
 
 class TextMessageResponse {
 
@@ -48,6 +38,7 @@ class TextMessageResponse {
 
   /**
    * @param{Message} - (/model/medibus/message)
+   * @usedBy{Text}   - (/model/data/text)
    **/
   constructor(msg) {
     this.#map   = new Map();
@@ -57,8 +48,7 @@ class TextMessageResponse {
      
     if(msg.hasPayload){
       this.#hexPayload = msg.hexPayload;
-      console.log(`[TextMessageResponse] payload size: ${this.#hexPayload.length}`)
-      //console.log(this.#hexPayload);
+      //console.log(`[TextMessageResponse] payload size: ${this.#hexPayload.length}`)
             
       let ts;
       let index = 0;
@@ -83,21 +73,28 @@ class TextMessageResponse {
   get size      () { return this.#map.size; }
   static from = (msg) => { return new TextMessageResponse(msg); }
   
+  /*
   getSegment = (s) => {
     const r = this.#map.get(s);
     return r ? r.value : null;
   }
+  */
   
+  /*
   logSegments = () => {
     this.#map.forEach(function(value, key) {
       win.def.log({level: 'debug', file: 'TextMessageResponse', func: 'logSegments', message: `[Segment] Key: ${key}` })
     })
   }
+  **/
   
+  /**
+   * @usedBy{Text} - (/model/data/text)
+   **/
   get dataObject () {
     let res = [];
      this.#map.forEach(function(value, key) { res.push(value.dataObject) });
-     return res;
+     return res.map((r) => { r.def = bus.text.messages.get(r.code); return r; });
   }
   
 }

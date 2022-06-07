@@ -38,11 +38,12 @@ class TextData {
       console.log(`Extract Message: ${msg.id}`)
       this.#resp = new TextMessageResponse(msg);
     }
-
   }
   
+  /**
+   * @usedBy{router.get(/text)} - (/routes/data)
+   **/
   get dataObject () { return this.#resp.dataObject; }
-  
 }
 
 

@@ -278,7 +278,7 @@ const bus = {
       [ '5B', 'Pressure Support Mode' ],
       [ '5C', 'Pressure Support added to intermittend Ventilation Mode' ],
       [ '5D', 'Synchronized intermittend Ventilation' ],
-      [ '5E', 'AutoFlow added to Volume Mode' ]
+      [ '5E', 'AutoFlow added to Volume Mode' ],
       
       [ '58', 'HLM Mode active' ],
       [ '2C', 'Selected Language' ],
@@ -294,7 +294,7 @@ const bus = {
       [ '4F', 'No 2nd Anesthesia Gas detected' ],
       
       [ '56', 'Selected Agent Unit is kPa' ],
-      [ '57', 'Selected Agent Unit is %' ],
+      [ '57', 'Selected Agent Unit is %' ]
       
       
     ]),
