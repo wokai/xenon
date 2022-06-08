@@ -142,7 +142,7 @@ module.exports = {
   },
   
   text: new Action(commands.text, (msg) => {
-    win.def.log({ level: 'info', file: 'action', func: 'text', message: `Msg id: ${msg.id} | Code: ${msg.code}`});
+    win.def.log({ level: 'debug', file: 'action', func: 'text', message: `Msg id: ${msg.id} | Code: ${msg.code}`});
     text.extractTextMessages(msg);
   })
 }

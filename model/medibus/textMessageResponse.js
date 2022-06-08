@@ -30,7 +30,7 @@ class TextMessageResponse {
   #time
   #code         /// Message.code
   #hexPayload   /// Message.hexPayload
-  #map          /// Map key-value pairs: 
+  #map          /// Map key = Text-Message-Code | value = TextSegment
 
   /**
    * @param{Message} - (/model/medibus/message)
@@ -66,29 +66,12 @@ class TextMessageResponse {
   get map       () { return this.#map; }
   get size      () { return this.#map.size; }
   static from = (msg) => { return new TextMessageResponse(msg); }
-  
-  /*
-  getSegment = (s) => {
-    const r = this.#map.get(s);
-    return r ? r.value : null;
-  }
-  */
-  
-  /*
-  logSegments = () => {
-    this.#map.forEach(function(value, key) {
-      win.def.log({level: 'debug', file: 'TextMessageResponse', func: 'logSegments', message: `[Segment] Key: ${key}` })
-    })
-  }
-  **/
-  
+    
   /**
    * @usedBy{Text} - (/model/data/text)
    **/
   get dataObject () {
-    let res = [];
-     this.#map.forEach(function(value, key) { res.push(value.dataObject) });
-     return res.map((r) =>  { r.def = bus.text.messages.get(r.code); return r; });
+    return Array.from(this.#map.values()).map(r => r.dataObject);
   }
   
 }
