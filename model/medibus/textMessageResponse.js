@@ -96,7 +96,7 @@ class TextMessageResponse {
   
   get dataObject () {
     let res = [];
-     this.#map.forEach(function(value, key) { res.push(value.dataObject) });
+     this.#map.forEach((value, key, map) => { res.push(value.dataObject) });
      return res;
   }
   
