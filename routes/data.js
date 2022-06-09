@@ -70,7 +70,7 @@ router.get('/text/text', function(request, result, next) {
 
 router.get('/text/param', function(request, result, next) {
   result.status(200).json(text.paramObject);
-}
+});
 
 router.get('/cache', function(request, result, next) {
   result.status(200).json(cache.consumeVentData());

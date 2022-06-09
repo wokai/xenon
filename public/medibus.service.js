@@ -285,6 +285,15 @@ app.component('ventParam', {
 });
 
 
+app.component('txtStatusParam', {
+  templateUrl: 'txtStatusParam.html',
+  controller: function($scope, MedibusService) {
+    $scope.data = MedibusService.data;
+  }
+});
+
+
+
 app.component('alarmParam', {
   templateUrl: 'alarmParam.html',
   controller: function($scope, MedibusService){

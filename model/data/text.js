@@ -69,42 +69,42 @@ class TextData {
   /// ////////////////////////////////////////////////////////////////////// ///
   
   fillEmptyParamObject = () => {
-    if(this.#param !== null){
+    if(this.#map !== null){
       let v;
       
       /// Device
-      v = this.#param.get(bus.text.parameters.device.language))
+      v = this.#map.get(bus.text.parameters.device.language)
       if(v !== undefined){ this.#param.device.language = v; }
       
-      v = this.#param.get(bus.text.parameters.device.co2unit))
+      v = this.#map.get(bus.text.parameters.device.co2unit)
       if(v !== undefined) { this.#param.device.co2unit = v; }
       
-      v = this.#param.get(bus.text.parameters.device.agentunit))
+      v = this.#map.get(bus.text.parameters.device.agentunit)
       if(v !== undefined) { this.#param.device.agentunit = v;}
       
-      v = this.#param.get(bus.text.parameters.device.hlm))
+      v = this.#map.get(bus.text.parameters.device.hlm)
       if(v !== undefined) { this.#param.device.hlm = v;}
       
-      v = this.#param.get(bus.text.parameters.device.devmode))
+      v = this.#map.get(bus.text.parameters.device.devmode)
       if(v !== undefined) { this.#param.device.devmode = v;}
       
-      v = this.#param.get(bus.text.parameters.device.leaktest))
+      v = this.#map.get(bus.text.parameters.device.leaktest)
       if(v !== undefined) { this.#param.device.leaktest = v;}
       
       /// Ventilation
-      v = this.#param.get(bus.text.parameters.ventilation.inhal))
+      v = this.#map.get(bus.text.parameters.ventilation.inhal)
       if(v !== undefined) { this.#param.ventilation.inhal = v;}
       
-      v = this.#param.get(bus.text.parameters.ventilation.secInhal))
+      v = this.#map.get(bus.text.parameters.ventilation.secInhal)
       if(v !== undefined) { this.#param.ventilation.secInhal = v;}
       
-      v = this.#param.get(bus.text.parameters.ventilation.carrier))
+      v = this.#map.get(bus.text.parameters.ventilation.carrier)
       if(v !== undefined) { this.#param.ventilation.carrier = v;}
       
-      v = this.#param.get(bus.text.parameters.ventilation.ventmode))
+      v = this.#map.get(bus.text.parameters.ventilation.ventmode)
       if(v !== undefined) { this.#param.ventilation.ventmode = v;}
       
-      v = this.#param.get(bus.text.parameters.ventilation.autoflow))
+      v = this.#map.get(bus.text.parameters.ventilation.autoflow)
       if(v !== undefined) { this.#param.ventilation.autoflow = v;}
     }
   }
@@ -116,10 +116,8 @@ class TextData {
   /// as Key
   /// ////////////////////////////////////////////////////////////////////// ///
   createParameterMap = () => {
-    if(this.#resp === null){
-      this.#param = null;
-    } else {
-      this.#param = new Map();
+    if(this.#resp !== null){
+      this.#map = new Map();
       this.#resp.map.forEach((t) => {
         let def = bus.text.messages.get(t.code);
         
@@ -128,7 +126,7 @@ class TextData {
         /// key   : Definition parameter (e.g. ventmode)
         /// value : Object containing parameter definition + text message
         /// //////////////////////////////////////////////////////////////// ///
-        this.#param.set(def.param, {
+        this.#map.set(def.param, {
           code: t.code,
           text: t.text,
           value: def.value,
@@ -141,7 +139,6 @@ class TextData {
   updateParamObject = () => {
     this.setEmptyParamObject();
     if(this.#resp !== null) {
-      this.setEmptyParamObject();
       this.createParameterMap();
       this.fillEmptyParamObject();
     }
@@ -149,7 +146,6 @@ class TextData {
   
   constructor() {
     this.#resp = null;
-    this.#param = null;
     this.#map = new Map();
     this.setEmptyParamObject();
   }
@@ -182,7 +178,9 @@ class TextData {
     }
   }
   
-  get paramObject () { return this.#param; }
+  get paramObject () { 
+    return this.#param;
+  }
 }
 
 

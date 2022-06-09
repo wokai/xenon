@@ -78,8 +78,9 @@ class MessageController {
     win.def.log({ level: 'debug', file: 'messageController', func: 'doNextAction', message: `Length: ${this.#schedule.length} | From Message: ${id}`});
     if(status.controller.sending) {
       if(!this.#schedule.length) {
-        monitor.dataMsg('cycle', `Message cycle finished. Message id ${id}.`, ventilation.getValueObject());
-        cache.pushVentData(ventilation.getValueObject());
+        let val = ventilation.getValueObject();
+        cache.pushVentData(val);
+        monitor.dataMsg('cycle', `Message cycle finished. Message id ${id}.`, val);
         this.loadCycle();
       }
       this.#schedule.pop().sendCommand()

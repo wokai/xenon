@@ -41,6 +41,7 @@
         PortService.setComStatus(msg.data);
       });     
 
+      // Triggered by {Monitor} - (/monitor/monitor)
       $scope.socket.on('io:data', function(msg) {
         if(msg.action == 'cycle'){
           $scope.$apply(() => { MedibusService.setVentData(msg.data) });
@@ -126,6 +127,7 @@
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#bodyAccordion">
               <div class="accordion-body">
                 <device-status-indicator></device-status-indicator>
+                <txt-status-param></txt-status-param>
               </div>
             </div>
           </div> <!--- accordion-item --->
