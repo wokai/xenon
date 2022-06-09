@@ -49,7 +49,7 @@ class TextData {
         co2unit: '',
         agentunit: '',
         hlm: 'False',
-        devmode: '',
+        standby: { value: 'No' },
         leaktest: 'False'
       },
       ventilation: {
@@ -57,6 +57,8 @@ class TextData {
         secInhal: '',
         carrier: '',
         ventmode: '',
+        sync:   { text: 'No' },
+        psvadd: { text: 'No' },
         autoflow: 'False'
       }
     };
@@ -85,8 +87,8 @@ class TextData {
       v = this.#map.get(bus.text.parameters.device.hlm)
       if(v !== undefined) { this.#param.device.hlm = v;}
       
-      v = this.#map.get(bus.text.parameters.device.devmode)
-      if(v !== undefined) { this.#param.device.devmode = v;}
+      v = this.#map.get(bus.text.parameters.device.standby)
+      if(v !== undefined) { this.#param.device.standby = v; }
       
       v = this.#map.get(bus.text.parameters.device.leaktest)
       if(v !== undefined) { this.#param.device.leaktest = v;}
@@ -104,6 +106,12 @@ class TextData {
       v = this.#map.get(bus.text.parameters.ventilation.ventmode)
       if(v !== undefined) { this.#param.ventilation.ventmode = v;}
       
+      v = this.#map.get(bus.text.parameters.ventilation.sync)
+      if(v !== undefined) { this.#param.ventilation.sync = v;}
+      
+      v = this.#map.get(bus.text.parameters.ventilation.psvadd)
+      if(v !== undefined) { this.#param.ventilation.psvadd = v;}
+
       v = this.#map.get(bus.text.parameters.ventilation.autoflow)
       if(v !== undefined) { this.#param.ventilation.autoflow = v;}
     }

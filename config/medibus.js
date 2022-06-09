@@ -261,7 +261,7 @@ const bus = {
         co2unit: 'co2unit',
         agentunit: 'agentUnit',
         hlm: 'hlm',
-        devmode: 'devmode',
+        standby: 'standby',
         leaktest: 'leaktest'
       },
       ventilation: {
@@ -269,7 +269,9 @@ const bus = {
         secInhal: 'secInhal',
         carrier: 'carrier',
         ventmode: 'ventmode',
-        autoflow: 'autoflow'
+        autoflow: 'autoflow',
+        psvadd: 'psvadd',
+        sync: 'sync'
       }
     },
     messages: new Map([
@@ -292,12 +294,12 @@ const bus = {
       [ '34', { text: 'Ventilationmode PCV',                param: 'ventmode', value: 'PCV' } ],
       [ '36', { text: 'Ventilationmode FRESH GAS EXTERNAL', param: 'ventmode', value: 'Fresh Gas' } ],
       [ '53', { text: 'Device is performing leakage test',  param: 'leaktest', value: 'True' } ],
-      [ '54', { text: 'Device is in Standby-Mode',          param:  'devmode', value:  'Standby' } ],
+      [ '54', { text: 'Device is in Standby-Mode',          param:  'standby', value:  'Standby' } ],
       [ '59', { text: 'Volume controlled Ventilation Mode', param: 'ventmode', value: 'Vol control' } ],
       [ '5A', { text: 'Pressure controlled Ventilation Mode',   param: 'ventmode', value: 'Press control' } ],
       [ '5B', { text: 'Pressure Support Mode',                  param: 'ventmode', value: 'PSV' } ],
-      [ '5C', { text: 'Pressure Support added to intermittend Ventilation Mode', param: 'ventmode', value: 'IMV+PSV' } ],
-      [ '5D', { text: 'Synchronized intermittend Ventilation',  param: 'ventmode', value: 'SIMV'} ],
+      [ '5C', { text: 'Pressure Support added to intermittend Ventilation Mode', param: 'psvadd', value: 'PSV added' } ],
+      [ '5D', { text: 'Synchronized intermittend Ventilation',  param: 'sync', value: 'Synchronized'} ],
       [ '5E', { text: 'AutoFlow added to Volume Mode',      param: 'autoflow',  value: 'True'  } ],
       
       [ '58', { text: 'HLM Mode active',                    param: 'hlm',       value: 'True' } ],
