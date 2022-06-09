@@ -48,9 +48,9 @@ class TextData {
         language: '',
         co2unit: '',
         agentunit: '',
-        hlm: 'False',
-        standby: { value: 'No' },
-        leaktest: 'False'
+        hlm:      { value: 'No' },
+        standby:  { value: 'No' },
+        leaktest: { value: 'Yes' }
       },
       ventilation: {
         inhal: '',

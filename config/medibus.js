@@ -293,7 +293,7 @@ const bus = {
       [ '2B', { text: 'Ventilationmode man./spont.',        param: 'ventmode', value: 'Man/Spont' } ],
       [ '34', { text: 'Ventilationmode PCV',                param: 'ventmode', value: 'PCV' } ],
       [ '36', { text: 'Ventilationmode FRESH GAS EXTERNAL', param: 'ventmode', value: 'Fresh Gas' } ],
-      [ '53', { text: 'Device is performing leakage test',  param: 'leaktest', value: 'True' } ],
+      [ '53', { text: 'Device is performing leakage test',  param: 'leaktest', value: 'Yes' } ],
       [ '54', { text: 'Device is in Standby-Mode',          param:  'standby', value:  'Standby' } ],
       [ '59', { text: 'Volume controlled Ventilation Mode', param: 'ventmode', value: 'Vol control' } ],
       [ '5A', { text: 'Pressure controlled Ventilation Mode',   param: 'ventmode', value: 'Press control' } ],
@@ -302,7 +302,7 @@ const bus = {
       [ '5D', { text: 'Synchronized intermittend Ventilation',  param: 'sync', value: 'Synchronized'} ],
       [ '5E', { text: 'AutoFlow added to Volume Mode',      param: 'autoflow',  value: 'True'  } ],
       
-      [ '58', { text: 'HLM Mode active',                    param: 'hlm',       value: 'True' } ],
+      [ '58', { text: 'HLM Mode active',                    param: 'hlm',       value: 'Yes' } ],
       [ '2C', { text: 'Selected Language',                  param: 'language',  value: '' } ],
       
       [ '37', { text: 'Selected Carrier Gas is Air',        param: 'carrier',   value: 'Air' } ],
