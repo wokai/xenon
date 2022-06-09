@@ -64,9 +64,13 @@ router.get('/alarm/cp1', function(request, result, next){
   result.status(200).json(cp1Alarms.getAlarmArray());
 });
 
-router.get('/text', function(request, result, next) {
+router.get('/text/text', function(request, result, next) {
   result.status(200).json(text.dataObject);
 });
+
+router.get('/text/param', function(request, result, next) {
+  result.status(200).json(text.paramObject);
+}
 
 router.get('/cache', function(request, result, next) {
   result.status(200).json(cache.consumeVentData());

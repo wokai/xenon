@@ -32,6 +32,16 @@ class TextData {
   #map    /// @type{Map}
   #param  /// @type{Object}
   
+  // //////////////////////////////////////////////////////////////////////// //
+  // ToDo: This section is still experimental:
+  // Evaluation required for asessment which text segments
+  // occur simultaneously -> must be stored in different parameter segments
+  // //////////////////////////////////////////////////////////////////////// //
+  
+  /// ////////////////////////////////////////////////////////////////////// ///
+  /// Empty Object will be set in each message cycle
+  /// ////////////////////////////////////////////////////////////////////// ///
+  
   setEmptyParamObject = () => {
     this.#param = {
       device : {
@@ -52,17 +62,59 @@ class TextData {
     };
   }
   
+  /// ////////////////////////////////////////////////////////////////////// ///
+  /// Second step for creation of parameter object:
+  /// Check for existence of parameter in current text message list
+  /// and eventually copy value into this.#param object
+  /// ////////////////////////////////////////////////////////////////////// ///
+  
   fillEmptyParamObject = () => {
     if(this.#param !== null){
       let v;
+      
+      /// Device
       v = this.#param.get(bus.text.parameters.device.language))
       if(v !== undefined){ this.#param.device.language = v; }
       
       v = this.#param.get(bus.text.parameters.device.co2unit))
       if(v !== undefined) { this.#param.device.co2unit = v; }
+      
+      v = this.#param.get(bus.text.parameters.device.agentunit))
+      if(v !== undefined) { this.#param.device.agentunit = v;}
+      
+      v = this.#param.get(bus.text.parameters.device.hlm))
+      if(v !== undefined) { this.#param.device.hlm = v;}
+      
+      v = this.#param.get(bus.text.parameters.device.devmode))
+      if(v !== undefined) { this.#param.device.devmode = v;}
+      
+      v = this.#param.get(bus.text.parameters.device.leaktest))
+      if(v !== undefined) { this.#param.device.leaktest = v;}
+      
+      /// Ventilation
+      v = this.#param.get(bus.text.parameters.ventilation.inhal))
+      if(v !== undefined) { this.#param.ventilation.inhal = v;}
+      
+      v = this.#param.get(bus.text.parameters.ventilation.secInhal))
+      if(v !== undefined) { this.#param.ventilation.secInhal = v;}
+      
+      v = this.#param.get(bus.text.parameters.ventilation.carrier))
+      if(v !== undefined) { this.#param.ventilation.carrier = v;}
+      
+      v = this.#param.get(bus.text.parameters.ventilation.ventmode))
+      if(v !== undefined) { this.#param.ventilation.ventmode = v;}
+      
+      v = this.#param.get(bus.text.parameters.ventilation.autoflow))
+      if(v !== undefined) { this.#param.ventilation.autoflow = v;}
     }
   }
   
+  /// ////////////////////////////////////////////////////////////////////// ///
+  /// Preparation for reading text message data into a status object:
+  /// Copy data into a Map which uses 
+  /// parameter definition @see{bus.medibus.text.parameters} - (/config/medibus)
+  /// as Key
+  /// ////////////////////////////////////////////////////////////////////// ///
   createParameterMap = () => {
     if(this.#resp === null){
       this.#param = null;
@@ -87,10 +139,11 @@ class TextData {
   }
   
   updateParamObject = () => {
-    if(this.#resp === null) {
+    this.setEmptyParamObject();
+    if(this.#resp !== null) {
       this.setEmptyParamObject();
-    } else {
-      let m = this.#resp.map;
+      this.createParameterMap();
+      this.fillEmptyParamObject();
     }
   }
   
@@ -98,11 +151,19 @@ class TextData {
     this.#resp = null;
     this.#param = null;
     this.#map = new Map();
+    this.setEmptyParamObject();
   }
   
+  // ToDo: Check what has to be done when an empty text message 
+  // has been received
+  
+  /**
+   * @usedBy{text} - (/bus/action)
+   **/
   extractTextMessages = (msg) => {
     if(msg.hasPayload){
       this.#resp = new TextMessageResponse(msg);
+      this.updateParamObject();
     }
   }
   
@@ -120,6 +181,8 @@ class TextData {
       });
     }
   }
+  
+  get paramObject () { return this.#param; }
 }
 
 
