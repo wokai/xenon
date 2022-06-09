@@ -151,7 +151,6 @@ app.factory('MedibusService', function($http, $rootScope) {
   const setVentData = function(vent) { 
     busStatus.messageId = vent.msgId;
     busStatus.lastmessage = new Date(vent.time).toLocaleTimeString();
-    
     data.vent = vent;
   }  
   

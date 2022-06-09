@@ -257,68 +257,66 @@ const bus = {
      **/
     parameters: {
       device: {
-        language: 'language',
-        co2unit: 'co2unit',
+        language:  'language',
+        co2unit:   'co2unit',
         agentunit: 'agentUnit',
-        hlm: 'hlm',
-        standby: 'standby',
-        leaktest: 'leaktest'
+        hlm:       'hlm',
+        standby:   'standby',
+        leaktest:  'leaktest'
       },
       ventilation: {
-        inhal: 'inhal',
+        inhal:    'inhal',
         secInhal: 'secInhal',
-        carrier: 'carrier',
+        carrier:  'carrier',
         ventmode: 'ventmode',
         autoflow: 'autoflow',
-        psvadd: 'psvadd',
-        sync: 'sync'
+        psvadd:   'psvadd',
+        sync:     'sync'
       }
     },
     messages: new Map([
-      [ '01', { text: 'Ventilationmode IPPV' ,              param: 'ventmode', value: 'IPPV' } ],
-      [ '06', { text: 'Ventilationmode SIMV' ,              param: 'ventmode', value: 'SIMV' } ],
-      [ '1E', { text: 'Ventilator is in Standby-Mode',      param: 'ventmode', value: 'Standby' } ],
+      [ '01', { param: 'ventmode',  value: 'IPPV',          text: 'Ventilationmode IPPV'              } ],
+      [ '06', { param: 'ventmode',  value: 'SIMV',          text: 'Ventilationmode SIMV'              } ],
+      [ '1E', { param: 'ventmode',  value: 'Standby',       text: 'Ventilator is in Standby-Mode'     } ],
       
-      [ '22', { text: 'Selected CO2 Unit is mmHg',          param: 'co2unit',  value: 'mmHg' } ],
-      [ '23', { text: 'Selected CO2 Unit is kPa',           param: 'co2unit',  value: 'kPa' } ],
-      [ '24', { text: 'Selected CO2 Unit is %',             param: 'co2unit',  value: '%' } ],
+      [ '22', { param: 'co2unit',   value: 'mmHg',          text: 'Selected CO2 Unit is mmHg'         } ],
+      [ '23', { param: 'co2unit',   value: 'kPa',           text: 'Selected CO2 Unit is kPa'          } ],
+      [ '24', { param: 'co2unit',   value: '%',             text: 'Selected CO2 Unit is %'            } ],
       
-      [ '25', { text: 'Halothane detected',                 param: 'inhal',    value: 'Halothane' } ],
-      [ '26', { text: 'Enflurane detected',                 param: 'inhal',    value: 'Enflurane' } ],
-      [ '27', { text: 'Isoflurane detected',                param: 'inhal',    value: 'Isoflurane' } ],
-      [ '28', { text: 'Desflurane detected',                param: 'inhal',    value: 'Desflurane' } ],
-      [ '29', { text: 'Sevoflurane detected',               param: 'inhal',    value: 'Sevoflurane' } ],
-      [ '2A', { text: 'No Anaesthesia Gas detected',        param: 'inhal',    value: 'None' } ],
+      [ '25', { param: 'inhal',     value: 'Halothane',     text: 'Halothane detected'                } ],
+      [ '26', { param: 'inhal',     value: 'Enflurane',     text: 'Enflurane detected'                } ],
+      [ '27', { param: 'inhal',     value: 'Isoflurane',    text: 'Isoflurane detected'               } ],
+      [ '28', { param: 'inhal',     value: 'Desflurane',    text: 'Desflurane detected'               } ],
+      [ '29', { param: 'inhal',     value: 'Sevoflurane',   text: 'Sevoflurane detected'              } ],
+      [ '2A', { param: 'inhal',     value: 'None',          text: 'No Anaesthesia Gas detected'       } ],
       
-      [ '2B', { text: 'Ventilationmode man./spont.',        param: 'ventmode', value: 'Man/Spont' } ],
-      [ '34', { text: 'Ventilationmode PCV',                param: 'ventmode', value: 'PCV' } ],
-      [ '36', { text: 'Ventilationmode FRESH GAS EXTERNAL', param: 'ventmode', value: 'Fresh Gas' } ],
-      [ '53', { text: 'Device is performing leakage test',  param: 'leaktest', value: 'Yes' } ],
-      [ '54', { text: 'Device is in Standby-Mode',          param:  'standby', value:  'Standby' } ],
-      [ '59', { text: 'Volume controlled Ventilation Mode', param: 'ventmode', value: 'Vol control' } ],
-      [ '5A', { text: 'Pressure controlled Ventilation Mode',   param: 'ventmode', value: 'Press control' } ],
-      [ '5B', { text: 'Pressure Support Mode',                  param: 'ventmode', value: 'PSV' } ],
-      [ '5C', { text: 'Pressure Support added to intermittend Ventilation Mode', param: 'psvadd', value: 'PSV added' } ],
-      [ '5D', { text: 'Synchronized intermittend Ventilation',  param: 'sync', value: 'Synchronized'} ],
-      [ '5E', { text: 'AutoFlow added to Volume Mode',      param: 'autoflow',  value: 'True'  } ],
+      [ '2B', { param: 'ventmode',  value: 'Man/Spont',     text: 'Ventilationmode man./spont.'       } ],
+      [ '34', { param: 'ventmode',  value: 'PCV',           text: 'Ventilationmode PCV'               } ],
+      [ '36', { param: 'ventmode',  value: 'Fresh Gas',     text: 'Ventilationmode FRESH GAS EXTERNAL'} ],
+      [ '53', { param: 'leaktest',  value: 'Yes',           text: 'Device is performing leakage test' } ],
+      [ '54', { param: 'standby',   value: 'Standby',       text: 'Device is in Standby-Mode'         } ],
+      [ '59', { param: 'ventmode',  value: 'Vol control',   text: 'Volume controlled Ventilation Mode'} ],
+      [ '5A', { param: 'ventmode',  value: 'Press control', text: 'Pressure controlled Ventilation Mode' } ],
+      [ '5B', { param: 'ventmode',  value: 'PSV',           text: 'Pressure Support Mode'             } ],
+      [ '5C', { param: 'psvadd',    value: 'PSV added',     text: 'Pressure Support added to intermittend Ventilation Mode'} ],
+      [ '5D', { param: 'sync',      value: 'Synchronized',  text: 'Synchronized intermittend Ventilation'} ],
+      [ '5E', { param: 'autoflow',  value: 'True',          text: 'AutoFlow added to Volume Mode'     } ],
       
-      [ '58', { text: 'HLM Mode active',                    param: 'hlm',       value: 'Yes' } ],
-      [ '2C', { text: 'Selected Language',                  param: 'language',  value: '' } ],
+      [ '58', { param: 'hlm',       value: 'Yes',           text: 'HLM Mode active'                   } ],
+      [ '2C', { param: 'language',  value: '',              text: 'Selected Language'                 } ],
       
-      [ '37', { text: 'Selected Carrier Gas is Air',        param: 'carrier',   value: 'Air' } ],
-      [ '38', { text: 'Selected Carrier Gas is N2O',        param: 'carrier',   value: 'N2O' } ],
+      [ '37', { param: 'carrier',   value: 'Air',           text: 'Selected Carrier Gas is Air'       } ],
+      [ '38', { param: 'carrier',   value: 'N2O',           text: 'Selected Carrier Gas is N2O'       } ],
       
-      [ '4A', { text: '2nd Agent Halothane detected',       param: 'secInhal',  value: 'Halothane' } ],
-      [ '4B', { text: '2nd Agent Enflurane detected',       param: 'secInhal',  value: 'Enflurane' } ],
-      [ '4C', { text: '2nd Agent Isoflurane detected',      param: 'secInhal',  value: 'Isoflurane' } ],
-      [ '4D', { text: '2nd Agent Desflurane detected',      param: 'secInhal',  value: 'Desflurane' } ],
-      [ '4E', { text: '2nd Agent Sevoflurne detected',      param: 'secInhal',  value: 'Sevoflurane' } ],
-      [ '4F', { text: 'No 2nd Anesthesia Gas detected',     param: 'secInhal',  value: 'None' } ],
+      [ '4A', { param: 'secInhal',  value: 'Halothane',     text: '2nd Agent Halothane detected'      } ],
+      [ '4B', { param: 'secInhal',  value: 'Enflurane',     text: '2nd Agent Enflurane detected'      } ],
+      [ '4C', { param: 'secInhal',  value: 'Isoflurane',    text: '2nd Agent Isoflurane detected'     } ],
+      [ '4D', { param: 'secInhal',  value: 'Desflurane',    text: '2nd Agent Desflurane detected'     } ],
+      [ '4E', { param: 'secInhal',  value: 'Sevoflurane',   text: '2nd Agent Sevoflurne detected'     } ],
+      [ '4F', { param: 'secInhal',  value: 'None',          text: 'No 2nd Anesthesia Gas detected'    } ],
       
-      [ '56', { text: 'Selected Agent Unit is kPa',         param: 'agentUnit', value: 'kPa' } ],
-      [ '57', { text: 'Selected Agent Unit is %',           param: 'agentUnit', value: '%' } ]
-      
-      
+      [ '56', { param: 'agentUnit', value: 'kPa',           text: 'Selected Agent Unit is kPa'        } ],
+      [ '57', { param: 'agentUnit', value: '%',             text: 'Selected Agent Unit is %'          } ]
     ]),
     etx: 0x03
   }

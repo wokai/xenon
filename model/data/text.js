@@ -44,23 +44,19 @@ class TextData {
   
   setEmptyParamObject = () => {
     this.#param = {
-      device : {
-        language: '',
-        co2unit: '',
-        agentunit: '',
-        hlm:      { value: 'No' },
-        standby:  { value: 'No' },
-        leaktest: { value: 'No' }
-      },
-      ventilation: {
-        inhal: '',
-        secInhal: '',
-        carrier: '',
-        ventmode: '',
-        sync:   { text: 'No' },
-        psvadd: { text: 'No' },
-        autoflow: 'False'
-      }
+      language: '',
+      co2unit: '',
+      agentunit: '',
+      hlm:      { value: 'No' },
+      standby:  { value: 'No' },
+      leaktest: { value: 'No' },
+      inhal: '',
+      secInhal: '',
+      carrier: '',
+      ventmode: '',
+      sync:   { text: 'No' },
+      psvadd: { text: 'No' },
+      autoflow: 'False'
     };
   }
   
@@ -76,44 +72,44 @@ class TextData {
       
       /// Device
       v = this.#map.get(bus.text.parameters.device.language)
-      if(v !== undefined){ this.#param.device.language = v; }
+      if(v !== undefined){ this.#param.language = v; }
       
       v = this.#map.get(bus.text.parameters.device.co2unit)
-      if(v !== undefined) { this.#param.device.co2unit = v; }
+      if(v !== undefined) { this.#param.co2unit = v; }
       
       v = this.#map.get(bus.text.parameters.device.agentunit)
-      if(v !== undefined) { this.#param.device.agentunit = v;}
+      if(v !== undefined) { this.#param.agentunit = v;}
       
       v = this.#map.get(bus.text.parameters.device.hlm)
-      if(v !== undefined) { this.#param.device.hlm = v;}
+      if(v !== undefined) { this.#param.hlm = v;}
       
       v = this.#map.get(bus.text.parameters.device.standby)
-      if(v !== undefined) { this.#param.device.standby = v; }
+      if(v !== undefined) { this.#param.standby = v; }
       
       v = this.#map.get(bus.text.parameters.device.leaktest)
-      if(v !== undefined) { this.#param.device.leaktest = v;}
+      if(v !== undefined) { this.#param.leaktest = v;}
       
       /// Ventilation
       v = this.#map.get(bus.text.parameters.ventilation.inhal)
-      if(v !== undefined) { this.#param.ventilation.inhal = v;}
+      if(v !== undefined) { this.#param.inhal = v;}
       
       v = this.#map.get(bus.text.parameters.ventilation.secInhal)
-      if(v !== undefined) { this.#param.ventilation.secInhal = v;}
+      if(v !== undefined) { this.#param.secInhal = v;}
       
       v = this.#map.get(bus.text.parameters.ventilation.carrier)
-      if(v !== undefined) { this.#param.ventilation.carrier = v;}
+      if(v !== undefined) { this.#param.carrier = v;}
       
       v = this.#map.get(bus.text.parameters.ventilation.ventmode)
-      if(v !== undefined) { this.#param.ventilation.ventmode = v;}
+      if(v !== undefined) { this.#param.ventmode = v;}
       
       v = this.#map.get(bus.text.parameters.ventilation.sync)
-      if(v !== undefined) { this.#param.ventilation.sync = v;}
+      if(v !== undefined) { this.#param.sync = v;}
       
       v = this.#map.get(bus.text.parameters.ventilation.psvadd)
-      if(v !== undefined) { this.#param.ventilation.psvadd = v;}
+      if(v !== undefined) { this.#param.psvadd = v;}
 
       v = this.#map.get(bus.text.parameters.ventilation.autoflow)
-      if(v !== undefined) { this.#param.ventilation.autoflow = v;}
+      if(v !== undefined) { this.#param.autoflow = v;}
     }
   }
   
