@@ -61,8 +61,6 @@ class TextSegment {
   #end    /** @descr{number} - (position of first element after buffer segment) */
   
   
-  
-  
   /**************************************************************************
    * @param{buffer} - (Buffer) - (Message.payload)
    * @param{begin}  - (number) - (position of message in buffer. 0-based)
@@ -71,33 +69,33 @@ class TextSegment {
    * */
   
   readSegmentFromBuffer = (buffer, begin) => {
+       
     let index = begin;
     
     /**
      * @descr{First two bytes}  - (Code of text message)
      * @see{Medibus for Primus} - (Text Message - p.34)
      **/
-    this.#code = buf.slice(index , index + 2);
+    this.#code = buffer.slice(index , index + 2);
     index += 2;
     
     /**
      * @descr{Third byte}                 - (Text length, Ascii-code)
      * @descr{length + 0x30 = Ascii-code} - (Range: '1'=0x30 to 'P'=0x50)
      **/
-    this.#length = buf.slice(index, index + 1);
+    this.#length = buffer.slice(index, index + 1);
     index += 1;
     
     /**
      * @descr{Transmitted text} - {Ascii encoded)
      **/
-    this.#text     = buf.slice(index, index + this.length);
-    index += this.length;
-    
+    this.#text     = buffer.slice(index, index + this.length);
+    index += this.length;   
     
     /**
      * @descr{ETX} - (end-of-text = 0x30)
      **/
-    this.#etx = buf.slice(index, index + 1);
+    this.#etx = buffer.slice(index, index + 1);
     
     /**
      * @descr{End position} - (Start position of next text segment, 0-based)
@@ -117,8 +115,8 @@ class TextSegment {
 
     this.#msgid = txtMsgRes.id;     /// number
     this.#time  = txtMsgRes.time;   /// Date
-    this.readSegmentFromBuffer(txtMsgRes.payload, begin);
-    win.def.log({ level: 'info', file: 'TextSegment', func: 'constructor', message: `[TextSegment] MsgId: ${this.messageId} | Code: ${this.code} | Size: ${this.length} | Text: ${this.text}`});
+    this.readSegmentFromBuffer(txtMsgRes.hexPayload, begin);
+    win.def.log({ level: 'debug', file: 'TextSegment', func: 'constructor', message: `[TextSegment] MsgId: ${this.messageId} | Code: ${this.code} | Size: ${this.length} | Text: ${this.text}`});
   }
   
   static from(txtMsgRes, begin){
@@ -131,7 +129,6 @@ class TextSegment {
   /**
    * @descr{Converts buffer to string 
    **/
-
   get code   () { return this.#code.toString()}   /// [ 0x32, 0x33 ] -> '23'
   
   /**
@@ -143,7 +140,7 @@ class TextSegment {
   /**
    * @descr{Converts buffer containing transmitted text to string}
    **/
-  get text   () { return AsciiHex.toString(this.#text) };
+  get text   () { return this.#text.toString(); }
   
   /**
    * @descr{0-based index of first byte in incoming buffer}
@@ -156,6 +153,9 @@ class TextSegment {
   get end    () { return this.#end;  };
 
   
+  /**
+   * @descr{Converts property data to plain Javascript Object}
+   **/
   get dataObject      () {
     return {
       id: this.messageId,
