@@ -50,7 +50,7 @@ class TextData {
         agentunit: '',
         hlm:      { value: 'No' },
         standby:  { value: 'No' },
-        leaktest: { value: 'Yes' }
+        leaktest: { value: 'No' }
       },
       ventilation: {
         inhal: '',
