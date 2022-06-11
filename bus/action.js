@@ -38,6 +38,7 @@ const { alarmLimits, cp1Alarms, cp2Alarms }
                         = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
                         
 const { text }          = require(path.join(__dirname, '..', 'model', 'data', 'text'));
+const { settings }      = require(path.join(__dirname, '..', 'model', 'data', 'settings'));
 
 const monitor           = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 
@@ -144,6 +145,11 @@ module.exports = {
   text: new Action(commands.text, (msg) => {
     win.def.log({ level: 'debug', file: 'action', func: 'text', message: `Msg id: ${msg.id} | Code: ${msg.code}`});
     text.extractTextMessages(msg);
+  }),
+  
+  settings: new Action(commands.device.settings, (msg) => {
+    win.def.log({ level: 'info', file: 'action', func: 'settings', message: `Msg id: ${msg.id} | Code: ${msg.code}`});
+    settings.extractSettings(msg);
   })
 }
 

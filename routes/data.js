@@ -30,6 +30,7 @@ const { device }      = require(path.join(__dirname, '..', 'model', 'data', 'dev
 const { dateTime }    = require(path.join(__dirname, '..', 'model', 'data', 'dateTime'));
 
 const { text }        = require(path.join(__dirname, '..', 'model', 'data', 'text'));
+const { settings }    = require(path.join(__dirname, '..', 'model', 'data', 'settings'));
 const { cache }       = require(path.join(__dirname, '..', 'model', 'data', 'cache'));
 
 const { alarmLimits, exspiredAlarms, cp1Alarms } = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
@@ -70,6 +71,10 @@ router.get('/text/text', function(request, result, next) {
 
 router.get('/text/param', function(request, result, next) {
   result.status(200).json(text.paramObject);
+});
+
+router.get('/settings', function(request, result, next) {
+  result.status(200).json(settings.dataObject);
 });
 
 router.get('/cache', function(request, result, next) {

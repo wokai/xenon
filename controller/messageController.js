@@ -69,6 +69,7 @@ class MessageController {
     this.#schedule.unshift(action.alarm.cp1);
     this.#schedule.unshift(action.alarm.cp2);
     this.#schedule.unshift(action.text);
+    this.#schedule.unshift(action.settings);
   }
 
   /**
