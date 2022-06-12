@@ -47,36 +47,31 @@ class SettingsMessageResponse {
       this.#hexPayload = msg.hexPayload;
       
       /// See Medibus RS232 
-      let nsgm = this.#hexPayload.length / 7;
-      let ts;
-      let index = 0;    /// Start position of next segment. 0-based.
-
-      while(index < this.#hexPayload.length){
-        let sg =  SettingSegment.from(msg, index);
-        index = sg.end;
-        console.log(`[SettingsMessageResponse] Index: ${index}`);
-        this.#map.set(sg.code, sg);      
+      let nsg = this.#hexPayload.length / 7;       
+      for(let i = 0; i < nsg; ++i){
+          let sg = SettingSegment.from(msg, i * 7);
+          this.#map.set(sg.code, sg);
+          console.log(`[SettingsMessageResponse] Index: ${i * 7}`);
+        }
+      } catch (error) {
+        win.def.log({ level: 'error', file: 'SettingsMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Segments: ${nsg} | Index: ${index}`});
       }
     }
-    win.def.log({ level: 'info', file: 'SettingsMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Segments: ${nsgm}`});
+    win.def.log({ level: 'info', file: 'SettingsMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Segments: ${nsg}`});
   }
 
-  
   get id        () { return this.#msgid; }
   get time      () { return this.#time; }
-  get rawLength () { return this.#hexPayload.length; }
   get length    () { return this.#map.length; }
-  get payload   () { return this.#hexPayload; }
   get array     () { return [...this.#map.values()]; }
   get map       () { return this.#map; }
-  get size      () { return this.#map.size; }
   static from = (msg) => { return new SettingsMessageResponse(msg); }
     
   /**
    * @usedBy{DeviceSettings} - (/model/data/settings)
    **/
   get dataObject () {
-    return Array.from(this.#map.values()).map(r => r.dataObject);
+    return Array.from(this.#map.values()).map(s => s.dataObject);
   }
 }
 

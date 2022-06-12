@@ -55,56 +55,46 @@ class SettingSegment {
   #setting 
   
   #begin  /** @descr{number} - (position of message in buffer. 0-based) */
-  #end    /** @descr{number} - (position of first element after buffer segment) */
+  
   
   
   /**************************************************************************
-   * @param{buffer} - (Buffer) - (Message.payload)
-   * @param{begin}  - (number) - (position of message in buffer. 0-based)
+   * @param{msg}    - {Message}
+   * @param{begin}  - (number: 0-based index of current position in payload)
    * @see  {Medibus Protocol 6.0.0 - Device Setting Responses - p.17}
-   * @descr{Reads content of device setting from buffer + sets #end position} 
-   * */
-  
-  readSegmentFromBuffer = (buffer, begin) => {
-       
-    let index = begin;
-    
-    /**
-     * @descr{First two bytes}  - (Code of text message)
-     * @see{Medibus for Primus} - (Text Message - p.34)
-     **/
-    this.#code = buffer.slice(index , index + 2);
-    index += 2;
-    
-    /**
-     * @descr{Three bytes}                 - (Text length, Ascii-code)
-     * @descr{length + 0x30 = Ascii-code} - (Range: '1'=0x30 to 'P'=0x50)
-     **/
-    this.#setting = buffer.slice(index, index + 5);
-    
-    /**
-     * @descr{End position} - (Start position of next text segment, 0-based)
-     **/
-    this.#end = index + 5;
-    
-  }
-
-
-
-  
-  /**************************************************************************
-   * @param{setMsgRes}  - (SettingMessageResponse}
-   * @param{begin}      - (number: 0-based index of current position in payload)
    **/
-  constructor(setMsgRes, begin) {
-    this.#msgid = setMsgRes.id;     /// number
-    this.#time  = setMsgRes.time;   /// Date
-    this.readSegmentFromBuffer(setMsgRes.hexPayload, begin);
-    win.def.log({ level: 'debug', file: 'SettingSegment', func: 'constructor', message: `[SettingSegment] MsgId: ${this.messageId} | Code: ${this.code} | Setting: ${this.setting}`});
+  constructor(msg, begin) {
+    try{
+      
+      let buffer = msg.hexPayload;      
+      this.#msgid = msg.id;     /// number
+      this.#time  = msg.time;   /// Date
+      
+      if(buffer.length < begin + 6){
+        win.def.log({ level: 'error', file: 'SettingSegment', func: 'constructor', message: `MsgId: ${this.messageId} | Begin: ${begin} | Buffer out of bounds.`});
+      } else {
+        
+        /**
+         * @descr{First two bytes}  - (Code of text message)
+         * @see{Medibus for Primus} - (Text Message - p.34)
+         **/
+        this.#code = buffer.slice(begin , begin + 2);
+        
+        /**
+         * @descr{Five bytes}       - (Current value of specified parameter)
+         **/
+        this.#setting = buffer.slice(begin + 2, begin + 7);
+        
+        win.def.log({ level: 'debug', file: 'SettingSegment', func: 'constructor', message: `MsgId: ${this.messageId} | begin: ${begin} | Code: ${this.code} | Setting: ${this.setting}`});
+      }
+
+    } catch (error) {
+      win.def.log({ level: 'error', file: 'SettingSegment', func: 'constructor', message: `MsgId: ${this.messageId} | Code: ${this.code} | Setting: ${this.setting}`});
+    }
   }
   
-  static from(setMsgRes, begin){
-    return new SettingSegment(setMsgRes, begin);
+  static from(msg, begin){
+    return new SettingSegment(msg, begin);
   }
   
   get time            () { return this.#time; }
@@ -113,16 +103,13 @@ class SettingSegment {
   /**
    * @descr{Converts buffer to string}
    **/
-  get code    () { return this.#code.toString() }   /// [ 0x32, 0x33 ] -> '23'
+  get code    () { return this.#code.toString()    } /// [ 0x32, 0x33 ] -> '23'
   get setting () { return this.#setting.toString() }
-  get end     () { return this.#end; }
 
-
-  
   /**
    * @descr{Converts property data to plain Javascript Object}
    **/
-  get dataObject      () {
+  get dataObject () {
     return {
       id: this.messageId,
       time: this.time,

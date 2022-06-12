@@ -34,6 +34,13 @@ class MessageParser extends Stream.Transform {
     super({objectMode: true})
   }
   
+  
+  /**
+   * @param{chunk}    - (Buffer: node:buffer)
+   * @param{encoding} - (String)
+   * @param{callback} - (Function)
+   **/
+  
   _transform(chunk, encoding, callback){
     /// Create message object from Buffer. Checksum is verified
     var msg = Medibus.Message.fromBuffer(chunk);
