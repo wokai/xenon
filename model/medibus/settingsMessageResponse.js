@@ -45,20 +45,18 @@ class SettingsMessageResponse {
      
     if(msg.hasPayload){
       this.#hexPayload = msg.hexPayload;
-      
       try {
         /// See Dräger Medibus RS232 : Device Setting Responses (p. 17)
         let nsg = this.#hexPayload.length / 7;       
         for(let i = 0; i < nsg; ++i){
             let sg = SettingSegment.from(msg, i * 7);
             this.#map.set(sg.code, sg);
-            console.log(`[SettingsMessageResponse] Index: ${i * 7}`);
           }
       } catch (error) {
         win.def.log({ level: 'error', file: 'SettingsMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Segments: ${nsg} | Index: ${index}`});
       }
     }
-    win.def.log({ level: 'info', file: 'SettingsMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Segments: ${nsg}`});
+    win.def.log({ level: 'debug', file: 'SettingsMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Segments: ${this.#map.size}`});
   }
 
   get id        () { return this.#msgid; }
@@ -67,6 +65,45 @@ class SettingsMessageResponse {
   get array     () { return [...this.#map.values()]; }
   get map       () { return this.#map; }
   static from = (msg) => { return new SettingsMessageResponse(msg); }
+  
+  
+  /// ////////////////////////////////////////////////////////////////////// ///
+  /// Get numeric value from SettingSegment Objects
+  /// ////////////////////////////////////////////////////////////////////// ///
+  getFlt = (p) => {
+    let v = this.#map.get(p)
+    if(v === undefined){ return 0;} 
+    let f = Number.parseFloat(v.setting);
+    if(Number.isNaN(f)){ return 0; }
+    return f;
+  }
+  
+  getInt = (p) => {
+    let v = this.#map.get(p)
+    if(v === undefined){ return 0;} 
+    let f = Number.parseInt(v.setting);
+    if(Number.isNaN(f)){ return 0; }
+    return f;
+  }
+  
+  
+  /// Define accessors for parameters
+  get o2          () { return this.getFlt(bus.settings.o2)            };
+  get tidalvolume () { return this.getFlt(bus.settings.tidalvolume);  };
+  get insptime    () { return this.getFlt(bus.settings.insptime);     };
+  get frequency   () { return this.getFlt(bus.settings.frequency);    };
+  get peep        () { return this.getFlt(bus.settings.peep);         };
+  get pps         () { return this.getInt(bus.settings.pps);          };
+  get pmax        () { return this.getFlt(bus.settings.pmax);         };
+  get insptime    () { return this.getInt(bus.settings.insptime);     };
+  get flowtrigger () { return this.getFlt(bus.settings.flowtrigger);  };
+  get slopetime   () { return this.getFlt(bus.settings.slopetime);    };
+  get freshgas    () { return this.getInt(bus.settings.freshgas);     };
+  get minfreq     () { return this.getFlt(bus.settings.minfreq);      };
+  get pinsp       () { return this.getInt(bus.settings.pinsp);        };  
+  get age         () { return this.getInt(bus.settings.age);          };
+  get weight      () { return this.getInt(bus.settings.weight);       };
+
     
   /**
    * @usedBy{DeviceSettings} - (/model/data/settings)

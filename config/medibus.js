@@ -319,6 +319,27 @@ const bus = {
       [ '57', { param: 'agentUnit', value: '%',             text: 'Selected Agent Unit is %'          } ]
     ]),
     etx: 0x03
+  },
+  /**
+   * @see{Medibus-Primus DeviceSettings} - (p.13)
+   * @usedBy{settingsMessageResponse}    - (/model/medibus/settingsMessageResponse)
+   **/
+  settings: {
+    o2:           '01',
+    tidalvolume:  '04',
+    insptime:     '05',
+    frequency:    '0A',
+    peep:         '0C',
+    pps:          '12',
+    pmax:         '13',
+    insptime:     '27',
+    flowtrigger:  '29',
+    slopetime:    '2E',
+    freshgas:     '2F',
+    minfreq:      '42',
+    pinsp:        '45',
+    age:          '4A',
+    weight:       '4B'
   }
 };
 

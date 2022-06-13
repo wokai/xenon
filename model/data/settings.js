@@ -40,7 +40,7 @@ class DeviceSettings {
         insptime: 0,
         frequency: 0,
         peep: 0,
-        psp: 0,
+        pps: 0,
         pmax: 0,
         flowtrigger: 0,
         slopetime: 0,
@@ -52,6 +52,23 @@ class DeviceSettings {
       };
   }
 
+
+  updateParamObject = () => {
+    this.#param.o2          = this.#resp.o2;
+    this.#param.tidalvolume = this.#resp.tidalvolume;
+    this.#param.insptime    = this.#resp.insptime;
+    this.#param.frequency   = this.#resp.frequency;
+    this.#param.peep        = this.#resp.peep;
+    this.#param.pps         = this.#resp.pps;
+    this.#param.pmax        = this.#resp.pmax;
+    this.#param.flowtrigger = this.#resp.flowtrigger;
+    this.#param.slopetime   = this.#resp.slopetime;
+    this.#param.freshgas    = this.#resp.freshgas;
+    this.#param.minfreq     = this.#resp.minfreq;
+    this.#param.pinsp       = this.#resp.pinsp;
+    this.#param.age         = this.#resp.age;
+    this.#param.weight      = this.#resp.weight;
+  } 
   
   constructor() {
     this.#resp = null;
@@ -65,7 +82,7 @@ class DeviceSettings {
   extractSettings = (msg) => {
     if(msg.hasPayload){
       this.#resp = new SettingsMessageResponse(msg);
-      //this.updateParamObject();
+      this.updateParamObject();
     }
   }
 

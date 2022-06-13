@@ -148,7 +148,7 @@ module.exports = {
   }),
   
   settings: new Action(commands.device.settings, (msg) => {
-    win.def.log({ level: 'info', file: 'action', func: 'settings', message: `Msg id: ${msg.id} | Code: ${msg.code}`});
+    win.def.log({ level: 'debug', file: 'action', func: 'settings', message: `Msg id: ${msg.id} | Code: ${msg.code}`});
     settings.extractSettings(msg);
   })
 }

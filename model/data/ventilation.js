@@ -204,7 +204,7 @@ class Ventilation {
 
 
     } catch(error) {
-      win.def.log({ level: 'warn', file: 'anaesth', func: 'setVentilation', message:  err.message });
+      win.def.log({ level: 'warn', file: 'ventilation', func: 'setVentilation', message:  err.message });
     }
   }
   
@@ -227,7 +227,7 @@ class Ventilation {
       this.#lolim.gas.feco2                = res.getSegment('E6');
 
     } catch(err) {
-      win.def.log({ level: 'warn', file: 'anaesth', func: 'setAlarmLoLim', message:  err.message });
+      win.def.log({ level: 'warn', file: 'ventilation', func: 'setAlarmLoLim', message:  err.message });
     }
   }
   

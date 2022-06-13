@@ -62,7 +62,7 @@ class DataResponse {
   constructor(msg) {
 
     this.#msgid = msg.id;
-    this.#time  = msg.time.toTimeString();
+    this.#time  = msg.dateTime.toTimeString();
     this.#date  = msg.dateTime.toLocaleDateString();
     this.#dateTime = msg.dateTime; 
     
