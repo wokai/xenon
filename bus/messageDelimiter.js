@@ -24,6 +24,17 @@ const Stream = require('stream');
 const bus = require('../config/medibus');
 
 
+/// //////////////////////////////////////////////////////////////////////// ///
+/// Part of the Event - Loop: 
+/// Message processing between PortController and downstream Data processing
+///
+/// -> Message-Delimiter
+/// -  Message-Parser
+/// -  React
+/// -  Next-Message
+/// //////////////////////////////////////////////////////////////////////// ///
+
+
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Accumulation of data up to apperance of message delimiter (0xd)

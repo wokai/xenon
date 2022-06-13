@@ -62,8 +62,8 @@ class DataResponse {
   constructor(msg) {
 
     this.#msgid = msg.id;
-    this.#time  = msg.time;
-    this.#date  = msg.date;
+    this.#time  = msg.time.toTimeString();
+    this.#date  = msg.dateTime.toLocaleDateString();
     this.#dateTime = msg.dateTime; 
     
     this.#code = msg.code;
@@ -95,6 +95,7 @@ class DataResponse {
   get id        () { return this.#msgid; }
   get time      () { return this.#time; }
   get date      () { return this.#date; }
+  get dateTime  () { return this.#dateTime; }
   
   get rawLength () { return this.#hexPayload.length; }
   get length    () { return this.#map.length; }

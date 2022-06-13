@@ -51,11 +51,15 @@ class DataCache {
     }
   }
 
+  // ToDo: Used at all ??
   pushVentData = (vent) => {
     this.spliceVentData();
     this.#vent.push(vent);
   }
 
+  /**
+   * @usedBy{router.get('/cache')} - (/routes/data)
+   **/
   consumeVentData = () => {
     let res = this.#vent;
     this.#vent = [];

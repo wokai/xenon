@@ -29,6 +29,17 @@ const { protocol } = require('../controller/protocolController');
 
 
 /// //////////////////////////////////////////////////////////////////////// ///
+/// Part of the Event - Loop: 
+/// Message processing between PortController and downstream Data processing
+///
+/// -  Message-Delimiter
+/// -  Message-Parser
+/// -  React
+/// -> Next-Message
+/// //////////////////////////////////////////////////////////////////////// ///
+
+
+/// //////////////////////////////////////////////////////////////////////// ///
 /// Reply: Send answers upon imcoming commands
 /// This segment of the processing chain fulfills the requirement, that
 /// there must be an answer for incoming commands.

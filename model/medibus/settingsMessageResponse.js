@@ -46,13 +46,14 @@ class SettingsMessageResponse {
     if(msg.hasPayload){
       this.#hexPayload = msg.hexPayload;
       
-      /// See Medibus RS232 
-      let nsg = this.#hexPayload.length / 7;       
-      for(let i = 0; i < nsg; ++i){
-          let sg = SettingSegment.from(msg, i * 7);
-          this.#map.set(sg.code, sg);
-          console.log(`[SettingsMessageResponse] Index: ${i * 7}`);
-        }
+      try {
+        /// See Dräger Medibus RS232 : Device Setting Responses (p. 17)
+        let nsg = this.#hexPayload.length / 7;       
+        for(let i = 0; i < nsg; ++i){
+            let sg = SettingSegment.from(msg, i * 7);
+            this.#map.set(sg.code, sg);
+            console.log(`[SettingsMessageResponse] Index: ${i * 7}`);
+          }
       } catch (error) {
         win.def.log({ level: 'error', file: 'SettingsMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Segments: ${nsg} | Index: ${index}`});
       }

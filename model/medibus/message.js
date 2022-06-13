@@ -102,9 +102,11 @@ class Message {
   get id        () { return this.#id; }
   
   /**
-   * @usedBy{Ventilation.setVentilation}
-   * @usedBy{AlarmStatusResponse.constructor}
-   * @usedBy{TextMessageResponse.constructor}
+   * @usedBy{Ventilation.setVentilation}          - (/model/data)
+   * @usedBy{AlarmStatusResponse.constructor}     - (/model/medibus)
+   * @usedBy{TextMessageResponse.constructor}     - (/model/medibus)
+   * @usedBy{SettingsMessageResponse.constructor} - (/model/medibus)
+   * @usedBy{DataResponse.constructor}            - (/model/medibus)
    **/
   get dateTime  () { return this.#dateTime; }
   get time      () { return this.#time; }
@@ -190,6 +192,9 @@ class Message {
     }
   }
   
+  /**
+   * Provide a readable string representation
+   **/
   get dirString () {
     if(this.#direction == bus.message.direction.in){
       return bus.message.direction.instr;

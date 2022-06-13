@@ -123,7 +123,7 @@ module.exports = {
   
   alarm : {
     ll : new Action(commands.alarm.ll, (msg) => {
-        win.def.log({ level: 'debug', file: 'action', func: 'alarm.lolim', message: `Msg id: ${msg.id} | Code: ${msg.code} | Time: ${msg.time} | Date: ${msg.date}`})
+        win.def.log({ level: 'debug', file: 'action', func: 'alarm.lolim', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
         ventilation.setAlarmLoLim(msg);
         alarmLimits.setLowLimits(new DataResponse(msg));
       }),
