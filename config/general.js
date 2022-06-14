@@ -42,7 +42,7 @@ const config = {
     }
   },
   empty: {
-    time: '2000-01-01T00:00:00.000Z',
+    time: new Date('2000-01-01T00:00:00.000Z'),
     uuid: '0'
   },
   temporal: {

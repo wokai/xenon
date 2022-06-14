@@ -78,8 +78,6 @@ app.factory('MedibusService', function($http, $rootScope) {
     .then(function(response) {
       currentCp1Alarms.length = 0;
       currentCp1Alarms.push(...response);
-      // ToDo: Remove...
-      console.log(response);
     }, function(response) {
       currentCp1Alarms.length = 0;
     })
@@ -292,6 +290,13 @@ app.component('txtStatusParam', {
   }
 });
 
+
+app.component('settingsParam', {
+  templateUrl: 'settingsParam.html',
+  controller: function($scope, MedibusService) {
+    $scope.data = MedibusService.data;
+  }
+});
 
 
 app.component('alarmParam', {

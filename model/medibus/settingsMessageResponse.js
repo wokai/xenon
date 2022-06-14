@@ -28,7 +28,7 @@ const SettingSegment  = require(path.join(__dirname, 'settingSegment'));
 class SettingsMessageResponse {
 
   #msgid
-  #time
+  #time         /// Date
   #code         /// Message.code
   #hexPayload   /// Message.hexPayload
   #map          /// Map key = Text-Message-Code | value = TextSegment
@@ -69,7 +69,10 @@ class SettingsMessageResponse {
   
   /// ////////////////////////////////////////////////////////////////////// ///
   /// Get numeric value from SettingSegment Objects
+  /// Both functions return the desired numeric value or 0
   /// ////////////////////////////////////////////////////////////////////// ///
+  
+  /// Returns float
   getFlt = (p) => {
     let v = this.#map.get(p)
     if(v === undefined){ return 0;} 
@@ -78,6 +81,7 @@ class SettingsMessageResponse {
     return f;
   }
   
+  /// Returns integer
   getInt = (p) => {
     let v = this.#map.get(p)
     if(v === undefined){ return 0;} 
@@ -86,8 +90,11 @@ class SettingsMessageResponse {
     return f;
   }
   
-  
-  /// Define accessors for parameters
+  /// ////////////////////////////////////////////////////////////////////// ///
+  /// Public accessors for named parameters
+  /// Retrieve an element (defined by its code) by querying local Map
+  /// UsedBy: DeviceSettings.updateParamObject - (/model/data/settings)
+  /// ////////////////////////////////////////////////////////////////////// ///
   get o2          () { return this.getFlt(bus.settings.o2)            };
   get tidalvolume () { return this.getFlt(bus.settings.tidalvolume);  };
   get insptime    () { return this.getFlt(bus.settings.insptime);     };

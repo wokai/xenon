@@ -22,8 +22,10 @@
  
 const path = require('path'); 
 
-const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
-const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
+const win     = require(path.join(__dirname, '..', '..', 'logger', 'logger' ));
+const general = require(path.join(__dirname, '..', '..', 'config', 'general'));
+const bus     = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
+
 const SettingsMessageResponse = require(path.join(__dirname, '..', 'medibus', 'settingsMessageResponse' ));
 
 
@@ -35,6 +37,8 @@ class DeviceSettings {
   
   getEmptyParamSet = () => {
     return  {
+        msgId: 0,     
+        time: general.empty.time,
         o2 : 0,
         tidalvolume: 0,
         insptime: 0,
@@ -54,6 +58,8 @@ class DeviceSettings {
 
 
   updateParamObject = () => {
+    this.#param.msgId       = this.#resp.id;
+    this.#param.time        = this.#resp.time;
     this.#param.o2          = this.#resp.o2;
     this.#param.tidalvolume = this.#resp.tidalvolume;
     this.#param.insptime    = this.#resp.insptime;

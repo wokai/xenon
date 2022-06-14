@@ -99,25 +99,13 @@ class SettingSegment {
   
   get time            () { return this.#time; }
   get messageId       () { return this.#msgid; }
-
+  get code    () { return this.#code.toString()    } /// [ 0x32, 0x33 ] -> '23'
+  
   /**
    * @descr{Converts buffer to string}
+   * @usedBy{SettingsMessageResponse} - (/model/medibus/settingsMessageResponse)
    **/
-  get code    () { return this.#code.toString()    } /// [ 0x32, 0x33 ] -> '23'
-  get setting () { return this.#setting.toString() }
-
-  /**
-   * @descr{Converts property data to plain Javascript Object}
-   **/
-  get dataObject () {
-    return {
-      id: this.messageId,
-      time: this.time,
-      code: this.code,
-      setting: this.setting
-    };
-  }
-  
+  get setting () { return this.#setting.toString() }  
 }
 
 module.exports = SettingSegment;

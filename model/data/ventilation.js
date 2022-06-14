@@ -29,6 +29,7 @@ const status        = require(path.join(__dirname, '..', '..', 'controller', 'st
 const { port }      = require(path.join(__dirname, '..', '..', 'controller', 'portController'));
 const { cp1Alarms } = require(path.join(__dirname, 'alarm'));
 const { text }      = require(path.join(__dirname, 'text' ));
+const { settings }  = require(path.join(__dirname, 'settings'));
 
 class Ventilation {
   
@@ -39,6 +40,7 @@ class Ventilation {
   constructor(){ this.setEmptyObject(); }
   
   /**
+   * @descr{
    * @usedBy{MessageController.doNextAction}
    **/
   getValueObject () {
@@ -46,8 +48,11 @@ class Ventilation {
     this.#val.status  = status.controller.text;
     this.#val.alarm.cp1 = cp1Alarms.getAlarmArray(); /// Array<AlarmPeriod.dataObject>
     this.#val.text = text.paramObject;
+    this.#val.settings = settings.dataObject;
     return this.#val;
   }
+  
+  
   
   setEmptyObject = () => {
     

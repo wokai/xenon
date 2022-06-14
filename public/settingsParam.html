@@ -1,0 +1,82 @@
+<div class="card shadow-sm mt-2">
+   <table class="table table-hover text-secondary" style="font-size:small;">
+    <thead>
+      <tr class="d-flex">
+        <th class="col-6" scope="col">Settings</th>
+        <th class="col-4" scope="col">{{ data.vent.settings.time | date:'HH:mm:ss' }}</th>
+        <th class="col-2" scope="col">id: {{ data.vent.settings.msgId }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="d-flex">
+        <td class="col-6">O2</td>
+        <td class="col-4">{{ data.vent.settings.o2 }}</td>
+        <td class="col-2">%</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Inspiratory Tidalvolume</td>
+        <td class="col-4">{{ data.vent.settings.tidalvolume }}</td>
+        <td class="col-2">l</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Inspiratory time</td>
+        <td class="col-4">{{ data.vent.settings.insptime }}</td>
+        <td class="col-2">sec</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Frequency</td>
+        <td class="col-4">{{ data.vent.settings.frequency }}</td>
+        <td class="col-2">1/min</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">PEEP</td>
+        <td class="col-4">{{ data.vent.settings.peep }}</td>
+        <td class="col-2">mbar</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Pressure Support Pressure</td>
+        <td class="col-4">{{ data.vent.settings.pps }}</td>
+        <td class="col-2">mbar</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Inspiratory Pause</td>
+        <td class="col-4">{{ data.vent.settings.peep }}</td>
+        <td class="col-2">%</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Flow Trigger</td>
+        <td class="col-4">{{ data.vent.settings.flowtrigger }}</td>
+        <td class="col-2">l/min</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Slope time</td>
+        <td class="col-4">{{ data.vent.settings.slopetime }}</td>
+        <td class="col-2">sec</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Freshgas Flow</td>
+        <td class="col-4">{{ data.vent.settings.freshgas }}</td>
+        <td class="col-2">ml/min</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Minimal Frequency</td>
+        <td class="col-4">{{ data.vent.settings.minfreq }}</td>
+        <td class="col-2">1/min</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Inspiratory pressure</td>
+        <td class="col-4">{{ data.vent.settings.pinsp }}</td>
+        <td class="col-2">mbar</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Age</td>
+        <td class="col-4">{{ data.vent.settings.age }}</td>
+        <td class="col-2">years</td>
+      </tr>
+      <tr class="d-flex">
+        <td class="col-6">Weight</td>
+        <td class="col-4">{{ data.vent.settings.weight }}</td>
+        <td class="col-2">kg</td>
+      </tr>
+    </tbody>
+</div>
