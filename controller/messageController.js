@@ -46,9 +46,8 @@ class MessageController {
     this.#schedule = [];
     
     /// //////////////////////////////////////////////////////////////////// ///
-    /// 
+    /// Load Messages and start message cycling upon initialising
     /// //////////////////////////////////////////////////////////////////// ///
-    
     status.controller.on('initialising', (data) => {
       status.controller.setStatus(status.status.protocol);
       this.loadInitialMessages();

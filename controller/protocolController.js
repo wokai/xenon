@@ -102,8 +102,7 @@ class CommandTimeout {
 
 class ProtocolController {
   
-  #port         /// PortController
-  #cmdTimeout   
+  #cmdTimeout /// {CommandTimeout}
   
   constructor() {
     this.#cmdTimeout = null;
@@ -128,12 +127,11 @@ class ProtocolController {
     }
   }
 
-    
-  /// ////////////////////////////////////////////////////////////////////// ///
-  /// Send command and receive a reply via Promise
-  /// ////////////////////////////////////////////////////////////////////// ///
   
-  /// EventLoop -> react catches arriving message
+  /**
+   * @usedBy{React._transform} - (/bus/react) - (event-loop)
+   * @descr{Will be called as default when React catches an incoming reply to a command}
+   **/
   receiveMessage = (msg) => {
     win.def.log({ level: 'debug', file: 'protocolController', func: 'receiveMessage', message: `Id: ${msg.id} | Code: ${msg.code}`});
     if(this.#cmdTimeout){ 
@@ -147,6 +145,11 @@ class ProtocolController {
   /// ToDo: A Timeout is unexpected and should therefore trigger
   /// a retry or a schutdown ....
   /// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ///
+  
+  /**
+   * @usedBy{Action.sendCommand}
+   **/
+  
   async sendCommand(msg) {
     this.#cmdTimeout = new CommandTimeout(msg);
     this.#cmdTimeout.sendCommand();
@@ -155,10 +158,14 @@ class ProtocolController {
   
   
   /// ////////////////////////////////////////////////////////////////////// ///
-  /// Terminate Medibus communication via STOP command
+  /// Terminatation of Medibus communication via STOP command
   /// ////////////////////////////////////////////////////////////////////// ///
   
-  /// Called directly from inside EventLoop (React) or when this.stop fails
+  /**
+   * @usedBy{React._transform} - (/bus/react) - (event-loop)
+   * @usedBy{this.stop}        - (sending stop failed)
+   **/
+  
   shutdown = () => {
     port.close()
       .then(res => {
@@ -168,8 +175,11 @@ class ProtocolController {
         win.def.log({ level: 'warn', file: 'protocolController', func: 'shutdown', message: err.message });
       })
   }
-  
-  /// Will be called by NextMessage in order to send a synchronised STOP command
+    
+  /**
+   * @usedBy{NextMessage._write} - (/bus/nextMessage)
+   * @descr{Called when NextMessage is reached while Status is stopping}
+   **/
   stop = () => {
     port.sendMessage(commands.stop)
       .then((resp) => {

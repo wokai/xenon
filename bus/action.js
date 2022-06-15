@@ -58,7 +58,9 @@ class Action {
   #timeoutId
   
   /**
-   * @param{Message, function, number}: 
+   * @param{msg}      - (Message) - (/model/medibus/message)
+   * @param{callback} - (function)
+   * @param{timeout}  - (number)
    */
   constructor(msg, callback, timeout = 0){
     this.#message = msg;        /// Message (model/medibus/message)

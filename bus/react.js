@@ -63,6 +63,11 @@ class React extends Stream.Transform {
   _transform(msg, encoding, callback){
     /// ToDo: React only, when controller is in active state ??
     
+    
+    /// //////////////////////////////////////////////////////////////////// ///
+    /// React to commands by sending appropriate results
+    /// //////////////////////////////////////////////////////////////////// ///
+    
     if(msg.isCmd()){
       
       win.def.log({ level: 'verbose', file: 'react', func: '_transform', message: `Incoming command: ID ${msg.id} | ${msg.code}`});
@@ -102,7 +107,10 @@ class React extends Stream.Transform {
           callback();
           /// ... (ToDo ???)
       }
+      
+    /// //////////////////////////////////////////////////////////////////// ///
     /// React on response
+    /// //////////////////////////////////////////////////////////////////// ///
     } else if (msg.isReply()){
       
       switch(msg.hexCode){
