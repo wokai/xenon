@@ -60,6 +60,12 @@ class React extends Stream.Transform {
     super({ objectMode: true })
   }
   
+  /**
+   * @param{msg}      - (Message)
+   * @param{encoding} - (String)
+   * @param{callback} - (Function)
+   **/
+  
   _transform(msg, encoding, callback){
     /// ToDo: React only, when controller is in active state ??
     
@@ -142,8 +148,8 @@ class React extends Stream.Transform {
     
   }
   
+  /// Is never called ...
   _flush(callback){
-    console.log('[React] _flush');
     callback(null); 
   }
 }

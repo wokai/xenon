@@ -64,10 +64,11 @@ class CommandTimeout {
   
   get promise() { return this.#promise; }
   
-  /// ////////////////////////////////////////////////////////////////////// ///
-  /// Will be used only internally inside ProtocolLayer object:
-  /// Upon reception of a message, ProtocolLayer will call this method
-  /// ////////////////////////////////////////////////////////////////////// ///
+  
+  /**
+   * @usedBy{ProtocolController.receiveMessage} - (Triggered by React)
+   **/
+  
   onReply = (msg) => {
     if(msg.hexCode == this.#msg.hexCode){
       win.def.log({ level: 'verbose', file: 'protocolController', func: 'CommandTimeout.onReply', message: `Resolving reply: ID ${msg.id} | Code ${msg.code}`});
@@ -80,6 +81,10 @@ class CommandTimeout {
   }
   
   /// Required here in order to re-throw Promise rejection
+  
+  /**
+   * @usedBy{ProtocolController.sendCommand} - (Triggered by Action.sendCommand)
+   **/
   sendCommand = () => {
     port.sendMessage(this.#msg)
       .then((res) => { /** Should be 'OK' **/ })
@@ -123,6 +128,7 @@ class ProtocolController {
         })
         .catch(err => {
           win.def.log({ level: 'warn', file: 'protocolController', func: 'initCom', message: `Port closed.`});
+          console.log('[ProtocolController.initCom]', err);
         })
     }
   }
