@@ -124,7 +124,6 @@ class ProtocolController {
           /// Setting status triggers first action of messageController
           /// ////////////////////////////////////////////////////////////// ///
           status.controller.setStatus(status.status.initialising);
-          status.controller.startEpisode();
         })
         .catch(err => {
           win.def.log({ level: 'warn', file: 'protocolController', func: 'initCom', message: `Port closed.`});
