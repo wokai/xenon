@@ -37,8 +37,10 @@ output:
 <!--- --------------------------------------------------------------------- --->
 
 In order to get access to the serial port on a linux system, it may be 
-necessary to add the current user to the `dialout` group via
-`usermod -aG dialout $USER` command (in root environment: su -).
+necessary to add the current user to the `dialout` group:
+
+ - `usermod -aG dialout $USER` command (in root environment: su -)
+ - Restart 
 
 
 
