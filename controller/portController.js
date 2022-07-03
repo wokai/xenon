@@ -24,13 +24,14 @@ const SerialPort = require('serialport');
 const Stream     = require('stream');
 const colors     = require('colors');
 const crypto     = require("crypto"); /// Generates 'Episode' UUID.
+const path       = require('path');
 
-const config  = require('../config/port');
-const general = require('../config/general');
-const win     = require('../logger/logger');
-const status  = require('../controller/statusController');
-const monitor = require('../monitor/monitor');
-
+const config  = require(path.join(__dirname, '..', 'config', 'port'));
+const general = require(path.join(__dirname, '..', 'config', 'general'));
+const win     = require(path.join(__dirname, '..', 'logger', 'logger'));
+const status  = require(path.join(__dirname, '..', 'controller', 'statusController'));
+const monitor = require(path.join(__dirname, '..', 'monitor', 'monitor'));
+const episode = require(path.join(__dirname, '..', 'model', 'data', 'episode'));
 
 /// ////////////////////////////////////////////////////////////////////////////
 /// Wrapper class around SerialPort object
@@ -53,7 +54,7 @@ class PortController extends Stream.Readable {
   #port
   #params
   #message    /// String: Status message from last action
-  #episode      /// Episode: { begin: Date , uuid: randomBytes(16) }
+  #episode    /// Episode: { begin: Date , uuid: randomBytes(16) }
   
   constructor() {
     super()
@@ -86,9 +87,16 @@ class PortController extends Stream.Readable {
     this.#episode.begin = new Date().toISOString();
     this.#episode.uuid  = crypto.randomBytes(16).toString("hex");
     this.#episode.end   = null;
+    
+    episode.init();
   }
   
-  endEpisode = () => { this.#episode.end = new Date().toISOString(); }
+  endEpisode = () => { 
+    this.#episode.end = new Date().toISOString();
+    episode.terminate();
+  }
+  
+  
   get episode () { return this.#episode; }
   
   /// //////////////////////////////////////////////////////////////////////////

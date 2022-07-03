@@ -24,24 +24,27 @@ const path = require('path');
 
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
+const episode             = require(path.join(__dirname, '..', '..', 'model', 'data', 'episode'));
 const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textMessageResponse'));
 
+
+
 class TextData {
-	
+
   static #emptyParam = {
-	  language: '',
-	  co2unit: '',
-	  agentunit: '',
-	  hlm:      { value: 'No' },
-	  standby:  { value: 'No' },
-	  leaktest: { value: 'No' },
-	  inhal: '',
-	  secInhal: '',
-	  carrier: '',
-	  ventmode: '',
-	  sync:   { text: 'No' },
-	  psvadd: { text: 'No' },
-	  autoflow: 'False'
+    language: '',
+    co2unit: '',
+    agentunit: '',
+    hlm:      { value: 'No' },
+    standby:  { value: 'No' },
+    leaktest: { value: 'No' },
+    inhal: '',
+    secInhal: '',
+    carrier: '',
+    ventmode: '',
+    sync:   { text: 'No' },
+    psvadd: { text: 'No' },
+    autoflow: 'False'
    };
 
   
@@ -55,8 +58,8 @@ class TextData {
   /// ////////////////////////////////////////////////////////////////////// ///
   
   setEmptyParamObject = () => {
-	 this.#param = {};
-	 Object.assign(this.#param, TextData.#emptyParam);
+   this.#param = {};
+   Object.assign(this.#param, TextData.#emptyParam);
   }
   
   /// ////////////////////////////////////////////////////////////////////// ///
@@ -66,45 +69,45 @@ class TextData {
   /// ////////////////////////////////////////////////////////////////////// ///
   
   getParam = (key, empty) => {
-	 let v = this.#map.get(key);
-	 if(v !== undefined){
+   let v = this.#map.get(key);
+   if(v !== undefined){
        return v;
-	 } else {
-		return empty;
-	 }
+   } else {
+    return empty;
+   }
   }
 
   fillEmptyParamObject = () => {
-	try{
-		if(this.#map !== null){
-		  let v;
-		  let empty = TextData.#emptyParam; 
-		  
-		  /// ////////////////////////////////////////////////////////// ///     
-		  let device = bus.text.parameters.device;
-		  
-		  this.#param.language 	= this.getParam(device.language,  empty.language);
-		  this.#param.co2unit  	= this.getParam(device.co2unit,   empty.co2unit);
-		  this.#param.agentunit = this.getParam(device.agentunit, empty.agentunit);
-		  this.#param.hlm 		= this.getParam(device.hlm,       empty.hlm);
-		  this.#param.standby 	= this.getParam(device.standby,   empty.standby);
-		  this.#param.leaktest 	= this.getParam(device.leaktest,  empty.leaktest);
-	  
-		  /// ////////////////////////////////////////////////////////// ///
-		  let vent = bus.text.parameters.ventilation;
-	   
-		  this.#param.inhal     = this.getParam(vent.inhal,       empty.inhal);
-		  this.#param.secInhal  = this.getParam(vent.secInhal,    empty.secInhal);
-		  this.#param.carrier   = this.getParam(vent.carrier,     empty.carrier);
-		  this.#param.ventmode  = this.getParam(vent.ventmode,    empty.ventmode);
-		  this.#param.sync      = this.getParam(vent.sync,        empty.sync);
-		  this.#param.psvadd    = this.getParam(vent.psvadd,      empty.psvadd);
-		  this.#param.autoflow  = this.getParam(vent.autoflow,    empty.autoflow);
-		}
-	} catch (error) {
-		console.log('[Text.fillEmptyParamObject]')
-		console.log(error);
-	}
+    try{
+      if(this.#map !== null){
+        let v;
+        let empty = TextData.#emptyParam; 
+        
+        /// ////////////////////////////////////////////////////////// ///     
+        let device = bus.text.parameters.device;
+        
+        this.#param.language  = this.getParam(device.language,  empty.language);
+        this.#param.co2unit   = this.getParam(device.co2unit,   empty.co2unit);
+        this.#param.agentunit = this.getParam(device.agentunit, empty.agentunit);
+        this.#param.hlm       = this.getParam(device.hlm,       empty.hlm);
+        this.#param.standby   = this.getParam(device.standby,   empty.standby);
+        this.#param.leaktest  = this.getParam(device.leaktest,  empty.leaktest);
+      
+        /// ////////////////////////////////////////////////////////// ///
+        let vent = bus.text.parameters.ventilation;
+       
+        this.#param.inhal     = this.getParam(vent.inhal,       empty.inhal);
+        this.#param.secInhal  = this.getParam(vent.secInhal,    empty.secInhal);
+        this.#param.carrier   = this.getParam(vent.carrier,     empty.carrier);
+        this.#param.ventmode  = this.getParam(vent.ventmode,    empty.ventmode);
+        this.#param.sync      = this.getParam(vent.sync,        empty.sync);
+        this.#param.psvadd    = this.getParam(vent.psvadd,      empty.psvadd);
+        this.#param.autoflow  = this.getParam(vent.autoflow,    empty.autoflow);
+      }
+    } catch (error) {
+      console.log('[Text.fillEmptyParamObject]')
+      console.log(error);
+    }
   }
   
   /// ////////////////////////////////////////////////////////////////////// ///
@@ -141,6 +144,11 @@ class TextData {
       this.fillEmptyParamObject();
     }
   }
+  
+  /// Convenience getter for selected parameters
+  get standby () { return this.#param.standby;  }
+  get ventmode() { return this.#param.ventmode; }
+  
   
   constructor() {
     this.#resp = null;
