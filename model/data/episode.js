@@ -22,6 +22,7 @@
  
 const path   = require('path');
 const crypto = require("crypto"); /// Generates 'Episode' UUID.
+const fs     = require('fs');
 
 const win     = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const general = require(path.join(__dirname, '..', '..', 'config', 'general'));
@@ -34,14 +35,20 @@ class Episode {
   #end
   #uuid
   
+  #lastStandBy
+  #lastVentMode
+  
   constructor() {
     this.#nEpisodes = 0;
     this.#begin = general.empty.time,
     this.#uuid  = general.empty.uuid,
     this.#end   = null;
+    
+    this.#lastStandBy = null;
+    this.#lastVentMode = null;
   }
   
-  init(){
+  init = () => {
     ++this.#nEpisodes;
     this.#begin = new Date();
     this.#uuid  = crypto.randomBytes(16).toString("hex");
@@ -54,8 +61,24 @@ class Episode {
 
   get begin () { return this.#begin; }
   
-  
+  /**
+   * @usedBy{Text} - (/model/data/text)
+   **/
   setText = (text) => {
+    console.log(`[Episode] Standby: `, text.standby);
+    /**
+     * [Episode] Standby:  { value: 'No' }
+     **/
+    
+    console.log(`[Episode] Ventmode: `, text.ventmode);
+    /**
+     *[Episode] Ventmode:  {
+     *    code: '59',
+     *    text: 'Volume Mode',
+     *    value: 'Vol control',
+     *    def: 'Volume controlled Ventilation Mode'
+     * }
+     **/
     
   }
 

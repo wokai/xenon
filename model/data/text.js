@@ -24,7 +24,7 @@ const path = require('path');
 
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
-const episode             = require(path.join(__dirname, '..', '..', 'model', 'data', 'episode'));
+const { episode }         = require(path.join(__dirname, '..', '..', 'model', 'data', 'episode'));
 const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textMessageResponse'));
 
 
@@ -123,6 +123,8 @@ class TextData {
   createParameterMap = () => {
     if(this.#resp !== null){
       this.#map = new Map();
+      
+      /// TextMessageResponse
       this.#resp.map.forEach((t) => {
         let def = bus.text.messages.get(t.code);
         
@@ -146,11 +148,14 @@ class TextData {
     if(this.#resp !== null) {
       this.createParameterMap();
       this.fillEmptyParamObject();
+      episode.setText(this);
     }
   }
   
+  /// ////////////////////////////////////////////////////////////// ///
   /// Convenience getter for selected parameters
-  get standby () { return this.#param.standby;  }
+
+  get standby () { return this.#param.standby }
   get ventmode() { return this.#param.ventmode; }
   
   
