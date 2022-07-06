@@ -36,7 +36,15 @@ class Episode {
   #uuid
   
   #lastStandBy
+  #currentStandbyPeriod
+  #standbyPeriods
+  
+  #currentVentilationPeriod
+  #ventilationPeriods
+  
   #lastVentMode
+  #currentVentModePeriod
+  #ventModePeriods
   
   constructor() {
     this.#nEpisodes = 0;
@@ -44,8 +52,24 @@ class Episode {
     this.#uuid  = general.empty.uuid,
     this.#end   = null;
     
+    /// ----------------------------------------------------------------
+    /// Stanby periods
+    /// ----------------------------------------------------------------
     this.#lastStandBy = null;
     this.#lastVentMode = null;
+    this.#currentStandbyPeriod = null;
+    this.#currentVentilationPeriod = null;
+    
+    this.#standbyPeriods = [];
+    this.#ventilationPeriods = [];
+    
+    
+    /// ----------------------------------------------------------------
+    /// Ventilation mode periods
+    /// ----------------------------------------------------------------
+    this.#currentVentModePeriod = null;
+    this.#ventModePeriods = [];
+    
   }
   
   init = () => {
@@ -60,26 +84,86 @@ class Episode {
   }
 
   get begin () { return this.#begin; }
+  get ventilationPeriods () { return this.#ventModePeriods; }
+  
+  beginVentPeriod = (standby) => {
+    console.log(`[Episode] Begin vent period: id: ${standby.msgId}, time: ${standby.time.toLocaleTimeString()},  ${standby.value}`)
+    this.#currentVentilationPeriod = standby;
+  }
+  
+  
+  beginStandbyPeriod = (standby) => {
+    console.log(`[Episode] Begin standby period: id: ${standby.msgId}, time: ${standby.time.toLocaleTimeString()},  ${standby.value}`)
+    this.#currentStandbyPeriod = {
+      begin: standby,               /// First Standby message
+      end  : null                   /// First Message with Standby 'No'
+    }
+  }
+  
+  endStandbyPeriod = (standby) => {
+    if(this.#currentStandbyPeriod !== null) {
+      
+      /// Terminate current standby period
+      this.#currentStandbyPeriod.end = standby;
+      this.#standbyPeriods.push(this.#currentStandbyPeriod);
+      this.#currentStandbyPeriod = null;
+      
+      /// Begin current ventilation period
+      this.#currentVentilationPeriod = {
+        begin: standby,
+        end: null
+      }
+    }
+  }
+  
+  
+  /**
+   * @param{standby} - ({ msgid, time, value });
+   **/
+  setStandby = (standby) => {
+    if(this.#lastStandBy === null){
+      console.log(`[Episode] First Standby: ${standby.value}`)
+      this.#lastStandBy = standby;
+      this.beginStandbyPeriod(standby);
+    }
+  }
+  
+  
+  /**
+   * @param{ventmode} - ({ msgId, time, code, text })
+   **/
+  beginVentModePeriod = (ventmode) => {
+    if(this.#currentVentModePeriod !== null){
+      this.#currentVentModePeriod.end = ventmode;
+      this.#ventModePeriods.push(this.#currentVentModePeriod);
+    }
+    this.#currentVentModePeriod = {
+      begin: ventmode,
+      end  : null
+    }
+  }
+  
+  setVentmode = (ventmode) => {
+    if(this.#lastVentMode === null) {
+      this.#lastVentMode = ventmode;
+      this.beginVentModePeriod(ventmode);
+    } else {
+      if(ventmode.code != this.#lastVentMode.code){
+        this.beginVentModePeriod(ventmode);
+      }
+      this.#lastVentMode = ventmode;
+    }
+  }
   
   /**
    * @usedBy{Text} - (/model/data/text)
+   * @param{text}  - (TextData)
    **/
   setText = (text) => {
-    console.log(`[Episode] Standby: `, text.standby);
-    /**
-     * [Episode] Standby:  { value: 'No' }
-     **/
+    console.log(`[Episode] setText: id ${text.id} | time: ${text.time.toLocaleTimeString()}`);
     
-    console.log(`[Episode] Ventmode: `, text.ventmode);
-    /**
-     *[Episode] Ventmode:  {
-     *    code: '59',
-     *    text: 'Volume Mode',
-     *    value: 'Vol control',
-     *    def: 'Volume controlled Ventilation Mode'
-     * }
-     **/
-    
+    this.setStandby(text.standby);
+    this.setVentmode(text.ventmode);    
   }
 
 }

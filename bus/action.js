@@ -76,8 +76,8 @@ class Action {
 
     this.#timeoutId = setTimeout(() => {
       protocol.sendCommand(this.#message)
-        .then((msg) => { 
-          this.#callback(msg);
+        .then((msg) => {
+          this.#callback(msg); /// Message
         })
         .catch((err) => {
           /// Promise will be rejected when timout is exceeded or command fails

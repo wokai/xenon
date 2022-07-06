@@ -22,6 +22,7 @@
  
 const path = require('path'); 
 
+const general       	  = require(path.join(__dirname, '..', '..', 'config',  'general'));
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const { episode }         = require(path.join(__dirname, '..', '..', 'model', 'data', 'episode'));
@@ -32,6 +33,8 @@ const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textM
 class TextData {
 
   static #emptyParam = {
+    msgId: 0,
+    time: general.empty.time,
     language: '',
     co2unit: '',
     agentunit: '',
@@ -146,6 +149,8 @@ class TextData {
   updateParamObject = () => {
     this.setEmptyParamObject();
     if(this.#resp !== null) {
+	  this.#param.msgId = this.#resp.id;
+	  this.#param.time  = this.#resp.time;
       this.createParameterMap();
       this.fillEmptyParamObject();
       episode.setText(this);
@@ -155,8 +160,23 @@ class TextData {
   /// ////////////////////////////////////////////////////////////// ///
   /// Convenience getter for selected parameters
 
-  get standby () { return this.#param.standby }
-  get ventmode() { return this.#param.ventmode; }
+  get id      () { return this.#param.msgId;    }  /// Number
+  get time    () { return this.#param.time;     }  /// Date
+  
+  get standby () { return {
+	  msgId: this.#param.msgId,
+	  time : this.#param.time,
+	  value: this.#param.standby.value  
+    }
+  }
+  
+  get ventmode() { return {
+      msgId: this.#param.msgId,
+      time:  this.#param.time,
+      code:  parseInt(this.#param.ventmode.code),
+      text:  this.#param.ventmode.text
+    }
+  }
   
   
   constructor() {
@@ -170,6 +190,7 @@ class TextData {
   
   /**
    * @usedBy{text} - (/bus/action)
+   * @param{msg}   - (Message)
    **/
   extractTextMessages = (msg) => {
     if(msg.hasPayload){

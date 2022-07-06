@@ -77,6 +77,8 @@ class MessageController {
   doNextAction = (id) => {
     win.def.log({ level: 'debug', file: 'messageController', func: 'doNextAction', message: `Length: ${this.#schedule.length} | From Message: ${id}`});
     if(status.controller.sending) {
+      
+      /// After full cycle, ventilation data is extracted
       if(!this.#schedule.length) {
         let val = ventilation.getValueObject();
         cache.pushVentData(val);
