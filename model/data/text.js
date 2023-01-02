@@ -22,7 +22,7 @@
  
 const path = require('path'); 
 
-const general       	  = require(path.join(__dirname, '..', '..', 'config',  'general'));
+const general       	    = require(path.join(__dirname, '..', '..', 'config',  'general'));
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const { episode }         = require(path.join(__dirname, '..', '..', 'model', 'data', 'episode'));
@@ -95,7 +95,7 @@ class TextData {
 		  this.#param.language 	= this.getParam(device.language,  empty.language);
 		  this.#param.co2unit  	= this.getParam(device.co2unit,   empty.co2unit);
 		  this.#param.agentunit = this.getParam(device.agentunit, empty.agentunit);
-		  this.#param.hlm 		= this.getParam(device.hlm,       empty.hlm);
+		  this.#param.hlm 		  = this.getParam(device.hlm,       empty.hlm);
 		  this.#param.standby 	= this.getParam(device.standby,   empty.standby);
 		  this.#param.leaktest 	= this.getParam(device.leaktest,  empty.leaktest);
 	  
@@ -159,7 +159,7 @@ class TextData {
   
   /// ////////////////////////////////////////////////////////////// ///
   /// Convenience getter for selected parameters
-
+  /// ////////////////////////////////////////////////////////////// ///
   get id      () { return this.#param.msgId;    }  /// Number
   get time    () { return this.#param.time;     }  /// Date
   

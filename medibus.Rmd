@@ -41,7 +41,7 @@ necessary to add the current user to the `dialout` group:
 
  - `usermod -aG dialout $USER` command (in root environment: su -)
  - Restart 
-
+ - Monitor serial communication using `cutecom`
 
 
 ## Communication via USB to Serial/UART/RS232 

@@ -159,9 +159,7 @@ class Episode {
    * @usedBy{Text} - (/model/data/text)
    * @param{text}  - (TextData)
    **/
-  setText = (text) => {
-    console.log(`[Episode] setText: id ${text.id} | time: ${text.time.toLocaleTimeString()}`);
-    
+  setText = (text) => {   
     this.setStandby(text.standby);
     this.setVentmode(text.ventmode);    
   }

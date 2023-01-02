@@ -71,6 +71,11 @@ router.get('/params', function(request, result, next){
 /// Port must be open. Otherwise update rejects
 /// Parameters: baudRate, dataBits, parity, stopBits
 /// //////////////////////////////////////////////////////////////////////// ///
+
+  /**
+   * @usedBy{port.service.uploadParams} - {serialPortConfig.html - Init Button}
+   **/
+
 router.post('/params', function(request, result, next){
   port.update(request.body)
     .then((resolve) => {
@@ -87,7 +92,14 @@ router.post('/params', function(request, result, next){
 /// Can also be done when port is not open
 /// //////////////////////////////////////////////////////////////////////// ///
 
+  /**
+   * @usedBy{port.service.initialisePort} - {serialPortConfig.html - Init Button}
+   **/
+
 router.post('/init', function(request, result, next) {
+  // ToDo: request.body.path present?
+  console.log('/init', request.body)
+  
   port.setParameters(request.body)
     .then(res => { return port.initializePort(request.body.path); })
     .then(res => { result.status(200).json(port.status) })
@@ -137,8 +149,6 @@ router.get('/close', function(request, result, next){
     .then((resolve) => { result.status(200).json(resolve); }, 
       reject => { result.status(409).json(reject); })
 });
-
-
 
 
 module.exports = router;

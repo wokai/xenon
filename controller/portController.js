@@ -200,6 +200,9 @@ class PortController extends Stream.Readable {
   }
   
   /// Propagates thrown error when incorrect parameters are provided:
+  /**
+   * @usedBy{post('/init')} - (/routes/port)
+   **/
   async setParameters(params) {
     return this.checkParamValidity(params)
       .then(params => {
@@ -234,6 +237,9 @@ class PortController extends Stream.Readable {
   handleData = (data) => { this.emit('data', data); }
   
   
+  /**
+   * @usedBy{post('/init')} - (/routes/port)
+   **/
   async initializePort(path) {
     return new Promise((resolve, reject) => {
       /// Eventually do cleanup
@@ -299,6 +305,7 @@ class PortController extends Stream.Readable {
         /// portController.open
         this.#port.open((err) => {
           if(err){
+            console.log('[Port open error]');
             win.def.log({ level: 'error', file: 'portController', func: 'open', message: err.message });
             this.#message = `Port open failed: ${err.message}`;
             reject(this.status);
@@ -370,7 +377,7 @@ class PortController extends Stream.Readable {
   
   async reset() {
     return await new Promise((resolve, reject) => {
-      initializePort()
+      this.initializePort(this.#path);
       resolve(this.status);
     });
   }

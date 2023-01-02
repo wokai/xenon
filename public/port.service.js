@@ -154,7 +154,7 @@ app.factory('PortService', function($http, $rootScope, $timeout, $q) {
       }).then(function(response){
         console.log(`[PortService] uploadParams. Status: ${response.status} | Text: ${response.statusText}`)
         portStatus = response.data.status;
-        /// No further action because Port-Status-Indicator will be notified via socket.
+        /// No further action required because Port-Status-Indicator will be notified via socket.
       }, function(response) {
         // ToDo: Indicate error ...
         console.log(`[PortService] uploadParams. Status: ${response.status} | Text: ${response.statusText} | Reason: ${response.data.text}`)
@@ -199,7 +199,7 @@ app.factory('PortService', function($http, $rootScope, $timeout, $q) {
     updateParams(params);
     
     $http.post('/port/init', {
-      path    : current.path,
+      path    : current.path.path,
       baudRate: parseInt(current.baudRate),
       dataBits: parseInt(current.dataBits),
       parity  : current.parity,
