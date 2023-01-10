@@ -87,13 +87,13 @@ class Episode {
   get ventilationPeriods () { return this.#ventModePeriods; }
   
   beginVentPeriod = (standby) => {
-    console.log(`[Episode] Begin vent period: id: ${standby.msgId}, time: ${standby.time.toLocaleTimeString()},  ${standby.value}`)
+    win.def.log({ level: 'debug', file: 'model/data/episode', func: 'beginVentPeriod', message: `[Episode] Begin vent period: id: ${standby.msgId}, time: ${standby.time.toLocaleTimeString()},  ${standby.value}`});
     this.#currentVentilationPeriod = standby;
   }
   
   
   beginStandbyPeriod = (standby) => {
-    console.log(`[Episode] Begin standby period: id: ${standby.msgId}, time: ${standby.time.toLocaleTimeString()},  ${standby.value}`)
+    win.def.log({ level: 'debug', file: 'model/data/episode', func: 'beginStandbyPeriod', message: `[Episode] Begin standby period: id: ${standby.msgId}, time: ${standby.time.toLocaleTimeString()},  ${standby.value}`});
     this.#currentStandbyPeriod = {
       begin: standby,               /// First Standby message
       end  : null                   /// First Message with Standby 'No'
@@ -122,7 +122,7 @@ class Episode {
    **/
   setStandby = (standby) => {
     if(this.#lastStandBy === null){
-      console.log(`[Episode] First Standby: ${standby.value}`)
+      win.def.log({ level: 'debug', file: 'model/data/episode', func: 'setStandby', message: `[Episode] First Standby: ${standby.value}`});
       this.#lastStandBy = standby;
       this.beginStandbyPeriod(standby);
     }

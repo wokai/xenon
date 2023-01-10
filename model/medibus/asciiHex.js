@@ -44,19 +44,37 @@ class AsciiHex {
   }
   
   /// ////////////////////////////////////////////////////////////////////// ///
-  /// Works on an array containing hexadecimal values 
-  /// and returns hexadecimal values
+  /// Works on an Array containing hexadecimal values 
+  /// and returns Array containing hexadecimal values
   /// ////////////////////////////////////////////////////////////////////// ///
   static checksum(msg) {
     /// Sum values
     var sum = msg.reduce((a, b) => a + b, 0)
     /// Extract least significant 8-bit value
     var byte = sum & 0xFF;
+    
+    /// Return [ 48, 48 ] instead of [ 48 ]
+    if(byte == 0) return [ 48, 48 ];
+    
     /// 1) Hexadecimal code
     /// 2) Convert characters to upper case
     /// 3) Extract ASCII code
     /// 3) Convert to hexadecimal
-    return byte.toString(16).split('').map(x => x.toUpperCase().charCodeAt(0));
+
+    var res = byte.toString(16).split('').map(x => x.toUpperCase().charCodeAt(0));
+    if(isNaN(res[0])) {
+      console.log('[model/medibus/asciiHex] NaN checksum error: sum: %s | byte: %s | toString: %s, | res: %s', sum, byte, byte.toString(16), res)
+    }
+    
+    return res;
+  }
+  
+  /// ////////////////////////////////////////////////////////////////////// ///
+  /// Converts hexadecimal array into array of strings in hexadecimal format
+  /// Example: [ 0x30, 0x45 ] => [ '0x30', '0x45' ]
+  /// ////////////////////////////////////////////////////////////////////// ///
+  static hexArrayToStringArray(hex) {
+    return hex.map(x => x.toString('16')).map(x => '0x'+x);
   }
   
   /// ////////////////////////////////////////////////////////////////////// ///
@@ -64,7 +82,6 @@ class AsciiHex {
   /// decimal value:
   /// '3A' -> 58 (p.45)
   /// ////////////////////////////////////////////////////////////////////// ///
-  
   static strCheckSumToDecimal(str) {
     var a = [...str].map(x => parseInt(x.toUpperCase(), 16));
     return a[0]*16 + a[1];
@@ -79,7 +96,6 @@ class AsciiHex {
     return AsciiHex.strCheckSumToDecimal(AsciiHex.hexArrayToString(buf));
   }
   
-  
   /// ////////////////////////////////////////////////////////////////////// ///
   /// Calculates integer checksum from hexadecimal array for usage in
   /// integer comparison (Message.fromBuffer):
@@ -92,11 +108,20 @@ class AsciiHex {
   /// ////////////////////////////////////////////////////////////////////// ///
   /// Converts a checksum (AsciiHex representation in message) back into
   /// decimal value:
-  /// '3A' -> 58 (p.45)
+  /// '3A' -> 58 (p.45)  |  'E' -> 14
   /// ////////////////////////////////////////////////////////////////////// ///
+  /*
   static checkSumToDecimal(str) {
     var a = [...str].map(x => parseInt(x.toUpperCase(), 16));
     return a[0]*16 + a[1];
+  }
+  * */
+  static charArrayToDecimal(str) {
+    let a = [...str].map(x => parseInt(x.toUpperCase(), 16));
+    if(a.length == 2) {
+      return a[0]*16 + a[1];
+    }
+    return a[0];
   }
   
   /// ////////////////////////////////////////////////////////////////////// ///
@@ -104,11 +129,10 @@ class AsciiHex {
   /// a message to decimal representation:
   /// <Buffer 33 41> -> 58
   /// ////////////////////////////////////////////////////////////////////// ///
-  
   /**
-   * @descr{
+   * @descr{}
    * @usedBy{Message.fromBuffer}
-   * @param{Buffer
+   * @param{Buffer}
    **/
   static hexChecksumToDecimal(buf) {
     return AsciiHex.strCheckSumToDecimal(AsciiHex.hexArrayToString(buf));
@@ -116,7 +140,7 @@ class AsciiHex {
   
   
   /**
-   * @descr{Converts array of hexadecimal values and Buffer to string} 
+   * @descr{Converts array of hexadecimal values and Buffer to string (hex-format) } 
    *         - (Example: [ 0x45, 0x42 ] -> 'EB')
    * @usedBy{TextSegment - get text}
    **/
@@ -124,10 +148,17 @@ class AsciiHex {
     if(!array) return null;
     
     if(Buffer.isBuffer(array)){ return array.toString(); }
-    
     /// Will return erroneus results when called on Buffer
     /// <Buffer 35 41> returns 50 instead of 5A.
     return array.map(x => String.fromCharCode(x)).join('')
+  }
+  
+  /// ////////////////////////////////////////////////////////////////////// ///
+  /// Converts hexadecimal array into array of strings in hexadecimal format
+  /// Example: [ 0x30, 0x45 ] => [ '0x30', '0x45' ]
+  /// ////////////////////////////////////////////////////////////////////// ///
+  static hexArrayToStringArray(hex) {
+    return hex.map(x => x.toString('16')).map(x => '0x'+x);
   }
   
   /// ////////////////////////////////////////////////////////////////////// ///

@@ -97,9 +97,7 @@ router.post('/params', function(request, result, next){
    **/
 
 router.post('/init', function(request, result, next) {
-  // ToDo: request.body.path present?
-  console.log('/init', request.body)
-  
+  //console.log('/init', request.body)
   port.setParameters(request.body)
     .then(res => { return port.initializePort(request.body.path); })
     .then(res => { result.status(200).json(port.status) })
