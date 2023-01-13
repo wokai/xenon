@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2022, Wolfgang Kaisers
+ * Copyright 2023, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -24,6 +24,7 @@ const path = require('path');
 
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
+const monitor             = require(path.join(__dirname, '..', '..', 'monitor', 'monitor'));
 const DataResponse        = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
 const AlarmStatusResponse = require(path.join(__dirname, '..', 'medibus', 'alarmStatusResponse'));
 
@@ -181,8 +182,6 @@ class AlarmLimits {
   extractHighLimits = (msg) => { this.setHighLimits(new DataResponse(msg)); }
 }
 
-
-
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Keeps a map with current alarms
 /// Alarms from codepage 1 and codepage 2 must be separated because the
@@ -190,8 +189,6 @@ class AlarmLimits {
 ///   A3 67 32 35 37 6A A0 AC AD C8 C9 CA
 /// are (ambiguously) defined in both codepages.
 /// //////////////////////////////////////////////////////////////////////// ///
-
-
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// RS232 Medibus 6.0.0 | p.15 | Alarm Status Response
@@ -335,7 +332,16 @@ class ExspiredAlarms {
   /**
    * @param {alarmPeriod} period
    */
-  push(period) { this.#periods.push(period); }
+  push(period) {
+    this.#periods.push(period);
+    /// action: label
+    /// Message: 
+    
+    let p = period.dataObject;
+    //console.log(period.dataObject);
+    monitor.infoMsg('Alarm', `${p.label} from ${p.begin.time} (id ${p.begin.id}) to ${p.back.time} (id ${p.back.id})`);
+    win.def.log({ level: 'info', file: 'alarm', func: 'ExspiredAlarms.push', message:  `Alarm '${p.label}' from ${p.begin.time} (id ${p.begin.id}) to ${p.back.time} (id ${p.back.id})` });
+  }
   
   consume = () => {
     let res = this.#periods;

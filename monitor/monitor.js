@@ -85,6 +85,12 @@ class Monitor extends EventEmitter {
    **/
   dataMsg   = (action, msg, data={}) => { this.emitMsg('data',   action, msg, data); }
   deviceMsg = (action, msg, data={}) => { this.emitMsg('device', action, msg, data); }
+  
+  /**
+   * @usedBy{ExspiredAlarms.pus(period)} - (model/data/alarm)
+   * @target{index.html} - (socket.on | io:info | Will be fed into message table)
+   **/
+  infoMsg   = (action, msg)          => { this.emitMsg('info',   action, msg,    {}); }
 }
 
 const monitor = new Monitor();

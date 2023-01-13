@@ -39,7 +39,12 @@
       
       $scope.socket.on('io:com', function(msg) {
         PortService.setComStatus(msg.data);
-      });     
+      });
+      
+      // Used by: model/data/alarm
+      $scope.socket.on('io:info', function(msg) {
+        $scope.$apply(function() { ctrl.messages.unshift(msg); });
+      });
 
       // Triggered by {Monitor} - (/monitor/monitor)
       $scope.socket.on('io:data', function(msg) {

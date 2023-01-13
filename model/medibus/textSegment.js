@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2021, Wolfgang Kaisers
+ * Copyright 2023, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -27,7 +27,7 @@
 /// 12 bytes alarm phrase  : Character string.
 /// //////////////////////////////////////////////////////////////////////// ///
 
-const AsciiHex = require('./asciiHex');
+//const AsciiHex = require('./asciiHex');
 
 const win = require('../../logger/logger');
 const { parameters } = require('../parameters');

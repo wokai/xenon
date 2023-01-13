@@ -44,7 +44,6 @@ buf = Buffer.from([0x32, 0x33, 0x41, 0x42]);
 console.log(`[Buffer] [0x32, 0x33, 0x41, 0x42] toString: ${buf.toString()}`.yellow); 
 
 
-
 /// ////////////////////////////////////////////////////////////////////////////
 /// Translation between String and Number
 /// ////////////////////////////////////////////////////////////////////////////
@@ -138,8 +137,10 @@ class AsciiHex {
   }
   
   
+  /// ////////////////////////////////////////////////////////////////////// ///
   /// Converts [ 0x20, 0x39, 0x38, 0x20 ] to [ '', '9', '8', '' ] (p.47)
-  /// also works on strings [
+  /// also works on strings
+  /// ////////////////////////////////////////////////////////////////////// ///
   static hexArrayToCharArray(array){
     if(!array) return null;
     return array.map(x => x.toString(16)).map(x => parseInt(x, 16)).map(x => String.fromCharCode(x))
@@ -149,20 +150,8 @@ class AsciiHex {
   /// Convenience function:
   /// Converts Uint8Array into readable string for logging or printout purposes
   static hexString(buf){
-    /// Copy buffer content into array
-    var a = [];
-    for(var i = 0; i < buf.byteLength; ++i){
-      a.push(buf[i]);
-    }
-  
-    /// Format hexadecimal value to Uppercase and two digits
-    var hex = a.map(x => {
-      var h = x.toString(16).toUpperCase();
-      if(h.length < 2) { h = "0" + h; }
-      return h;
-    });
-    
-    return hex.join(' ');
+    let a = [...buf].map(x => x.toString(16).toUpperCase());
+    return a.map(x => (x.length<2) ? `0${x}` : x ).join(' ');
   }
 
   /// ////////////////////////////////////////////////////////////////////// ///
@@ -250,7 +239,6 @@ console.log('[Char-code: ] %s'.yellow, Math.abs(40).toString(16))
 console.log('[Char-code: ] %s'.yellow, String.fromCharCode(parseInt('40', 16)))
 
 
-
 /// ////////////////////////////////////////////////////////////////////////////
 /// C Checksum
 /// ////////////////////////////////////////////////////////////////////////////
@@ -264,7 +252,7 @@ const cs_err3 = [ 0x01, 0x24, 0x30, 0x36, 0x35, 0x30, 0x2E, 0x37, 0x31, 0x42, 0x
 let msg = cs_err3;
 let inc_cs = msg.slice(-3,-1);
 let cal_cs = AsciiHex.checksum(msg.slice(0, -3));
-console.log('[Checksum] Checksum incoming  : %s | Hex-val: %s | Dec-val: %s'.yellow, AsciiHex.hexArrayToStringArray(inc_cs), AsciiHex.hexArrayToString(inc_cs), AsciiHex.charArrayToDecimal(AsciiHex.hexArrayToString(inc_cs))); //AsciiHex.hexChecksumToDecimal(inc_cs));
+console.log('[Checksum] Checksum incoming  : %s | Hex-val: %s | Dec-val: %s'.yellow, AsciiHex.hexArrayToStringArray(inc_cs), AsciiHex.hexArrayToString(inc_cs), AsciiHex.charArrayToDecimal(AsciiHex.hexArrayToString(inc_cs)));
 console.log('[Checksum] Checksum calculated: %s | Hex-val: %s | Dec-val: %s'.yellow, AsciiHex.hexArrayToStringArray(cal_cs), AsciiHex.hexArrayToString(cal_cs), AsciiHex.charArrayToDecimal(AsciiHex.hexArrayToString(cal_cs)));
 
 /// ////////////////////////////////////////////////////////////////////////////

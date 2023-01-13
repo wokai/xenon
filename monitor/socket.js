@@ -57,6 +57,7 @@ class SocketController {
   emitComEvent    = (event) => { this.#io.emit('io:com', event); };
   emitDataEvent   = (event) => { this.#io.emit('io:data', event); };
   emitDeviceEvent = (event) => { this.#io.emit('io:device', event); };
+  emitInfoEvent   = (event) => { this.#io.emit('io:info', event); };
 
   
   /// ////////////////////////////////////////////////////////////////////// ///
@@ -97,6 +98,7 @@ class SocketController {
     monitor.on('com',    this.emitComEvent);
     monitor.on('data',   this.emitDataEvent);
     monitor.on('device', this.emitDeviceEvent);
+    monitor.on('info',   this.emitInfoEvent);
   }
   
   disconnnectMonitor() {
@@ -105,6 +107,7 @@ class SocketController {
       this.#monitor.removeListener('com',    this.emitComEvent);
       this.#monitor.removeListener('data',   this.emitDataEvent);
       this.#monitor.removeListener('device', this.emitDeviceEvent);
+      this.#monitor.removeListener('info',   this.emitInfoEvent);
       this.#monitor = null;
     }
   }

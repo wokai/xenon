@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2022, Wolfgang Kaisers
+ * Copyright 2023, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -165,10 +165,9 @@ class Message {
 
     var msg = new Message(buf);
     /// Incoming checksum as provided as two bytes in buffer
-    //var inc = AsciiHex.hexChecksumToDecimal(msg.checksum)
     var inc = AsciiHex.charArrayToDecimal(AsciiHex.hexArrayToString(msg.checksum));  
     /// Calculated checksum from leading bytes in buffer
-    let cal = AsciiHex.charArrayToDecimal(AsciiHex.hexArrayToString(AsciiHex.checksum(buf.slice(0, -3)))); // AsciiHex.decimalChecksum(buf.slice(0, -3))
+    let cal = AsciiHex.charArrayToDecimal(AsciiHex.hexArrayToString(AsciiHex.checksum(buf.slice(0, -3))));
     
     if(inc != cal){
       console.log('[/model/medibus/message] fromBuffer checksum error:')
@@ -176,7 +175,7 @@ class Message {
       console.log('Incoming: %s', inc);
       console.log('Calc    : %s', cal);
       console.log(AsciiHex.hexString(buf));
-      console.log(AsciiHex.checksum(buf.slice(0, -3)), '|', cal); // 65
+      console.log(AsciiHex.checksum(buf.slice(0, -3)), '|', cal);
       win.def.log({ level: 'warn', file: 'message', func: 'fromBuffer', message: `Checksum error (Truncated message?): Msg ID ${msg.id} |  Type: ${msg.typestr} | Msg-code ${msg.code} | Buffer-calc checksum: ${cal} | Incoming Checksum: ${inc}` });
     }
     msg.dir = 1;
