@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2022, Wolfgang Kaisers
+ * Copyright 2023, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -53,7 +53,7 @@ class Episode {
     this.#end   = null;
     
     /// ----------------------------------------------------------------
-    /// Stanby periods
+    /// Standby periods
     /// ----------------------------------------------------------------
     this.#lastStandBy = null;
     this.#lastVentMode = null;
@@ -99,6 +99,10 @@ class Episode {
       end  : null                   /// First Message with Standby 'No'
     }
   }
+  
+  /**
+   * @usedBy{} - (currently unused)
+   **/
   
   endStandbyPeriod = (standby) => {
     if(this.#currentStandbyPeriod !== null) {
