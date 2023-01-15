@@ -31,7 +31,22 @@ const monitor             = require(path.join(__dirname, '..', '..', 'monitor', 
 /// Alarms or change of settings
 /// ////////////////////////////////////////////////////////////////////////////
 
-class Status {
+class StatusItem {
+  #id
+}
+
+
+class ExspiredStatus {
+  #periods = [];
+  
+  get size()  { return this.#periods.length; }
+  get array() { return this.#periods.map((a) => (a.dataObject)); };
+  
+  constructor() {
+  }
+}
+
+class CurrentStatus {
   
   #current    /// Current status objects
   
@@ -40,8 +55,10 @@ class Status {
   }
 }
 
-const status = new Status();
+
+
+const currentStatus = new CurrentStatus();
 
 module.exports = {
-  status: status
+  currentStatus: currentStatus
 }
