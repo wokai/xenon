@@ -197,7 +197,6 @@ class AlarmLimits {
 /// 12 bytes alarm phrase  : Character string.
 /// //////////////////////////////////////////////////////////////////////// ///
 
-
 class PeriodPoint {
   
   #id     /// @ number | Medibus-Message-Id
@@ -205,9 +204,9 @@ class PeriodPoint {
    
   /// There is no type checking, because this would mess up the code
   /// This class mainly exists in order to have clean accessors...
-  constructor(id, time){
+  constructor(id = 0, time = new Date('2000-01-01T00:00:00')) {
     this.#id = id;
-    this.#time = new Date('2000-01-01T00:00:00');
+    this.#time = time;
   }
   
   set id(i)   { this.#id   = i;    }

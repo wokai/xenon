@@ -32,7 +32,25 @@ const monitor             = require(path.join(__dirname, '..', '..', 'monitor', 
 /// ////////////////////////////////////////////////////////////////////////////
 
 class StatusItem {
-  #id
+  
+  static #lastId = 0; /// Counter for creation of (session) unique id's
+  #id     /// @ number | Medibus-Message-Id
+  #begin  /// @ Date
+  #end    /// @ Date
+   
+  /// There is no type checking
+  /// This class mainly exists in order to have defined accessors
+  constructor(id = StatusItem.#lastId, begin = new Date('2000-01-01T00:00:00')) {
+    ++StatusItem.#lastId;
+    this.#id = id;
+    this.#begin = time;
+  }
+
+  set id(i)   { this.#id   = i;    }
+  set time(t) { this.#time = t;    }
+  
+  get id()    { return this.#id;   }
+  get time()  { return this.#time; }
 }
 
 
@@ -54,7 +72,6 @@ class CurrentStatus {
     this.#current = new Map();
   }
 }
-
 
 
 const currentStatus = new CurrentStatus();
