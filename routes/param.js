@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2022, Wolfgang Kaisers
+ * Copyright 2023, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -22,24 +22,22 @@
  
 const express = require('express');
 const path    = require('path');
-
 const medibus = require(path.join(__dirname, '..', 'config', 'medibus'));
-
+const text    = require(path.join(__dirname, '..', 'model', 'data', 'text'));
 
 const router = express.Router();
 
-router.get('/alarms/cp1', function(request, result, next){
+router.get('/alarms/cp1',     function(request, result, next) {
   result.status(200).json([...medibus.alarms.cp1]);
 });
 
-router.get('/alarms/cp2', function(request, result, next){
+router.get('/alarms/cp2',     function(request, result, next) {
   result.status(200).json([...medibus.alarms.cp2]);
 });
 
-router.get('/text', function(request, result, next) {
-  result.status(200).json([...medibus.textMessages]);
+router.get('/text/messages',  function(request, result, next) {
+  result.status(200).json(Array.from(medibus.text.messages, ([name, value]) => ({ name, value })));
 });
-
 
 
 module.exports = router;

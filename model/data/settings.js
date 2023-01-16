@@ -56,7 +56,7 @@ class DeviceSettings {
       };
   }
 
-
+  /// Copies data from SettingsMessageResponse object
   updateParamObject = () => {
     this.#param.msgId       = this.#resp.id;
     this.#param.time        = this.#resp.time;

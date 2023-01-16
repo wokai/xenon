@@ -1,6 +1,6 @@
 /*******************************************************************************
  * The MIT License
- * Copyright 2021, Wolfgang Kaisers
+ * Copyright 2023, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -122,7 +122,6 @@ app.factory('MedibusService', function($http, $rootScope) {
   }
   getDateTime()
   
-  
   /**
    * @source{Monitor.dataMsg} - {Ventilation.getValueObject}
    * @see   {http://localhost:4000/data/vent}
@@ -183,7 +182,6 @@ app.factory('MedibusService', function($http, $rootScope) {
   /// //////////////////////////////////////////////////////////////////////////
   /// Exported object
   /// //////////////////////////////////////////////////////////////////////////
-  
   return {
     data: data,
     device: device,
@@ -290,7 +288,6 @@ app.component('txtStatusParam', {
   }
 });
 
-
 app.component('settingsParam', {
   templateUrl: 'settingsParam.html',
   controller: function($scope, MedibusService) {
@@ -298,14 +295,12 @@ app.component('settingsParam', {
   }
 });
 
-
 app.component('alarmParam', {
   templateUrl: 'alarmParam.html',
   controller: function($scope, MedibusService){
     $scope.data = MedibusService.data;
   }
 });
-
 
 app.component('paramLimited', {
   templateUrl: 'paramLimited.html',
@@ -326,9 +321,6 @@ app.component('evitaParam', {
     $scope.data = MedibusService.data;
   }
 });
-
-
-
 
 
 })(window.angular); /// function(angular)

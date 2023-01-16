@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2022, Wolfgang Kaisers
+ * Copyright 2023, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -29,7 +29,6 @@ const { episode }         = require(path.join(__dirname, '..', '..', 'model', 'd
 const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textMessageResponse'));
 
 
-
 class TextData {
 
   static #emptyParam = {
@@ -50,16 +49,13 @@ class TextData {
     autoflow: 'False'
    };
 
-  
   #resp   /// @type{TextMessageResponse}
   #map    /// @type{Map}
   #param  /// @type{Object}
   
-  
   /// ////////////////////////////////////////////////////////////////////// ///
   /// Empty Object will be set in each message cycle
   /// ////////////////////////////////////////////////////////////////////// ///
-  
   setEmptyParamObject = () => {
    this.#param = {};
    Object.assign(this.#param, TextData.#emptyParam);
@@ -70,7 +66,6 @@ class TextData {
   /// Check for existence of parameter in current text message list
   /// and eventually copy value into this.#param object
   /// ////////////////////////////////////////////////////////////////////// ///
-  
   getParam = (key, empty) => {
    let v = this.#map.get(key);
    if(v !== undefined){
@@ -84,37 +79,37 @@ class TextData {
    * @usedBy{this.updateParamObject}
    */
   fillEmptyParamObject = () => {
-	try{
-		if(this.#map !== null){
-		  let v;
-		  let empty = TextData.#emptyParam; 
-		  
-		  /// ////////////////////////////////////////////////////////// ///     
-		  let device = bus.text.parameters.device;
-		  
-		  this.#param.language 	= this.getParam(device.language,  empty.language);
-		  this.#param.co2unit  	= this.getParam(device.co2unit,   empty.co2unit);
-		  this.#param.agentunit = this.getParam(device.agentunit, empty.agentunit);
-		  this.#param.hlm 		  = this.getParam(device.hlm,       empty.hlm);
-		  this.#param.standby 	= this.getParam(device.standby,   empty.standby);
-		  this.#param.leaktest 	= this.getParam(device.leaktest,  empty.leaktest);
-	  
-		  /// ////////////////////////////////////////////////////////// ///
-		  let vent = bus.text.parameters.ventilation;
-	   
-		  this.#param.inhal     = this.getParam(vent.inhal,       empty.inhal);
-		  this.#param.secInhal  = this.getParam(vent.secInhal,    empty.secInhal);
-		  this.#param.carrier   = this.getParam(vent.carrier,     empty.carrier);
-		  this.#param.ventmode  = this.getParam(vent.ventmode,    empty.ventmode);
-		  this.#param.sync      = this.getParam(vent.sync,        empty.sync);
-		  this.#param.psvadd    = this.getParam(vent.psvadd,      empty.psvadd);
-		  this.#param.autoflow  = this.getParam(vent.autoflow,    empty.autoflow);
-		}
-	} catch (error) {
-		win.def.log({ level: 'warn', file: 'text', func: 'fillEmptyParamObject', message: error.message });
-		console.log('[Text.fillEmptyParamObject]')
-		console.log(error);
-	}
+    try{
+      if(this.#map !== null){
+        let v;
+        let empty = TextData.#emptyParam; 
+        
+        /// ////////////////////////////////////////////////////////// ///     
+        let device = bus.text.parameters.device;
+        
+        this.#param.language 	= this.getParam(device.language,  empty.language);
+        this.#param.co2unit  	= this.getParam(device.co2unit,   empty.co2unit);
+        this.#param.agentunit = this.getParam(device.agentunit, empty.agentunit);
+        this.#param.hlm 		  = this.getParam(device.hlm,       empty.hlm);
+        this.#param.standby 	= this.getParam(device.standby,   empty.standby);
+        this.#param.leaktest 	= this.getParam(device.leaktest,  empty.leaktest);
+      
+        /// ////////////////////////////////////////////////////////// ///
+        let vent = bus.text.parameters.ventilation;
+       
+        this.#param.inhal     = this.getParam(vent.inhal,       empty.inhal);
+        this.#param.secInhal  = this.getParam(vent.secInhal,    empty.secInhal);
+        this.#param.carrier   = this.getParam(vent.carrier,     empty.carrier);
+        this.#param.ventmode  = this.getParam(vent.ventmode,    empty.ventmode);
+        this.#param.sync      = this.getParam(vent.sync,        empty.sync);
+        this.#param.psvadd    = this.getParam(vent.psvadd,      empty.psvadd);
+        this.#param.autoflow  = this.getParam(vent.autoflow,    empty.autoflow);
+      }
+    } catch (error) {
+      win.def.log({ level: 'warn', file: 'text', func: 'fillEmptyParamObject', message: error.message });
+      console.log('[Text.fillEmptyParamObject]')
+      console.log(error);
+    }
   }
   
   /// ////////////////////////////////////////////////////////////////////// ///
@@ -178,7 +173,6 @@ class TextData {
     }
   }
   
-  
   constructor() {
     this.#resp = null;
     this.#map = new Map();
@@ -187,7 +181,6 @@ class TextData {
   
   // ToDo: Check what has to be done when an empty text message 
   // has been received
-  
   /**
    * @usedBy{text} - (/bus/action)
    * @param{msg}   - (Message)

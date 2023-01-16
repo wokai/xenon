@@ -43,14 +43,17 @@ class StatusItem {
   constructor(id = StatusItem.#lastId, begin = new Date('2000-01-01T00:00:00')) {
     ++StatusItem.#lastId;
     this.#id = id;
-    this.#begin = time;
+    this.#begin = begin;
+    this.#end = begin;
   }
 
-  set id(i)   { this.#id   = i;    }
-  set time(t) { this.#time = t;    }
+  set id(i)     { this.#id   = i;    }
+  set begin(t)  { this.#begin = t;   }
+  set end(t)    { this.#end   = t;   }
   
-  get id()    { return this.#id;   }
-  get time()  { return this.#time; }
+  get id()      { return this.#id;    }
+  get begin()   { return this.#begin; }
+  get end()     { return this.#end;   }
 }
 
 

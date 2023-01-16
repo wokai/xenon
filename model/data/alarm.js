@@ -337,8 +337,7 @@ class ExspiredAlarms {
     /// Message: 
     
     let p = period.dataObject;
-    //console.log(period.dataObject);
-    monitor.infoMsg('Alarm', `${p.label} from ${p.begin.time} (id ${p.begin.id}) to ${p.back.time} (id ${p.back.id})`);
+    monitor.infoMsg('Alarm', `${p.label} from ${p.begin.time} to ${p.back.time}`);
     win.def.log({ level: 'info', file: 'alarm', func: 'ExspiredAlarms.push', message:  `Alarm '${p.label}' from ${p.begin.time} (id ${p.begin.id}) to ${p.back.time} (id ${p.back.id})` });
   }
   
