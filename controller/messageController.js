@@ -28,7 +28,6 @@ const action          = require(path.join(__dirname, '..', 'bus', 'action'));
 const monitor         = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 const { ventilation } = require(path.join(__dirname, '..','model', 'data', 'ventilation'));
 const { cache }       = require(path.join(__dirname, '..','model', 'data', 'cache'));
-//const { text }        = require(path.join(__diraname, '..', 'model', 'data', 'text'));
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Manages scheduled messages

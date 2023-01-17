@@ -1,5 +1,5 @@
 ---
-title: "Medibus Standard"
+title: "Xenon"
 author:
     name: "W. Kaisers"
     affiliation: "Düsseldorf"
@@ -22,7 +22,6 @@ output:
  - [Evita V800 / V600](https://www.draeger.com/Library/Content/9055601_04_IfU_Evita_V800_V600_SW1_n_en.pdf)
  - [Medibus Procol Definition](https://hit.healthsystem.virginia.edu/index.cfm/_api/render/file/?fileID=DC02EE3A-17A4-77A0-3E1CF4BE2E1B9EA8&fileEXT=.pdf)
  - [Medibus for Primus](https://www.draeger.com/Products/Content/IfU_SP_Primus_MEDIBUS_for_Primus__Primus_IE__Apollo_and_Pallas_9037426.pdf)
-
 
  - Find Raspberry in network: `arp -a`
  - Primus password: 8056
@@ -69,8 +68,6 @@ additional information.
 
  - `echo -e "\x1b\x51\x36\x43\x0d" > /dev/ttyS0`
 
-
-
 ## Additional resources
 
  - [Stackexchange](https://unix.stackexchange.com/questions/117037/how-to-send-data-to-a-serial-port-and-see-any-answer)
@@ -88,7 +85,6 @@ This description of **Medibus** data exchange bases on two documents:
  - [MEDIBUS for Primus, Primus IE, Apollo and Pallas](https://www.draeger.com/Products/Content/IfU_SP_Primus_MEDIBUS_for_Primus__Primus_IE__Apollo_and_Pallas_9037426.pdf)
  
 
-
 ## Message structure
 
 In general, a Medibus message can be divided into three constituents:
@@ -96,8 +92,6 @@ In general, a Medibus message can be divided into three constituents:
  - Message header: Two bytes encoding for the message type and the command code
  - An optional payload
  - Message trailer: Two bytes checksum and a terminating 0x0d (CR, carriage return)
-
-
 
  - First byte: Type character (ESC=0x1b  or SOH 0x01)
  - Second byte: Command code
@@ -130,7 +124,6 @@ Miscellaneous commands:
  - Configure data response (0x4A)
 
 ##  AsciiHex Format
-
 
 Allowed characters:
 

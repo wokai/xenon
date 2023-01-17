@@ -92,7 +92,6 @@ class DeviceSettings {
     }
   }
 
-
   /**
    * @usedBy{router.get(/text)} - (/routes/data)
    **/
