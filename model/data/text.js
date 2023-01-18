@@ -46,7 +46,8 @@ class TextData {
     ventmode: '',
     sync:   { text: 'No' },
     psvadd: { text: 'No' },
-    autoflow: 'False'
+    autoflow: 'False',
+    airway: '(empty)'
    };
 
   #resp   /// @type{TextMessageResponse}
@@ -104,6 +105,8 @@ class TextData {
         this.#param.sync      = this.getParam(vent.sync,        empty.sync);
         this.#param.psvadd    = this.getParam(vent.psvadd,      empty.psvadd);
         this.#param.autoflow  = this.getParam(vent.autoflow,    empty.autoflow);
+        
+        /// ////////////////////////////////////////////////////////// ///
       }
     } catch (error) {
       win.def.log({ level: 'warn', file: 'text', func: 'fillEmptyParamObject', message: error.message });
@@ -126,17 +129,23 @@ class TextData {
       this.#resp.map.forEach((t) => {
         let def = bus.text.messages.get(t.code);
         
-        /// //////////////////////////////////////////////////////////////// ///
-        /// Store Text messages in parametrised format. Map:
-        /// key   : Definition parameter (e.g. ventmode)
-        /// value : Object containing parameter definition + text message
-        /// //////////////////////////////////////////////////////////////// ///
-        this.#map.set(def.param, {
-          code: t.code,
-          text: t.text,
-          value: def.value,
-          def: def.text       /// Parameter definition tes
-        })
+        if(def === undefined){
+          win.def.log({ level: 'warn', file: 'text', func: 'createParameterMap', message: `Received unknown code ${t.code}` });
+          console.log(`[model/data/text] createParameterMap: Received unknown code ${t.code}`);
+          console.log(t);
+        } else {
+          /// //////////////////////////////////////////////////////////////// ///
+          /// Store Text messages in parametrised format. Map:
+          /// key   : Definition parameter (e.g. ventmode)
+          /// value : Object containing parameter definition + text message
+          /// //////////////////////////////////////////////////////////////// ///
+          this.#map.set(def.param, {
+            code: t.code,
+            text: t.text,
+            value: def.value,
+            def: def.text       /// Parameter definition tes
+          })
+        }
       });
     }
   }

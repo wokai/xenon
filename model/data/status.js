@@ -35,22 +35,25 @@ class StatusItem {
   
   static #lastId = 0; /// Counter for creation of (session) unique id's
   #id     /// @ number | Medibus-Message-Id
+  #label  /// @ string | Text displayed in list or stored in logfile
   #begin  /// @ Date
   #end    /// @ Date
    
   /// There is no type checking
   /// This class mainly exists in order to have defined accessors
-  constructor(id = StatusItem.#lastId, begin = new Date('2000-01-01T00:00:00')) {
+  constructor(label, id = StatusItem.#lastId, begin = new Date('2000-01-01T00:00:00')) {
+    this.#label = label;
     ++StatusItem.#lastId;
     this.#id = id;
     this.#begin = begin;
     this.#end = begin;
   }
 
-  set id(i)     { this.#id   = i;    }
-  set begin(t)  { this.#begin = t;   }
-  set end(t)    { this.#end   = t;   }
+  set id(i)     { this.#id    = i;    }
+  set begin(t)  { this.#begin = t;    }
+  set end(t)    { this.#end   = t;    }
   
+  get label()   { return this.#label; }
   get id()      { return this.#id;    }
   get begin()   { return this.#begin; }
   get end()     { return this.#end;   }

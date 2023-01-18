@@ -28,6 +28,8 @@ const { Message } = require('./message');
 /// Will be sent as reply upon incoming commands
 /// //////////////////////////////////////////////////////////////////////// ///
 
+/// devid: See Medibus Protocol definition 6.0 p.55
+
 const icc   = new Message(0x01, 0x51); /// [ 0x01, 0x51, 0x35, 0x32, 0x0d ]
 const devid = new Message(0x01, 0x52); /// [ 0x01, 0x52, 0x35, 0x33, 0x0d ]
 const nak   = new Message(0x01, 0x15); /// [ 0x01, 0x15, 0x31, 0x36, 0x0d ]

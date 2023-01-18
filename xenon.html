@@ -423,16 +423,6 @@ to Serial/UART/RS232</a></li>
 commands</a></li>
 <li><a href="#additional-resources" id="toc-additional-resources">Additional resources</a></li>
 </ul></li>
-<li><a href="#serial-interface" id="toc-serial-interface">Serial
-interface</a>
-<ul>
-<li><a href="#status" id="toc-status">Status</a>
-<ul>
-<li><a href="#start-routine" id="toc-start-routine">Start
-routine</a></li>
-<li><a href="#stop" id="toc-stop">Stop</a></li>
-</ul></li>
-</ul></li>
 <li><a href="#dräger-medibus-communication-standard" id="toc-dräger-medibus-communication-standard">Dräger Medibus
 communication standard</a>
 <ul>
@@ -466,7 +456,18 @@ and unknown commands</a></li>
 commands</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#event-loop" id="toc-event-loop">Event Loop</a></li>
+<li><a href="#controller" id="toc-controller">Controller</a>
+<ul>
+<li><a href="#portcontroller" id="toc-portcontroller">PortController</a></li>
+<li><a href="#statuscontroller" id="toc-statuscontroller">StatusController</a></li>
+<li><a href="#protcolcontroller" id="toc-protcolcontroller">ProtcolController</a></li>
+<li><a href="#messagecontroller" id="toc-messagecontroller">MessageController</a></li>
+</ul></li>
+<li><a href="#event-loop" id="toc-event-loop">Event Loop</a>
+<ul>
+<li><a href="#launch-of-communication" id="toc-launch-of-communication">Launch of communication</a></li>
+<li><a href="#shutdown-of-communication" id="toc-shutdown-of-communication">Shutdown of communication</a></li>
+</ul></li>
 <li><a href="#data" id="toc-data">Data</a>
 <ul>
 <li><a href="#querying-of-data-using-command-objects" id="toc-querying-of-data-using-command-objects">Querying of data using
@@ -552,49 +553,6 @@ program exit when error occur.</li>
 </ul>
 <hr />
 <!--- --------------------------------------------------------------------- --->
-</div>
-</div>
-<div id="serial-interface" class="section level1">
-<h1>Serial interface</h1>
-<!--- --------------------------------------------------------------------- --->
-<div id="status" class="section level2">
-<h2>Status</h2>
-<div id="start-routine" class="section level3">
-<h3>Start routine</h3>
-<ul>
-<li><strong>Open Port</strong> via portController.open</li>
-<li>The portController sets Status to <code>listen</code></li>
-<li>Upon incoming ICC command, eventLoop.React calls
-protocolController.initCom</li>
-<li>protocolController.initCom
-<ul>
-<li>Sends ICC reply</li>
-<li>ProtocolController sets Status to <code>Initialising</code></li>
-<li>Sets Episode UUID via <code>initEpisodeUuid</code><br />
-</li>
-</ul></li>
-<li>Upon Status.Initialising, MessageController does:
-<ul>
-<li>Set status to <code>Protocol</code></li>
-<li>Fill Action schedule (initial messages + message cycle)</li>
-<li>Executes doNextAction which triggers transmission of first
-command.</li>
-</ul></li>
-</ul>
-</div>
-<div id="stop" class="section level3">
-<h3>Stop</h3>
-<ul>
-<li>Set Status to stopping.</li>
-<li>NextMessage calls ProtocolController.stop() which sends STOP
-command</li>
-<li>Reply is caught by EventLoop React which calls
-ProtocolController.shutdown</li>
-<li>Shutdown closes port and clears StatusController episode UUID.</li>
-</ul>
-<hr />
-<!--- --------------------------------------------------------------------- --->
-</div>
 </div>
 </div>
 <div id="dräger-medibus-communication-standard" class="section level1">
@@ -821,6 +779,28 @@ medical device within approx. 1 second.</p></li>
 </div>
 </div>
 </div>
+<div id="controller" class="section level1">
+<h1>Controller</h1>
+<!--- --------------------------------------------------------------------- --->
+<p>There are four controllers located in the <code>/controller</code>
+directory.</p>
+<div id="portcontroller" class="section level2">
+<h2>PortController</h2>
+<p>The <em>PortController</em> derives from <code>Stream.readable</code>
+and contains an instance of <em>SerialPort</em>.</p>
+</div>
+<div id="statuscontroller" class="section level2">
+<h2>StatusController</h2>
+</div>
+<div id="protcolcontroller" class="section level2">
+<h2>ProtcolController</h2>
+</div>
+<div id="messagecontroller" class="section level2">
+<h2>MessageController</h2>
+<hr />
+<!--- --------------------------------------------------------------------- --->
+</div>
+</div>
 <div id="event-loop" class="section level1">
 <h1>Event Loop</h1>
 <!--- --------------------------------------------------------------------- --->
@@ -838,8 +818,42 @@ incoming chunks</li>
 Device-Id)</li>
 <li>Receive replies (Data, STOP)</li>
 </ul>
+<div id="launch-of-communication" class="section level2">
+<h2>Launch of communication</h2>
+<ul>
+<li><strong>Open Port</strong> via portController.open</li>
+<li>The portController sets Status to <code>listen</code></li>
+<li>Upon incoming ICC command, eventLoop.React calls
+protocolController.initCom</li>
+<li>protocolController.initCom
+<ul>
+<li>Sends ICC reply</li>
+<li>ProtocolController sets Status to <code>Initialising</code></li>
+<li>Sets Episode UUID via <code>initEpisodeUuid</code><br />
+</li>
+</ul></li>
+<li>Upon Status.Initialising, MessageController does:
+<ul>
+<li>Set status to <code>Protocol</code></li>
+<li>Fill Action schedule (initial messages + message cycle)</li>
+<li>Executes doNextAction which triggers transmission of first
+command.</li>
+</ul></li>
+</ul>
+</div>
+<div id="shutdown-of-communication" class="section level2">
+<h2>Shutdown of communication</h2>
+<ul>
+<li>Set Status to stopping.</li>
+<li>NextMessage calls ProtocolController.stop() which sends STOP
+command</li>
+<li>Reply is caught by EventLoop React which calls
+ProtocolController.shutdown</li>
+<li>Shutdown closes port and clears StatusController episode UUID.</li>
+</ul>
 <hr />
 <!--- --------------------------------------------------------------------- --->
+</div>
 </div>
 <div id="data" class="section level1">
 <h1>Data</h1>

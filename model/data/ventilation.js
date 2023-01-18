@@ -42,6 +42,7 @@ class Ventilation {
   /**
    * @descr{
    * @usedBy{MessageController.doNextAction}
+   * @usedBy{/data/vent} - (/routes/data)
    **/
   getValueObject () {
     this.#val.episode = port.episode.uuid;

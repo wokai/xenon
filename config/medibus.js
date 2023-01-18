@@ -253,7 +253,8 @@ const bus = {
   text: {
     /**
      * @descr{Provices Map keys for extraction of stored text messages}
-     * @see{Text.setEmptyParamObject} - (/model/data/text)
+     * @see{Text.setEmptyParamObject}  - (/model/data/text)
+     * @usedBy{/param/text/parameters} - (/routes/param)
      **/
     parameters: {
       device: {
@@ -274,6 +275,10 @@ const bus = {
         sync:     'sync'
       }
     },
+    
+    /**
+     * @usedBy{/param/text/messages}   - (/routes/param)
+     **/
     messages: new Map([
       [ '01', { param: 'ventmode',  value: 'IPPV',          text: 'Ventilationmode IPPV'              } ],
       [ '06', { param: 'ventmode',  value: 'SIMV',          text: 'Ventilationmode SIMV'              } ],
@@ -316,13 +321,28 @@ const bus = {
       [ '4F', { param: 'secInhal',  value: 'None',          text: 'No 2nd Anesthesia Gas detected'    } ],
       
       [ '56', { param: 'agentUnit', value: 'kPa',           text: 'Selected Agent Unit is kPa'        } ],
-      [ '57', { param: 'agentUnit', value: '%',             text: 'Selected Agent Unit is %'          } ]
+      [ '57', { param: 'agentUnit', value: '%',             text: 'Selected Agent Unit is %'          } ],
+      
+      /// Unknown messages received from evita: 0A 20 48 68 6D 6F 71 78 9F 
+      [ '0A', { param: 'ventmode',  value: 'SPN-CPAP',      text: 'Mode SPN-CPAP'} ],
+      [ '20', { param: 'agemode',   value: 'Mode Adults',   text: 'Device is in adult mode'          } ],
+      [ '48', { param: 'airway',    value: 'IV (invasive)', text: 'Device configured for intubated patient ventilation'          } ],
+      [ '49', { param: 'airway',    value: 'NIV',           text: 'Device configured for mask ventilation'   } ],
+      [ '68', { param: 'tubetype',  value: 'Endodracheal',  text: 'Tube type endotracheal'             } ],
+      [ '6D', { param: 'atcauto',   value: 'Automatic',     text: 'Automatic tube compensation (ATC) added to current ventilation mode'          } ],
+      [ '6E', { param: 'atctype',   value: 'Exspiratory',   text: 'Expiratory ATC enabled'             } ],
+      [ '6F', { param: 'atctype',   value: 'Inspiratory',   text: 'Inspiratory ATC enabled'            } ],
+      [ '70', { param: 'tubetype',  value: 'Tracheostoma',  text: 'Tube type tracheostoma'             } ],
+      [ '71', { param: 'apneavent', value: 'Enabled',       text: 'Apnea ventilation enabled'          } ],
+      [ '78', { param: 'hme    ',   value: 'HME / Filter',  text: 'HME / Filter'                       } ],
+      [ '9F', { param: 'trachpres', value: 'Enabled',       text: 'Tracheal pressure calculation enabled as real-time value'          } ]
     ]),
     etx: 0x03
   },
   /**
    * @see{Medibus-Primus DeviceSettings} - (p.13)
    * @usedBy{settingsMessageResponse}    - (/model/medibus/settingsMessageResponse)
+   * @usedBy{/param/settings}            - (/routes/param)
    **/
   settings: {
     o2:           '01',

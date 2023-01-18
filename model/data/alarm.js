@@ -178,7 +178,7 @@ class AlarmLimits {
   get dataObject ()  { return this.#obj; }
   
   /// Wrapper functions for obtaining data from  
-  extractLowLimits  = (msg) => { this.setLowLimits( new DataResponse(msg)); }
+  extractLowLimits  = (msg) => { this.setLowLimits (new DataResponse(msg)); }
   extractHighLimits = (msg) => { this.setHighLimits(new DataResponse(msg)); }
 }
 
@@ -230,9 +230,7 @@ class Alarm {
     this.#priority = 1;
     this.#code     = '';
     this.#phrase   = '';
-    
     this.#label    = '';
-    
     this.#begin     = new PeriodPoint();
   }
   
