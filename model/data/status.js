@@ -68,7 +68,6 @@ class ExspiredStatus {
 }
 
 class CurrentStatus {
-  
   #current    /// Current status objects
   
   constructor() {

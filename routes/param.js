@@ -39,5 +39,13 @@ router.get('/text/messages',  function(request, result, next) {
   result.status(200).json(Array.from(medibus.text.messages, ([name, value]) => ({ name, value })));
 });
 
+router.get('/text/parameters', function(request, result, next) {
+  result.status(200).json(medibus.text.parameters);
+});
+
+router.get('/settings', function(request, result, next) {
+  result.status(200).json(medibus.settings);
+});
+
 
 module.exports = router;
