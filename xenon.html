@@ -423,6 +423,16 @@ to Serial/UART/RS232</a></li>
 commands</a></li>
 <li><a href="#additional-resources" id="toc-additional-resources">Additional resources</a></li>
 </ul></li>
+<li><a href="#serial-interface" id="toc-serial-interface">Serial
+interface</a>
+<ul>
+<li><a href="#status" id="toc-status">Status</a>
+<ul>
+<li><a href="#start-routine" id="toc-start-routine">Start
+routine</a></li>
+<li><a href="#stop" id="toc-stop">Stop</a></li>
+</ul></li>
+</ul></li>
 <li><a href="#dräger-medibus-communication-standard" id="toc-dräger-medibus-communication-standard">Dräger Medibus
 communication standard</a>
 <ul>
@@ -456,15 +466,18 @@ and unknown commands</a></li>
 commands</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#serial-interface" id="toc-serial-interface">Serial
-interface</a>
+<li><a href="#event-loop" id="toc-event-loop">Event Loop</a></li>
+<li><a href="#data" id="toc-data">Data</a>
 <ul>
-<li><a href="#status" id="toc-status">Status</a>
+<li><a href="#querying-of-data-using-command-objects" id="toc-querying-of-data-using-command-objects">Querying of data using
+Command objects</a></li>
+<li><a href="#scheduled-query-of-data" id="toc-scheduled-query-of-data">Scheduled query of data</a>
 <ul>
-<li><a href="#start-routine" id="toc-start-routine">Start
-routine</a></li>
-<li><a href="#stop" id="toc-stop">Stop</a></li>
+<li><a href="#initialization" id="toc-initialization">Initialization</a></li>
+<li><a href="#query-schedule" id="toc-query-schedule">Query
+schedule</a></li>
 </ul></li>
+<li><a href="#reporting-via-monitor" id="toc-reporting-via-monitor">Reporting via monitor</a></li>
 </ul></li>
 </ul>
 </div>
@@ -539,6 +552,49 @@ program exit when error occur.</li>
 </ul>
 <hr />
 <!--- --------------------------------------------------------------------- --->
+</div>
+</div>
+<div id="serial-interface" class="section level1">
+<h1>Serial interface</h1>
+<!--- --------------------------------------------------------------------- --->
+<div id="status" class="section level2">
+<h2>Status</h2>
+<div id="start-routine" class="section level3">
+<h3>Start routine</h3>
+<ul>
+<li><strong>Open Port</strong> via portController.open</li>
+<li>The portController sets Status to <code>listen</code></li>
+<li>Upon incoming ICC command, eventLoop.React calls
+protocolController.initCom</li>
+<li>protocolController.initCom
+<ul>
+<li>Sends ICC reply</li>
+<li>ProtocolController sets Status to <code>Initialising</code></li>
+<li>Sets Episode UUID via <code>initEpisodeUuid</code><br />
+</li>
+</ul></li>
+<li>Upon Status.Initialising, MessageController does:
+<ul>
+<li>Set status to <code>Protocol</code></li>
+<li>Fill Action schedule (initial messages + message cycle)</li>
+<li>Executes doNextAction which triggers transmission of first
+command.</li>
+</ul></li>
+</ul>
+</div>
+<div id="stop" class="section level3">
+<h3>Stop</h3>
+<ul>
+<li>Set Status to stopping.</li>
+<li>NextMessage calls ProtocolController.stop() which sends STOP
+command</li>
+<li>Reply is caught by EventLoop React which calls
+ProtocolController.shutdown</li>
+<li>Shutdown closes port and clears StatusController episode UUID.</li>
+</ul>
+<hr />
+<!--- --------------------------------------------------------------------- --->
+</div>
 </div>
 </div>
 <div id="dräger-medibus-communication-standard" class="section level1">
@@ -685,8 +741,8 @@ standard.</li>
 <div id="general-rules" class="section level2">
 <h2>General rules</h2>
 <!--- --------------------------------------------------------------------- --->
-<p>Medibus commands <a href="p.12"><span class="citation">Drägermedical
-(2007)</span></a>:</p>
+<p>Medibus commands <span class="citation">(Drägermedical 2007)</span>
+(p.12):</p>
 <ul>
 <li>Any new command must not be sent before the response to a previous
 command has been received.</li>
@@ -702,7 +758,7 @@ command.</li>
 <!--- --------------------------------------------------------------------- --->
 <ul>
 <li>For initialization, the ICC command</li>
-<li>ICC commands always require a response <a href="p.12"><span class="citation">Drägermedical (2007)</span></a></li>
+<li>ICC commands always require a response <span class="citation">(Drägermedical 2007)</span> (p.12)</li>
 </ul>
 <!--- --------------------------------------------------------------------- --->
 </div>
@@ -765,50 +821,94 @@ medical device within approx. 1 second.</p></li>
 </div>
 </div>
 </div>
-<div id="serial-interface" class="section level1">
-<h1>Serial interface</h1>
+<div id="event-loop" class="section level1">
+<h1>Event Loop</h1>
 <!--- --------------------------------------------------------------------- --->
-<div id="status" class="section level2">
-<h2>Status</h2>
-<div id="start-routine" class="section level3">
-<h3>Start routine</h3>
+<p>The <em>EventLoop</em> (/bus/eventLoop) defines the reaction-chain
+for incoming RS-232 messages. The event loop classes are derived from
+<em>Stream.transform</em>. The processing order is</p>
 <ul>
-<li><strong>Open Port</strong> via portController.open</li>
-<li>The portController sets Status to <code>listen</code></li>
-<li>Upon incoming ICC command, eventLoop.React calls
-protocolController.initCom</li>
-<li>protocolController.initCom
+<li><em>Interrupt</em>:</li>
+<li><em>MessageDelimiter</em> detects the end of a Medibus-Message and
+passes related data chunks to the next instance</li>
+<li><em>MessageParser</em> constructs <em>Message</em> objects from the
+incoming chunks</li>
+<li><em>React</em> defines the type of reaction:</li>
+<li>Eventually reply to incoming commands (especially: ICC,
+Device-Id)</li>
+<li>Receive replies (Data, STOP)</li>
+</ul>
+<hr />
+<!--- --------------------------------------------------------------------- --->
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<!--- --------------------------------------------------------------------- --->
+<div id="querying-of-data-using-command-objects" class="section level2">
+<h2>Querying of data using Command objects</h2>
+<p>Medibus Commands are represented by <em>Message</em> objects, defined
+in <code>model/medibus/commands</code>. <em>Command</em> messages are
+stored inside of <em>Action</em> objects. See definition of query
+command messages <span class="citation">(Drägermedical 2007)</span>
+(p.8). <em>Action</em> objects coordinate the sending of commands and
+the initiation of the further data processing. An <em>Action</em> object
+contains</p>
 <ul>
-<li>Sends ICC reply</li>
-<li>ProtocolController sets Status to <code>Initialising</code></li>
-<li>Sets Episode UUID via <code>initEpisodeUuid</code><br />
-</li>
-</ul></li>
-<li>Upon Status.Initialising, MessageController does:
-<ul>
-<li>Set status to <code>Protocol</code></li>
-<li>Fill Action schedule (initial messages + message cycle)</li>
-<li>Executes doNextAction which triggers transmission of first
-command.</li>
-</ul></li>
+<li>a <em>Message</em> object which will be send (via
+<em>ProtocollController</em>) upon request</li>
+<li>a Callback defining the further processing of received data.</li>
 </ul>
 </div>
-<div id="stop" class="section level3">
-<h3>Stop</h3>
+<div id="scheduled-query-of-data" class="section level2">
+<h2>Scheduled query of data</h2>
+<p>The data-query Cycle is implemented in the
+<strong>MessageController</strong> (/controller/messageController). The
+<em>MessageController</em> keeps an array of <em>Action</em> objects.
+These <em>Action</em>s are executed one after another.</p>
+<p>During construction, the <em>MessageController</em> first loads the
+initial commands</p>
 <ul>
-<li>Set Status to stopping.</li>
-<li>NextMessage calls ProtocolController.stop() which sends STOP
-command</li>
-<li>Reply is caught by EventLoop React which calls
-ProtocolController.shutdown</li>
-<li>Shutdown closes port and clears StatusController episode UUID.</li>
+<li>Request Device Identification <code>52H</code></li>
+<li>Request current Date and Time <code>28H</code></li>
 </ul>
+<p>together with a first cycle of data query commands. One
+<strong>Cycle</strong> contains a complete set of all Data query
+commands which are regularly queried:</p>
+<ul>
+<li>Request current measured Data (Codepage 1) <code>24H</code></li>
+<li>Request current low Alarm Limits (Codepage 1) <code>25H</code></li>
+<li>Request current high Alarm Limits (Codepage 1) <code>26H</code></li>
+<li>Request current Alarms (Codepage 1) <code>27H</code></li>
+<li>Request current Alarms (Codepage 2) <code>2EH</code></li>
+<li>Request current Text Messages <code>2AH</code></li>
+</ul>
+<div id="initialization" class="section level3">
+<h3>Initialization</h3>
+<p>When the <em>StatusController</em> signals entering of
+<code>initializing</code> status, the <em>MessageController</em> loads
+the intial set of commands together with the first cycle and finally
+calls <code>doNextAction</code> for the first time.</p>
+<p>All subsequent calls to <code>doNextAction</code> are done by
+<em>NextMessage</em> (event-loop).</p>
+</div>
+<div id="query-schedule" class="section level3">
+<h3>Query schedule</h3>
+<p>When the <em>MessageController</em> schedule array is empty, the next
+call to <code>doNextAction</code> triggers</p>
+<ul>
+<li>Reporting of the complete dataset to attached clients via
+<em>Monitor</em> (/monitor/monitor)</li>
+<li>Push dataset to <em>DataCache</em> (/model/data/cache)</li>
+</ul>
+</div>
+</div>
+<div id="reporting-via-monitor" class="section level2 unnumbered">
+<h2 class="unnumbered">Reporting via monitor</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-MbProtDef" class="csl-entry">
 Drägermedical. 2007. <span>“Dr<span>ä</span>ger RS 232 MEDIBUS.”</span>
 {Protocol Definition, Revision Level 6.00}. Moislinger Allee 53 – 55,
 D-23542 Lübeck, Germany: Dräger Medical AG &amp; Co. KG.
-</div>
 </div>
 </div>
 </div>

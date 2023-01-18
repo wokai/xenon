@@ -71,6 +71,7 @@ class MessageController {
   }
 
   /**
+   * @usedBy{this.constructor}
    * @usedBy{NextMessage._write} - (/bus/nextMessage)
    **/
   doNextAction = (id) => {

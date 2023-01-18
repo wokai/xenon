@@ -93,6 +93,7 @@ class DeviceSettings {
   }
 
   /**
+   * @usedBy{Ventilation.getValueObject} - (/model/data/ventilation)
    * @usedBy{router.get(/text)} - (/routes/data)
    **/
   get dataObject () { return this.#param; }

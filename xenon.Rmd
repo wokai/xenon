@@ -4,7 +4,7 @@ author:
     name: "W. Kaisers"
     affiliation: "Düsseldorf"
 date: "14.07.2021"
-bibliography: medibus.bib
+bibliography: xenon.bib
 output:
     html_document:
         theme: spacelab
@@ -164,12 +164,11 @@ NAK     01H 15H 31H 36H 0DH     `[ 0x01, 0x15, 0x31, 0x36, 0x0d ]`
 ## Message flow
 <!--- --------------------------------------------------------------------- --->
 
-
 <!--- --------------------------------------------------------------------- --->
 ## General rules
 <!--- --------------------------------------------------------------------- --->
 
-Medibus commands [@MbProtDef](p.12):
+Medibus commands [@MbProtDef] (p.12):
 
  - Any new command must not be sent before the response to a previous command has
     been received.
@@ -181,7 +180,7 @@ Medibus commands [@MbProtDef](p.12):
 ## Initialize communication
 <!--- --------------------------------------------------------------------- --->
  - For initialization, the ICC command
- - ICC commands always require a response [@MbProtDef](p.12)
+ - ICC commands always require a response [@MbProtDef] (p.12)
 
 <!--- --------------------------------------------------------------------- --->
 ## Stop communication
@@ -233,16 +232,48 @@ Requested data is sent in segments of 6 bytes length:
 
 Empty positions and leading zeros must be transmitted as space (0x20).
 
+--------------------------------------------------------------------------------
+
+<!--- --------------------------------------------------------------------- --->
+# Controller
+<!--- --------------------------------------------------------------------- --->
+
+There are four controllers located in the `/controller` directory.
+
+
+## PortController
+
+The *PortController* derives from `Stream.readable` and contains
+an instance of *SerialPort*.
+
+## StatusController
+
+## ProtcolController
+
+## MessageController
+
 
 --------------------------------------------------------------------------------
 
 <!--- --------------------------------------------------------------------- --->
-# Serial interface
+# Event Loop
 <!--- --------------------------------------------------------------------- --->
 
-## Status
+The *EventLoop* (/bus/eventLoop) defines the reaction-chain for incoming
+RS-232 messages.
+The event loop classes are derived from *Stream.transform*.
+The processing order is
 
-### Start routine
+ - *Interrupt*: 
+ - *MessageDelimiter* detects the end of a Medibus-Message and passes
+    related data chunks to the next instance
+ - *MessageParser* constructs *Message* objects from the incoming chunks
+ - *React* defines the type of reaction:
+  - Eventually reply to incoming commands (especially: ICC, Device-Id)
+  - Receive replies (Data, STOP)
+  
+
+## Launch of communication
 
  - **Open Port** via portController.open
  - The portController sets Status to `listen`
@@ -256,11 +287,74 @@ Empty positions and leading zeros must be transmitted as space (0x20).
     - Fill Action schedule (initial messages + message cycle)
     - Executes doNextAction which triggers transmission of first command.
 
-### Stop
+## Shutdown of communication
 
  - Set Status to stopping.
  - NextMessage calls ProtocolController.stop() which sends STOP command
  - Reply is caught by EventLoop React which calls ProtocolController.shutdown
  - Shutdown closes port and clears StatusController episode UUID.
+
+
+
+
+--------------------------------------------------------------------------------
+
+<!--- --------------------------------------------------------------------- --->
+# Data
+<!--- --------------------------------------------------------------------- --->
+
+## Querying of data using Command objects
+
+Medibus Commands are represented by *Message* objects, defined in 
+`model/medibus/commands`.
+*Command* messages are stored inside of *Action* objects.
+See definition of query command messages [@MbProtDef] (p.8).
+*Action* objects coordinate the sending of commands and the initiation of the
+further data processing.
+An *Action* object contains
+
+ - a *Message* object which will be send (via *ProtocollController*) upon request
+ - a Callback defining the further processing of received data.
+
+## Scheduled query of data
+
+The data-query Cycle is implemented in the **MessageController** (/controller/messageController).
+The *MessageController* keeps an array of *Action* objects.
+These *Action*s are executed one after another.
+
+During construction, the *MessageController* first loads the initial commands
+
+ - Request Device Identification `52H`
+ - Request current Date and Time `28H`
+
+together with a first cycle of data query commands.
+One **Cycle** contains a complete set of all Data query commands which are
+regularly queried:
+
+ - Request current measured Data (Codepage 1) `24H`
+ - Request current low Alarm Limits (Codepage 1) `25H`
+ - Request current high Alarm Limits (Codepage 1) `26H`
+ - Request current Alarms (Codepage 1) `27H`
+ - Request current Alarms (Codepage 2) `2EH`
+ - Request current Text Messages `2AH`
+
+### Initialization
+
+When the *StatusController* signals entering of `initializing` status,
+the *MessageController* loads the intial set of commands together with
+the first cycle and finally calls `doNextAction` for the first time.
+
+All subsequent calls to `doNextAction` are done by *NextMessage* (event-loop).
+
+### Query schedule
+
+When the *MessageController* schedule array is empty, the next call to
+`doNextAction` triggers
+
+ - Reporting of the complete dataset to attached clients via *Monitor* (/monitor/monitor)
+ - Push dataset to *DataCache* (/model/data/cache)
+
+
+## Reporting via monitor
 
 
