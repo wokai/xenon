@@ -31,6 +31,21 @@ const colors = require('colors');
 ///  15 0F SI   31 1F US   47 2F /  63 3F ?  79 4F O  95 5F _  111 6F o  127 7F DEL
 /// ///////////////////////////////////////////////////////////////////////// ///
 
+/// ////////////////////////////////////////////////////////////////////
+/// Messages
+/// ////////////////////////////////////////////////////////////////////
+const dat1      = Buffer.from([ 0x1b, 0x24, 0x33, 0x46, 0x0d ]);
+const alarm_ll  = Buffer.from([ 0x1b, 0x25, 0x34, 0x30, 0x0d ]);
+const alarm_hl  = Buffer.from([ 0x1b, 0x26, 0x34, 0x31, 0x0d ]);
+const alarm_cp1 = Buffer.from([ 0x1b, 0x27, 0x34, 0x32, 0x0d ]);
+const time      = Buffer.from([ 0x1b, 0x28, 0x34, 0x33, 0x0d ]);
+const settings  = Buffer.from([ 0x1b, 0x29, 0x34, 0x34, 0x0d ]);
+const alarm_cp2 = Buffer.from([ 0x1b, 0x2e, 0x34, 0x39, 0x0d ]);
+const nop       = Buffer.from([ 0x1b, 0x30, 0x34, 0x32, 0x0d ]);
+const icc       = Buffer.from([ 0x1b, 0x51, 0x36, 0x43, 0x0d ]);
+const devid     = Buffer.from([ 0x1b, 0x52, 0x36, 0x44, 0x0d ]);
+const rt_conf   = Buffer.from([ 0x1b, 0x54, 0x36, 0x46, 0x0d ]);
+const stop      = Buffer.from([ 0x1b, 0x55, 0x37, 0x30, 0x0d ]);
 
 /// ////////////////////////////////////////////////////////////////////////////
 /// Buffer
