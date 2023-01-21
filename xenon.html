@@ -456,6 +456,8 @@ and unknown commands</a></li>
 commands</a></li>
 </ul></li>
 </ul></li>
+<li><a href="#data-definition" id="toc-data-definition">Data
+definition</a></li>
 <li><a href="#controller" id="toc-controller">Controller</a>
 <ul>
 <li><a href="#portcontroller" id="toc-portcontroller">PortController</a></li>
@@ -779,6 +781,12 @@ medical device within approx. 1 second.</p></li>
 </div>
 </div>
 </div>
+<div id="data-definition" class="section level1">
+<h1>Data definition</h1>
+<!--- --------------------------------------------------------------------- --->
+<hr />
+<!--- --------------------------------------------------------------------- --->
+</div>
 <div id="controller" class="section level1">
 <h1>Controller</h1>
 <!--- --------------------------------------------------------------------- --->
@@ -791,6 +799,52 @@ and contains an instance of <em>SerialPort</em>.</p>
 </div>
 <div id="statuscontroller" class="section level2">
 <h2>StatusController</h2>
+<p>The <em>StatusController</em> (/controller/statusController) manages
+the communication status of the Port and the Medibus protocol. The
+status is one of five levels:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Value</th>
+<th>Level</th>
+<th>Label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>Port</td>
+<td>Closed</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Bus</td>
+<td>Inactive</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>Bus</td>
+<td>Listen</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>Bus</td>
+<td>Stopping</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>Bus</td>
+<td>Initializing</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>Com</td>
+<td>Protocol</td>
+</tr>
+</tbody>
+</table>
+<p>Via emission of client notifications, the processes of initialization
+and shutdown of Medibus protocol are coordinated.</p>
 </div>
 <div id="protcolcontroller" class="section level2">
 <h2>ProtcolController</h2>

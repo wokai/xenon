@@ -67,6 +67,7 @@ class CommandTimeout {
   
   /**
    * @usedBy{ProtocolController.receiveMessage} - (Triggered by React)
+   * @param {msg} - (Message) - (/model/medibus/message)
    **/
   
   onReply = (msg) => {
@@ -135,7 +136,8 @@ class ProtocolController {
   
   /**
    * @usedBy{React._transform} - (/bus/react) - (event-loop)
-   * @descr{Will be called as default when React catches an incoming reply to a command}
+   * @param {msg}              - (Message)    - (/model/medibus/message)
+   * @descr {Will be called as default when React catches an incoming reply to a previously sent command}
    **/
   receiveMessage = (msg) => {
     win.def.log({ level: 'debug', file: 'protocolController', func: 'receiveMessage', message: `Id: ${msg.id} | Code: ${msg.code}`});
@@ -145,7 +147,6 @@ class ProtocolController {
   }
   
   /// MessageLayer sends Messages and receives replies via the same function
-  
   /// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ ///
   /// ToDo: A Timeout is unexpected and should therefore trigger
   /// a retry or a schutdown ....

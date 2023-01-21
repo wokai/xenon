@@ -259,6 +259,22 @@ an instance of *SerialPort*.
 
 ## StatusController
 
+The *StatusController* (/controller/statusController) manages the communication
+status of the Port and the Medibus protocol.
+The status is one of five levels:
+
+| Value   | Level         | Label           |
+|---------|---------------|-----------------|
+| 0       | Port          | Closed          |
+| 1       | Bus           | Inactive        |
+| 2       | Bus           | Listen          |
+| 3       | Bus           | Stopping        |
+| 4       | Bus           | Initializing    |
+| 5       | Com           | Protocol        |
+
+Via emission of client notifications, the initialization and 
+shutdown procedures of Medibus protocol are coordinated.
+
 ## ProtcolController
 
 ## MessageController

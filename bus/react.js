@@ -61,7 +61,7 @@ class React extends Stream.Transform {
   }
   
   /**
-   * @param{msg}      - (Message)
+   * @param{msg}      - (Message) - (/model/medibus/message)
    * @param{encoding} - (String)
    * @param{callback} - (Function)
    **/

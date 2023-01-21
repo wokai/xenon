@@ -35,6 +35,7 @@ class StatusItem {
   
   static #lastId = 0; /// Counter for creation of (session) unique id's
   #id     /// @ number | Medibus-Message-Id
+  #param  /// @ string | Parameter: O2 setting or PEEP
   #label  /// @ string | Text displayed in list or stored in logfile
   #begin  /// @ Date
   #end    /// @ Date
