@@ -29,6 +29,7 @@ const { combine, label, json } = format;
 const fs = require('fs');
 const path = require('path');
 
+const config = require(path.join(__dirname, '..', 'config', 'general'));
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// GitHub Winston: "CHILL WINSTON! ... I put it in the logs."
@@ -117,7 +118,7 @@ const def = winston.createLogger({
   /** See app.js : uncaughtException
   exceptionHandlers: [ redisTransport ],
   **/
-  level: 'info',  /// Default: info
+  level: config.logger.level, //'info',  /// Default: info
   exitOnError: false
 });
 
@@ -162,7 +163,7 @@ const msg = winston.createLogger({
   exitOnError: false
 });
 
-
+def.log({ level: 'info', file: 'logger', func: '(-)', message: `Log level: ${config.logger.level}`});
 
 module.exports = {
   def : def,

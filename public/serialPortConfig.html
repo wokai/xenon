@@ -56,10 +56,10 @@
 <div class="card-body border-top">
   <div class="row">
     <div class="btn-group" role="group">
-    <button class="btn btn-primary" ng-click="initialisePort()" ng-disabled="portStatus.open">
+    <button class="btn btn-primary" ng-click="initialisePort()" ng-disabled="portStatus.open" data-toggle="tooltip" title="Create new SerialPort instance (Port must be closed)">
       Init
     </button>
-    <button class="btn btn-primary" ng-click="setParams()" ng-disabled="!portStatus.open">
+    <button class="btn btn-primary" ng-click="setParams()" ng-disabled="!portStatus.open" data-toggle="tooltip" title="Update parameters (Port must be open)">
       Set
     </button>
     <button class="btn btn-success" ng-click="openPort()" ng-disabled="portStatus.open">
