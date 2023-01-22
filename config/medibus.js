@@ -281,8 +281,14 @@ const bus = {
      **/
     messages: new Map([
       [ '01', { param: 'ventmode',  value: 'IPPV',          text: 'Ventilationmode IPPV'              } ],
+      [ '02', { param: 'ventmode',  value: 'VC-AC',         text: 'Ventilationmode VC-AC'             } ],
       [ '06', { param: 'ventmode',  value: 'SIMV',          text: 'Ventilationmode SIMV'              } ],
+      [ '0A', { param: 'ventmode',  value: 'SPN-CPAP',      text: 'Ventilationmode SPN_CPAP'          } ],
+      [ '0C', { param: 'ventmode',  value: 'VC-MMC',        text: 'Ventilationmode VC-MMC'            } ],
+      [ '0D', { param: 'ventmode',  value: 'PC-MMV',        text: 'Ventilationmode PC-MMV'            } ],
       [ '0E', { param: 'ventmode',  value: 'BIPAP',         text: 'Ventilationmode BIPAP'             } ],
+      [ '11', { param: 'ventmode',  value: 'APNOE',         text: 'Ventilationmode Apnoe ventilation' } ],
+      [ '12', { param: 'ventmode',  value: 'TEST',          text: 'Product Test mode'                 } ],
       [ '1E', { param: 'ventmode',  value: 'Standby',       text: 'Ventilator is in Standby-Mode'     } ],
       
       [ '22', { param: 'co2unit',   value: 'mmHg',          text: 'Selected CO2 Unit is mmHg'         } ],
