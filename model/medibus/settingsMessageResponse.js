@@ -53,7 +53,7 @@ class SettingsMessageResponse {
             this.#map.set(sg.code, sg);
           }
       } catch (error) {
-        win.def.log({ level: 'error', file: 'SettingsMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Segments: ${nsg} | Index: ${index}`});
+        win.def.log({ level: 'error', file: 'SettingsMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Index: ${index} | Error: ${error.toString()}`});
       }
     }
     win.def.log({ level: 'debug', file: 'SettingsMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Segments: ${this.#map.size}`});

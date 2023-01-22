@@ -51,6 +51,13 @@ const config = {
       parity: 'none',
       stopBits: 1, 
       dataBits: 8
+    },
+    {
+      name: 'V300',
+      baudRate: 19200,
+      parity: 'even',
+      stopBits: 1,
+      dataBits: 8
     }
   ]
 };
