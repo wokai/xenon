@@ -26,12 +26,17 @@ const win                 = require(path.join(__dirname, '..', '..', 'logger', '
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const monitor             = require(path.join(__dirname, '..', '..', 'monitor', 'monitor'));
 
+
 /// ////////////////////////////////////////////////////////////////////////////
 /// Status tracks values or events which occur infrequenly like
 /// Alarms or change of settings
+///
+/// 
+/// A) Each status item is identified by an ID which must be unique (system wide)
+/// B) 
 /// ////////////////////////////////////////////////////////////////////////////
 
-class StatusItem {
+class DeviceStatusItem {
   
   static #lastId = 0; /// Counter for creation of (session) unique id's
   #id     /// @ number | Medibus-Message-Id
@@ -42,9 +47,9 @@ class StatusItem {
    
   /// There is no type checking
   /// This class mainly exists in order to have defined accessors
-  constructor(label, id = StatusItem.#lastId, begin = new Date('2000-01-01T00:00:00')) {
+  constructor(label, id = DeviceStatusItem.#lastId, begin = new Date('2000-01-01T00:00:00')) {
     this.#label = label;
-    ++StatusItem.#lastId;
+    ++DeviceStatusItem.#lastId;
     this.#id = id;
     this.#begin = begin;
     this.#end = begin;
@@ -71,7 +76,7 @@ class ExspiredStatus {
   }
 }
 
-class CurrentStatus {
+class DeviceStatus {
   #current    /// Current status objects
   
   constructor() {
@@ -80,8 +85,8 @@ class CurrentStatus {
 }
 
 
-const currentStatus = new CurrentStatus();
+const DeviceStatus = new DeviceStatus();
 
 module.exports = {
-  currentStatus: currentStatus
+  DeviceStatus: DeviceStatus
 }

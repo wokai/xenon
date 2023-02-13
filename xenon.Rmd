@@ -277,6 +277,18 @@ shutdown procedures of Medibus protocol are coordinated.
 
 ## ProtcolController
 
+The ProtocolController on the Medibus Protocol level using the
+`CommandTimeout` class:
+
+ - initCom: Sends an `ICC` response upon receiving an ICC command and 
+  set StatusController to `initializing` status
+ - receiveMessage:
+ - sendCommand: Creates and triggers a `CommandTimeout`
+ - shutdown: Closes PortController
+ - stop: Initiates regular Protocol shutdown by sending a `STOP` command
+    and sets StatusController to `inactive` status
+
+
 ## MessageController
 
 

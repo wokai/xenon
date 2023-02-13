@@ -843,11 +843,24 @@ status is one of five levels:</p>
 </tr>
 </tbody>
 </table>
-<p>Via emission of client notifications, the processes of initialization
-and shutdown of Medibus protocol are coordinated.</p>
+<p>Via emission of client notifications, the initialization and shutdown
+procedures of Medibus protocol are coordinated.</p>
 </div>
 <div id="protcolcontroller" class="section level2">
 <h2>ProtcolController</h2>
+<p>The ProtocolController on the Medibus Protocol level using the
+<code>CommandTimeout</code> class:</p>
+<ul>
+<li>initCom: Sends an <code>ICC</code> response upon receiving an ICC
+command and set StatusController to <code>initializing</code>
+status</li>
+<li>receiveMessage:</li>
+<li>sendCommand: Creates and triggers a <code>CommandTimeout</code></li>
+<li>shutdown: Closes PortController</li>
+<li>stop: Initiates regular Protocol shutdown by sending a
+<code>STOP</code> command and sets StatusController to
+<code>inactive</code> status</li>
+</ul>
 </div>
 <div id="messagecontroller" class="section level2">
 <h2>MessageController</h2>
