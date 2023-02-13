@@ -28,8 +28,8 @@ const monitor             = require(path.join(__dirname, '..', '..', 'monitor', 
 
 
 /// ////////////////////////////////////////////////////////////////////////////
-/// Status tracks values or events which occur infrequenly like
-/// Alarms or change of settings
+/// DeviceStatus tracks values or events which occur infrequenly on the
+/// device such as Alarms or change of settings
 ///
 /// 
 /// A) Each status item is identified by an ID which must be unique (system wide)
@@ -82,6 +82,8 @@ class DeviceStatus {
   constructor() {
     this.#current = new Map();
   }
+  
+  
 }
 
 

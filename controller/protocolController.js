@@ -114,7 +114,11 @@ class ProtocolController {
     this.#cmdTimeout = null;
   }
 
-  /// Retry | recovery strategy ?
+
+  /**
+   * @usedBy{React._transform} - (/bus/react) - (event-loop)
+   **/
+  /// ToDoRetry | recovery strategy ?
   initCom = () => {
     if(status.controller.listen) {
       port.sendMessage(responses.icc)
