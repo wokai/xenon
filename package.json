@@ -17,7 +17,7 @@
     "morgan": "~1.9.1",
     "popper": "^1.0.1",
     "sequelize": "^6.6.5",
-    "serialport": "^9.1.0",
+    "serialport": "^10.5.0",
     "socket.io": "^4.1.2",
     "triple-beam": "^1.3.0",
     "winston": "^3.3.3"

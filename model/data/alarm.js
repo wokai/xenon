@@ -25,6 +25,8 @@ const path = require('path');
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const monitor             = require(path.join(__dirname, '..', '..', 'monitor', 'monitor'));
+const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
+
 const DataResponse        = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
 const AlarmStatusResponse = require(path.join(__dirname, '..', 'medibus', 'alarmStatusResponse'));
 
@@ -204,7 +206,7 @@ class PeriodPoint {
    
   /// There is no type checking, because this would mess up the code
   /// This class mainly exists in order to have clean accessors...
-  constructor(id = 0, time = new Date('2000-01-01T00:00:00')) {
+  constructor(id = 0, time = config.empty.time) {
     this.#id = id;
     this.#time = time;
   }

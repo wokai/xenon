@@ -25,6 +25,7 @@ const path = require('path');
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const monitor             = require(path.join(__dirname, '..', '..', 'monitor', 'monitor'));
+const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
 
 
 /// ////////////////////////////////////////////////////////////////////////////
@@ -36,7 +37,25 @@ const monitor             = require(path.join(__dirname, '..', '..', 'monitor', 
 /// B) 
 /// ////////////////////////////////////////////////////////////////////////////
 
-class DeviceStatusItem {
+
+/// Abstract base class
+
+class DeviceStatus {
+  
+  #msgId    /// Medibus message-id
+  #time
+  #label
+  #value
+  
+  constructor(msgId, time=new Date()) {
+    this.#msgId = msgId;
+    this.#time  = time;
+  }
+  
+}
+
+
+class DeviceStatusPeriod {
   
   static #lastId = 0; /// Counter for creation of (session) unique id's
   #id     /// @ number | Medibus-Message-Id
@@ -47,9 +66,9 @@ class DeviceStatusItem {
    
   /// There is no type checking
   /// This class mainly exists in order to have defined accessors
-  constructor(label, id = DeviceStatusItem.#lastId, begin = new Date('2000-01-01T00:00:00')) {
+  constructor(label, id = DeviceStatusPeriod.#lastId, begin = config.empty.time) {
     this.#label = label;
-    ++DeviceStatusItem.#lastId;
+    ++DeviceStatusPeriod.#lastId;
     this.#id = id;
     this.#begin = begin;
     this.#end = begin;
@@ -66,7 +85,7 @@ class DeviceStatusItem {
 }
 
 
-class ExspiredStatus {
+class ExspiredDeviceStatus {
   #periods = [];
   
   get size()  { return this.#periods.length; }

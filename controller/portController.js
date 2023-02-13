@@ -20,7 +20,7 @@
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 
-const SerialPort = require('serialport');
+const { SerialPort } = require('serialport');
 const Stream     = require('stream');
 const colors     = require('colors');
 const crypto     = require("crypto"); /// Generates 'Episode' UUID.
@@ -59,7 +59,7 @@ class PortController extends Stream.Readable {
   constructor() {
     super()
     this.setDefaultParameters();
-    this.initializePort(this.#path);
+    this.initializePort();
     this.#message = '';
     
     this.#episode = {
@@ -103,7 +103,7 @@ class PortController extends Stream.Readable {
   /// //////////////////////////////////////////////////////////////////////////
   
   /// Single serial port parameter
-  get path () { return this.#path; }  
+  get path () { return this.#params.path; }  
   get baudRate () { return this.#params.baudRate; }
   get dataBits () { return this.#params.dataBits; }
   get parity   () { return this.#params.parity;   }
@@ -123,7 +123,7 @@ class PortController extends Stream.Readable {
     return {
       open: this.isOpen,
       openText : this.isOpen ? 'Open' : 'Closed',
-      path: this.#path,
+      path: this.#params.path,
       baudRate: this.#params.baudRate,
       dataBits: this.#params.dataBits,
       parity: this.#params.parity,
@@ -141,8 +141,8 @@ class PortController extends Stream.Readable {
   /// ////////////////////////////////////////////////////////////////////// ///
   setDefaultParameters = () => {
     win.def.log({ level: 'verbose', file: 'portController.js', func: 'setDefaultParameters', message: 'Set default parameters'});
-    this.#path = config.preset.path;
     this.#params = {
+      path     : config.preset.path,
       baudRate : config.preset.baudRate,
       parity   : config.preset.parity,
       dataBits : config.preset.dataBits,
@@ -207,10 +207,12 @@ class PortController extends Stream.Readable {
     return this.checkParamValidity(params)
       .then(params => {
         /// Maintain parameters object (therewith: autoOpen)
+        this.#params.path     = params.path;
         this.#params.baudRate = params.baudRate;
         this.#params.dataBits = params.dataBits;      
         this.#params.parity   = params.parity;
         this.#params.stopBits = params.stopBits;
+        this.#params.autoOpen = params.autoOpen;
       })
   }
   
@@ -240,7 +242,7 @@ class PortController extends Stream.Readable {
   /**
    * @usedBy{post('/init')} - (/routes/port)
    **/
-  async initializePort(path) {
+  async initializePort() {
     return new Promise((resolve, reject) => {
       /// Eventually do cleanup
       if(this.#port){
@@ -253,8 +255,10 @@ class PortController extends Stream.Readable {
         this.#port.removeListener('close', this.handlePortClosed);
         this.#port.removeListener('data', this.handleData);
       }
+            
+      //this.#port = new SerialPort(path, this.#params);
+      this.#port = new SerialPort(this.#params);
       
-      this.#port = new SerialPort(path, this.#params);
       this.#port.on('open', this.handlePortOpened);
       this.#port.on('close', this.handlePortClosed);
       /// Pass data to external stream listener
@@ -383,7 +387,7 @@ class PortController extends Stream.Readable {
   
   async reset() {
     return await new Promise((resolve, reject) => {
-      this.initializePort(this.#path);
+      this.initializePort();
       resolve(this.status);
     });
   }

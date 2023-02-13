@@ -28,7 +28,8 @@ const config = {
     baudRate: 9600,
     parity: 'even',
     stopBits: 1, 
-    dataBits: 8
+    dataBits: 8,
+    autoOpen: false
   },
   select : {
     baudRate: [ 1200, 4800, 9600, 19200, 38400, 57600, 115200 ],
@@ -43,21 +44,24 @@ const config = {
       baudRate: 9600, 
       parity: 'even',
       stopBits: 1, 
-      dataBits: 8
+      dataBits: 8,
+      autoOpen: false
     },
     {
       name: 'Evita',
       baudRate: 19200,
       parity: 'none',
       stopBits: 1, 
-      dataBits: 8
+      dataBits: 8,
+      autoOpen: false
     },
     {
       name: 'V300',
       baudRate: 19200,
       parity: 'even',
       stopBits: 1,
-      dataBits: 8
+      dataBits: 8,
+      autoOpen: false
     }
   ]
 };
