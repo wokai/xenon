@@ -27,8 +27,6 @@
 /// 12 bytes alarm phrase  : Character string.
 /// //////////////////////////////////////////////////////////////////////// ///
 
-//const AsciiHex = require('./asciiHex');
-
 const win = require('../../logger/logger');
 const { parameters } = require('../parameters');
 
@@ -65,6 +63,7 @@ class TextSegment {
    * @param{buffer} - (Buffer) - (Message.payload)
    * @param{begin}  - (number) - (position of message in buffer. 0-based)
    * @see  {Medibus Protocol 6.0.0 - Text Message Response - p.18}
+   * @see  {Medibus for Primus     - Text Messages         - p.34}
    * @descr{Reads content of text-segment from buffer + sets #end position} 
    * */
   

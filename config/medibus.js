@@ -278,6 +278,7 @@ const bus = {
     
     /**
      * @usedBy{/param/text/messages}   - (/routes/param)
+     * @see   {Medibus for Primnus }   - (p.34)
      **/
     messages: new Map([
       [ '01', { param: 'ventmode',  value: 'IPPV',          text: 'Ventilationmode IPPV'              } ],

@@ -255,8 +255,7 @@ class PortController extends Stream.Readable {
         this.#port.removeListener('close', this.handlePortClosed);
         this.#port.removeListener('data', this.handleData);
       }
-            
-      //this.#port = new SerialPort(path, this.#params);
+      
       this.#port = new SerialPort(this.#params);
       
       this.#port.on('open', this.handlePortOpened);
@@ -264,7 +263,6 @@ class PortController extends Stream.Readable {
       /// Pass data to external stream listener
       this.#port.on('data', this.handleData);
       this.#message = 'initializePort success';
-      
       
       monitor.portMsg('Port initialized', `New Serial-Port instance`, this.status);
       win.def.log({ level: 'info', file: 'portController', func: 'initializePort', message: 'Success: New Serial-Port instance.' });   

@@ -291,7 +291,6 @@ The ProtocolController on the Medibus Protocol level using the
 
 ## MessageController
 
-
 --------------------------------------------------------------------------------
 
 <!--- --------------------------------------------------------------------- --->
@@ -339,7 +338,7 @@ The processing order is
 --------------------------------------------------------------------------------
 
 <!--- --------------------------------------------------------------------- --->
-# Data
+# Data Queries
 <!--- --------------------------------------------------------------------- --->
 
 ## Querying of data using Command objects
@@ -396,4 +395,29 @@ When the *MessageController* schedule array is empty, the next call to
 
 ## Reporting via monitor
 
+
+--------------------------------------------------------------------------------
+
+<!--- --------------------------------------------------------------------- --->
+# Parameters
+<!--- --------------------------------------------------------------------- --->
+
+## Settings
+
+## Text
+See Medibus for Primus [@MbPrimus] (p.34).
+
+
+### Device parameters
+
+ - Language
+ - CO<sub>2</sub>-Unit
+ - Agent-Unit
+ - HLM mode
+ - Standby
+ - Leaktest
+
+### Ventilation parameters
+
+ - 
 
