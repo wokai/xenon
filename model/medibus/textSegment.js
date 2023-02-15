@@ -88,7 +88,7 @@ class TextSegment {
     /**
      * @descr{Transmitted text} - {Ascii encoded)
      **/
-    this.#text     = buffer.slice(index, index + this.length);
+    this.#text = buffer.slice(index, index + this.length);
     index += this.length;   
     
     /**
@@ -102,9 +102,6 @@ class TextSegment {
     this.#end = index + 1;
     
   }
-
-
-
   
   /**************************************************************************
    * @param{txtMsgRes}  - (TextMessageResonse}
@@ -126,7 +123,7 @@ class TextSegment {
   get messageId       () { return this.#msgid; }
 
   /**
-   * @descr{Converts buffer to string 
+   * @descr{Converts buffer to string} 
    **/
   get code   () { return this.#code.toString()}   /// [ 0x32, 0x33 ] -> '23'
   

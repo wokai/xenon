@@ -406,6 +406,29 @@ When the *MessageController* schedule array is empty, the next call to
 
 ## Text
 See Medibus for Primus [@MbPrimus] (p.34).
+A text message response contains all current text messages.
+The response is divided into variable amounts of text-segments.
+Each text-segment consists of
+
+ - Text code: Two byte ascii-hex
+ - Length: One byte (0-32)
+ - Text
+
+The related classes are
+
+ - `TextMessageResponse`
+ - `TextSegment`.
+
+The obtained data is stored in an Array of Segment data-objects.
+Each data-object is made up of the following fields:
+
+ - `id`: Message-ID
+ - `time`: Message time
+ - `code`: String representation of text-code: `[ 0x32, 0x33 ] -> '23'`
+ - `text`: Transmitted Text message
+ 
+After reading the text segments out of the message, the values are copied
+into a default parameter object.
 
 
 ### Device parameters

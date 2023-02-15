@@ -1007,8 +1007,20 @@ call to <code>doNextAction</code> triggers</p>
 </div>
 <div id="text" class="section level2">
 <h2>Text</h2>
-<p>See Medibus for Primus<span class="citation">(Dräger 2010)</span>
-(p.34).</p>
+<p>See Medibus for Primus <span class="citation">(Dräger 2010)</span>
+(p.34). A text message response contains all current text messages. The
+response is divided into variable amounts of text-segments. Each
+text-segment consists of</p>
+<ul>
+<li>Text code: Two byte ascii-hex</li>
+<li>Length: One byte (0-32)</li>
+<li>Text</li>
+</ul>
+<p>The related classes are</p>
+<ul>
+<li><code>TextMessageResponse</code></li>
+<li><code>TextSegment</code>.</li>
+</ul>
 <div id="device-parameters" class="section level3">
 <h3>Device parameters</h3>
 <ul>
