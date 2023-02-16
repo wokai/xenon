@@ -405,7 +405,7 @@ When the *MessageController* schedule array is empty, the next call to
 ## Settings
 
 ## Text
-See Medibus for Primus [@MbPrimus] (p.34).
+See Medibus for Primus [@MbPrimus] (p.34) and additionally [@MbxProfDef] (p.109).
 A text message response contains all current text messages.
 The response is divided into variable amounts of text-segments.
 Each text-segment consists of
@@ -433,14 +433,43 @@ into a default parameter object.
 
 ### Device parameters
 
- - Language
- - CO<sub>2</sub>-Unit
- - Agent-Unit
- - HLM mode
- - Standby
- - Leaktest
+
++---------------+---------------+--------------------+
+| Code          | Parameter     | Description        |
++:==============+:==============+:===================+
+| 2C            | `language`    | Language           |
++---------------+---------------+--------------------+
+|               | `co2unit`     | CO<sub>2</sub>-Unit|
++---------------+---------------+--------------------+
+|               | `agentunit`   | Agent-Unit         |
++---------------+---------------+--------------------+
+|               | `hlm`         | HLM mode           |
++---------------+---------------+--------------------+
+|               | `standby`     | Standby mode       |
++---------------+---------------+--------------------+
+|               | `leaktest`    | Leaktest mode      |
++---------------+---------------+--------------------+
+
 
 ### Ventilation parameters
 
- - 
++---------------+---------------+---------------------------------------------------------+
+| Code          | Parameter     | Description                                             |
++:==============+:==============+:========================================================+
+|               | `inhal`       | Anaesthesia gas                                         |
++---------------+---------------+---------------------------------------------------------+
+|               | `secInhal`    | 2nd Anaesthesia gas                                     |
++---------------+---------------+---------------------------------------------------------+
+|               | `carrier`     | Carrier gas                                             |
++---------------+---------------+---------------------------------------------------------+
+|               | `ventmode`    | Ventilation mode                                        |
++---------------+---------------+---------------------------------------------------------+
+|               | `sync`        | Synchronized vent                                       |
++---------------+---------------+---------------------------------------------------------+
+|               | `psvadd`      | Pressure support added to intermittent Ventilation Mode |
++---------------+---------------+---------------------------------------------------------+
+|               | `autoflow`    | Autoflow added to Volume mode                           |
++---------------+---------------+---------------------------------------------------------+
+|               | `airway`      | Airway device configured                                |
++---------------+---------------+---------------------------------------------------------+
 

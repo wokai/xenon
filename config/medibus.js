@@ -309,10 +309,10 @@ const bus = {
       [ '53', { param: 'leaktest',  value: 'Yes',           text: 'Device is performing leakage test' } ],
       [ '54', { param: 'standby',   value: 'Standby',       text: 'Device is in Standby-Mode'         } ],
       [ '59', { param: 'ventmode',  value: 'Vol control',   text: 'Volume controlled Ventilation Mode'} ],
-      [ '5A', { param: 'ventmode',  value: 'Press control', text: 'Pressure controlled Ventilation Mode' } ],
+      [ '5A', { param: 'ventmode',  value: 'Press control', text: 'Pressure controlled Ventilation Mode'                               } ],
       [ '5B', { param: 'ventmode',  value: 'PSV',           text: 'Pressure Support Mode'             } ],
-      [ '5C', { param: 'psvadd',    value: 'PSV added',     text: 'Pressure Support added to intermittend Ventilation Mode'} ],
-      [ '5D', { param: 'sync',      value: 'Synchronized',  text: 'Synchronized intermittend Ventilation'} ],
+      [ '5C', { param: 'psvadd',    value: 'PSV added',     text: 'Pressure Support added to intermittend Ventilation Mode'            } ],
+      [ '5D', { param: 'sync',      value: 'Synchronized',  text: 'Synchronized intermittend Ventilation'                              } ],
       [ '5E', { param: 'autoflow',  value: 'True',          text: 'AutoFlow added to Volume Mode'     } ],
       
       [ '58', { param: 'hlm',       value: 'Yes',           text: 'HLM Mode active'                   } ],
@@ -333,17 +333,17 @@ const bus = {
       
       /// Unknown messages received from evita: 0A 20 48 68 6D 6F 71 78 9F 
       [ '0A', { param: 'ventmode',  value: 'SPN-CPAP',      text: 'Mode SPN-CPAP'} ],
-      [ '20', { param: 'agemode',   value: 'Mode Adults',   text: 'Device is in adult mode'          } ],
-      [ '48', { param: 'airway',    value: 'IV (invasive)', text: 'Device configured for intubated patient ventilation'          } ],
-      [ '49', { param: 'airway',    value: 'NIV',           text: 'Device configured for mask ventilation'   } ],
-      [ '68', { param: 'tubetype',  value: 'Endodracheal',  text: 'Tube type endotracheal'             } ],
-      [ '6D', { param: 'atcauto',   value: 'Automatic',     text: 'Automatic tube compensation (ATC) added to current ventilation mode'          } ],
-      [ '6E', { param: 'atctype',   value: 'Exspiratory',   text: 'Expiratory ATC enabled'             } ],
-      [ '6F', { param: 'atctype',   value: 'Inspiratory',   text: 'Inspiratory ATC enabled'            } ],
-      [ '70', { param: 'tubetype',  value: 'Tracheostoma',  text: 'Tube type tracheostoma'             } ],
-      [ '71', { param: 'apneavent', value: 'Enabled',       text: 'Apnea ventilation enabled'          } ],
-      [ '78', { param: 'hme    ',   value: 'HME / Filter',  text: 'HME / Filter'                       } ],
-      [ '9F', { param: 'trachpres', value: 'Enabled',       text: 'Tracheal pressure calculation enabled as real-time value'          } ]
+      [ '20', { param: 'agemode',   value: 'Mode Adults',   text: 'Device is in adult mode'           } ],
+      [ '48', { param: 'airway',    value: 'IV (invasive)', text: 'Device configured for intubated patient ventilation'                 } ],
+      [ '49', { param: 'airway',    value: 'NIV',           text: 'Device configured for mask ventilation'                              } ],
+      [ '68', { param: 'tubetype',  value: 'Endodracheal',  text: 'Tube type endotracheal'            } ],
+      [ '6D', { param: 'atcauto',   value: 'Automatic',     text: 'Automatic tube compensation (ATC) added to current ventilation mode' } ],
+      [ '6E', { param: 'atctype',   value: 'Exspiratory',   text: 'Expiratory ATC enabled'            } ],
+      [ '6F', { param: 'atctype',   value: 'Inspiratory',   text: 'Inspiratory ATC enabled'           } ],
+      [ '70', { param: 'tubetype',  value: 'Tracheostoma',  text: 'Tube type tracheostoma'            } ],
+      [ '71', { param: 'apneavent', value: 'Enabled',       text: 'Apnea ventilation enabled'         } ],
+      [ '78', { param: 'hme    ',   value: 'HME / Filter',  text: 'HME / Filter'                      } ],
+      [ '9F', { param: 'trachpres', value: 'Enabled',       text: 'Tracheal pressure calculation enabled as real-time value'            } ]
     ]),
     etx: 0x03
   },
