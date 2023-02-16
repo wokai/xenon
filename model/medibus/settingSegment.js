@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2021, Wolfgang Kaisers
+ * Copyright 2023, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -46,15 +46,15 @@ class SettingSegment {
   
   /**
    * @source{extractSegmentFromBuffer}
+   * @descr{Buffer} - (First 2 bytes - Code of text message)
    **/
-  #code   /** @descr{Buffer} - (First 2 bytes - Code of text message) */
+  #code
   
-  /**
-   * @descr{Buffer} - (Ascii-code) - (3 bytes = Ascii-code)
-   **/
+  /** @descr{Buffer} - (Ascii-code) - (3 bytes = Ascii-code) **/
   #setting 
   
-  #begin  /** @descr{number} - (position of message in buffer. 0-based) */
+  /** @descr{number} - (position of message in buffer. 0-based) */
+  #begin
   
   
   
@@ -62,7 +62,7 @@ class SettingSegment {
    * @param{msg}    - {Message}
    * @param{begin}  - (number: 0-based index of current position in payload)
    * @see  {Medibus Protocol 6.0.0 - Device Setting Responses - p.17}
-   **/
+   **************************************************************************/
   constructor(msg, begin) {
     try{
       

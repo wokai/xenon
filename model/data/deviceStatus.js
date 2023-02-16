@@ -22,16 +22,15 @@
  
 const path = require('path'); 
 
-const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
-const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
-const monitor             = require(path.join(__dirname, '..', '..', 'monitor', 'monitor'));
-const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
+const win     = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
+const bus     = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
+const monitor = require(path.join(__dirname, '..', '..', 'monitor', 'monitor'));
+const config  = require(path.join(__dirname, '..', '..', 'config', 'general'));
 
 
 /// ////////////////////////////////////////////////////////////////////////////
 /// DeviceStatus tracks values or events which occur infrequenly on the
 /// device such as Alarms or change of settings
-///
 /// 
 /// A) Each status item is identified by an ID which must be unique (system wide)
 /// B) 
@@ -51,7 +50,6 @@ class DeviceStatus {
     this.#msgId = msgId;
     this.#time  = time;
   }
-  
 }
 
 
@@ -101,10 +99,7 @@ class DeviceStatus {
   constructor() {
     this.#current = new Map();
   }
-  
-  
 }
-
 
 const DeviceStatus = new DeviceStatus();
 
