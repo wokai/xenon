@@ -82,7 +82,7 @@ class TextData {
   fillEmptyParamObject = () => {
     try{
       if(this.#map !== null){
-        let v;
+        //let v;
         let empty = TextData.#emptyParam; 
         
         /// ////////////////////////////////////////////////////////// ///     

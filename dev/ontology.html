@@ -275,28 +275,6 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-
-div.csl-bib-body { }
-div.csl-entry {
-clear: both;
-}
-.hanging div.csl-entry {
-margin-left:2em;
-text-indent:-2em;
-}
-div.csl-left-margin {
-min-width:2em;
-float:left;
-}
-div.csl-right-inline {
-margin-left:2em;
-padding-left:1em;
-}
-div.csl-indent {
-margin-left: 2em;
-}
-</style>
 
 
 
@@ -403,819 +381,221 @@ display: none;
 <h1 class="title toc-ignore">Xenon</h1>
 <h4 class="author">W. Kaisers</h4>
 <address class="author_afil">
-Düsseldorf<br><h4 class="date">14.07.2021</h4>
+Düsseldorf<br><h4 class="date">18.02.2023</h4>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#dräger-devices" id="toc-dräger-devices">Dräger devices</a>
-<ul>
-<li><a href="#medibus-protocol" id="toc-medibus-protocol">Medibus
-protocol</a></li>
-</ul></li>
-<li><a href="#rs232" id="toc-rs232">RS232</a>
-<ul>
-<li><a href="#communication-via-usb-to-serialuartrs232" id="toc-communication-via-usb-to-serialuartrs232">Communication via USB
-to Serial/UART/RS232</a></li>
-<li><a href="#use-minicom" id="toc-use-minicom">Use Minicom</a></li>
-<li><a href="#use-linux-terminal-commands" id="toc-use-linux-terminal-commands">Use Linux terminal
-commands</a></li>
-<li><a href="#additional-resources" id="toc-additional-resources">Additional resources</a></li>
-</ul></li>
-<li><a href="#dräger-medibus-communication-standard" id="toc-dräger-medibus-communication-standard">Dräger Medibus
-communication standard</a>
-<ul>
-<li><a href="#message-structure" id="toc-message-structure">Message
-structure</a></li>
-<li><a href="#asciihex-format" id="toc-asciihex-format">AsciiHex
-Format</a></li>
-<li><a href="#standard-messages" id="toc-standard-messages">Standard
-messages</a>
-<ul>
-<li><a href="#commands" id="toc-commands">Commands</a></li>
-<li><a href="#responses" id="toc-responses">Responses</a></li>
-</ul></li>
-<li><a href="#message-flow" id="toc-message-flow">Message flow</a></li>
-<li><a href="#general-rules" id="toc-general-rules">General
-rules</a></li>
-<li><a href="#initialize-communication" id="toc-initialize-communication">Initialize communication</a></li>
-<li><a href="#stop-communication" id="toc-stop-communication">Stop
-communication</a>
-<ul>
-<li><a href="#timeout" id="toc-timeout">Timeout</a></li>
-</ul></li>
-<li><a href="#responses-1" id="toc-responses-1">Responses</a>
-<ul>
-<li><a href="#responses-to-control-and-unknown-commands" id="toc-responses-to-control-and-unknown-commands">Responses to Control
-and unknown commands</a></li>
-</ul></li>
-<li><a href="#payload" id="toc-payload">Payload</a>
-<ul>
-<li><a href="#responses-to-data-request-commands" id="toc-responses-to-data-request-commands">Responses to data request
-commands</a></li>
-</ul></li>
-</ul></li>
-<li><a href="#data-definition" id="toc-data-definition">Data
-definition</a></li>
-<li><a href="#controller" id="toc-controller">Controller</a>
-<ul>
-<li><a href="#portcontroller" id="toc-portcontroller">PortController</a></li>
-<li><a href="#statuscontroller" id="toc-statuscontroller">StatusController</a></li>
-<li><a href="#protcolcontroller" id="toc-protcolcontroller">ProtcolController</a></li>
-<li><a href="#messagecontroller" id="toc-messagecontroller">MessageController</a></li>
-</ul></li>
-<li><a href="#event-loop" id="toc-event-loop">Event Loop</a>
-<ul>
-<li><a href="#launch-of-communication" id="toc-launch-of-communication">Launch of communication</a></li>
-<li><a href="#shutdown-of-communication" id="toc-shutdown-of-communication">Shutdown of communication</a></li>
-</ul></li>
-<li><a href="#data-queries" id="toc-data-queries">Data Queries</a>
-<ul>
-<li><a href="#querying-of-data-using-command-objects" id="toc-querying-of-data-using-command-objects">Querying of data using
-Command objects</a></li>
-<li><a href="#scheduled-query-of-data" id="toc-scheduled-query-of-data">Scheduled query of data</a>
-<ul>
-<li><a href="#initialization" id="toc-initialization">Initialization</a></li>
-<li><a href="#query-schedule" id="toc-query-schedule">Query
-schedule</a></li>
-</ul></li>
-<li><a href="#reporting-via-monitor" id="toc-reporting-via-monitor">Reporting via monitor</a></li>
-</ul></li>
 <li><a href="#parameters" id="toc-parameters">Parameters</a>
 <ul>
-<li><a href="#settings" id="toc-settings">Settings</a></li>
-<li><a href="#text" id="toc-text">Text</a>
+<li><a href="#fhir-codes" id="toc-fhir-codes">FHIR Codes</a></li>
+<li><a href="#loinc-codes" id="toc-loinc-codes">LOINC Codes</a></li>
+</ul></li>
+<li><a href="#snomed-ct" id="toc-snomed-ct">Snomed-CT</a>
 <ul>
-<li><a href="#device-parameters" id="toc-device-parameters">Device
-parameters</a></li>
-<li><a href="#ventilation-parameters" id="toc-ventilation-parameters">Ventilation parameters</a></li>
+<li><a href="#international-patient-summary" id="toc-international-patient-summary">International Patient
+Summary</a></li>
+<li><a href="#observation-hierarchy" id="toc-observation-hierarchy">Observation hierarchy</a>
+<ul>
+<li><a href="#devices" id="toc-devices">Devices</a></li>
 </ul></li>
+<li><a href="#cochrane-linked-data" id="toc-cochrane-linked-data">Cochrane Linked Data</a></li>
 </ul></li>
-<li><a href="#ontologies" id="toc-ontologies">Ontologies</a></li>
 <li><a href="#references" id="toc-references">References</a></li>
 </ul>
 </div>
 
 <hr />
 <!--- --------------------------------------------------------------------- --->
-<div id="dräger-devices" class="section level1">
-<h1>Dräger devices</h1>
-<!--- --------------------------------------------------------------------- --->
-<div id="medibus-protocol" class="section level2">
-<h2>Medibus protocol</h2>
-<ul>
-<li><p><a href="https://www.draeger.com/Library/Content/9055601_04_IfU_Evita_V800_V600_SW1_n_en.pdf">Evita
-V800 / V600</a></p></li>
-<li><p><a href="https://hit.healthsystem.virginia.edu/index.cfm/_api/render/file/?fileID=DC02EE3A-17A4-77A0-3E1CF4BE2E1B9EA8&amp;fileEXT=.pdf">Medibus
-Procol Definition</a></p></li>
-<li><p><a href="https://www.draeger.com/Products/Content/IfU_SP_Primus_MEDIBUS_for_Primus__Primus_IE__Apollo_and_Pallas_9037426.pdf">Medibus
-for Primus</a></p></li>
-<li><p>Find Raspberry in network: <code>arp -a</code></p></li>
-<li><p>Primus password: 8056</p></li>
-<li><p>Evita password: 1210</p></li>
-</ul>
-<hr />
-<!--- --------------------------------------------------------------------- --->
-</div>
-</div>
-<div id="rs232" class="section level1">
-<h1>RS232</h1>
-<!--- --------------------------------------------------------------------- --->
-<p>In order to get access to the serial port on a linux system, it may
-be necessary to add the current user to the <code>dialout</code>
-group:</p>
-<ul>
-<li><code>usermod -aG dialout $USER</code> command (in root environment:
-su -)</li>
-<li>Restart</li>
-<li>Monitor serial communication using <code>cutecom</code></li>
-</ul>
-<div id="communication-via-usb-to-serialuartrs232" class="section level2">
-<h2>Communication via USB to Serial/UART/RS232</h2>
-<p>Status of USB adapter interface can be monitored using dmesg
-<code>dmesg | grep tty</code> indicates connection and disconnection of
-cable:</p>
-<pre><code>[    0.201056] printk: console [tty0] enabled
-[    3.999890] usb 1-1: pl2303 converter now attached to ttyUSB0
-[ 5207.383172] pl2303 ttyUSB0: pl2303 converter now disconnected from ttyUSB0
-[ 5636.457821] usb 1-1: pl2303 converter now attached to ttyUSB0</code></pre>
-<p>For prolific chip set, <code>dmesg | grep pl2303</code> or
-<code>dmesg | grep 1-1</code> provides additional information.</p>
-</div>
-<div id="use-minicom" class="section level2">
-<h2>Use Minicom</h2>
-<ul>
-<li>Starting Minicom with <code>sudo minicom -s</code> prevents a
-program exit when error occur.</li>
-<li>Set communication parameters <code>9600 8M1</code></li>
-<li>Turn on echo with <code>Ctrl-a &amp; e</code></li>
-<li>End session, with <code>Ctrl+a</code> followed
-<code>Ctrl+x</code>.</li>
-</ul>
-</div>
-<div id="use-linux-terminal-commands" class="section level2">
-<h2>Use Linux terminal commands</h2>
-<ul>
-<li><code>echo -e &quot;\x1b\x51\x36\x43\x0d&quot; &gt; /dev/ttyS0</code></li>
-</ul>
-</div>
-<div id="additional-resources" class="section level2">
-<h2>Additional resources</h2>
-<ul>
-<li><a href="https://unix.stackexchange.com/questions/117037/how-to-send-data-to-a-serial-port-and-see-any-answer">Stackexchange</a></li>
-</ul>
-<hr />
-<!--- --------------------------------------------------------------------- --->
-</div>
-</div>
-<div id="dräger-medibus-communication-standard" class="section level1">
-<h1>Dräger Medibus communication standard</h1>
-<!--- --------------------------------------------------------------------- --->
-<p>This description of <strong>Medibus</strong> data exchange bases on
-two documents:</p>
-<ul>
-<li><a href="https://hit.healthsystem.virginia.edu/index.cfm/_api/render/file/?fileID=DC02EE3A-17A4-77A0-3E1CF4BE2E1B9EA8&amp;fileEXT=.pdf">Medibus
-6.0.0</a></li>
-<li><a href="https://www.draeger.com/Products/Content/IfU_SP_Primus_MEDIBUS_for_Primus__Primus_IE__Apollo_and_Pallas_9037426.pdf">MEDIBUS
-for Primus, Primus IE, Apollo and Pallas</a></li>
-</ul>
-<div id="message-structure" class="section level2">
-<h2>Message structure</h2>
-<p>In general, a Medibus message can be divided into three
-constituents:</p>
-<ul>
-<li><p>Message header: Two bytes encoding for the message type and the
-command code</p></li>
-<li><p>An optional payload</p></li>
-<li><p>Message trailer: Two bytes checksum and a terminating 0x0d (CR,
-carriage return)</p></li>
-<li><p>First byte: Type character (ESC=0x1b or SOH 0x01)</p></li>
-<li><p>Second byte: Command code</p></li>
-<li><p>Optional payload</p></li>
-<li><p>Checksum</p></li>
-<li><p>Terminating 0x0d (CR, carriage return)</p></li>
-<li><p>Maximal allowed length of response is 3845 bytes.</p></li>
-</ul>
-<p>There are two types of messages, determined by the first transmitted
-byte <a href="p.4"><span class="citation">1. Dräger
-(2007)</span></a>:</p>
-<ul>
-<li>Commands: ESC (0x1b)</li>
-<li>Responses: SOH (0x01), <em>Start Of Header</em></li>
-</ul>
-<p>The second byte encodes a command code</p>
-<ul>
-<li>Commands: The command type (for example ICC: 0.51)</li>
-<li>Responses: The echo of the command responded to.</li>
-</ul>
-<p>There are three command types:</p>
-<ul>
-<li>Control commands (p. 8)</li>
-<li>Data request commands (p. 8)</li>
-<li>Miscellaneous commands</li>
-</ul>
-<p>Miscellaneous commands:</p>
-<ul>
-<li>Time changed (0x49)</li>
-<li>Configure data response (0x4A)</li>
-</ul>
-</div>
-<div id="asciihex-format" class="section level2">
-<h2>AsciiHex Format</h2>
-<p>Allowed characters:</p>
-<ul>
-<li>Printable ASCII 0x20 (32) - 0x7F (127)</li>
-<li>Control characters defined in the <strong>Medibus</strong>
-standard.</li>
-</ul>
-<p>Ascii encoding:</p>
-<ul>
-<li>Space: 0x20 (32)</li>
-<li>Numeric (0-9): 0x30 (48) - 0x39 (57)</li>
-<li>Upper case (A-Z): 0x41 (65) - 0x5A (90)</li>
-<li>Lower case (a-z): 0x61 (97) - 0x7A (122)</li>
-</ul>
-</div>
-<div id="standard-messages" class="section level2">
-<h2>Standard messages</h2>
-<div id="commands" class="section level3">
-<h3>Commands</h3>
-<table>
-<thead>
-<tr class="header">
-<th align="left">MSG</th>
-<th align="left">ASCII Hex</th>
-<th align="left">hex</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">ICC</td>
-<td align="left">1BH 51H 36H 43H 0DH</td>
-<td align="left"><code>[ 0x1b, 0x51, 0x36, 0x43, 0x0d ]</code></td>
-</tr>
-<tr class="even">
-<td align="left">ID</td>
-<td align="left">1BH 52H 36H 44H 0DH</td>
-<td align="left"><code>[ 0x1b, 0x52, 0x36, 0x44, 0x0d ]</code></td>
-</tr>
-<tr class="odd">
-<td align="left">NOP</td>
-<td align="left">1BH 30H 34H 42H 0DH</td>
-<td align="left"><code>[ 0x1b, 0x30, 0x34, 0x42, 0x0d ]</code></td>
-</tr>
-<tr class="even">
-<td align="left">STOP</td>
-<td align="left">1BH 55H 37H 30H 0DH</td>
-<td align="left"><code>[ 0x1b, 0x55, 0x37, 0x30, 0x0d ]</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="responses" class="section level3">
-<h3>Responses</h3>
-<table>
-<thead>
-<tr class="header">
-<th align="left">MSG</th>
-<th align="left">ASCII Hex</th>
-<th align="left">hex</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">ICC</td>
-<td align="left">01H 51H 35H 32H 0DH</td>
-<td align="left"><code>[ 0x01, 0x51, 0x35, 0x32, 0x0d ]</code></td>
-</tr>
-<tr class="even">
-<td align="left">ID</td>
-<td align="left">01H 52H 56H 33H 0DH</td>
-<td align="left"><code>[ 0x01, 0x52, 0x35, 0x33, 0x0d ]</code></td>
-</tr>
-<tr class="odd">
-<td align="left">NAK</td>
-<td align="left">01H 15H 31H 36H 0DH</td>
-<td align="left"><code>[ 0x01, 0x15, 0x31, 0x36, 0x0d ]</code></td>
-</tr>
-</tbody>
-</table>
-<hr />
-<!--- --------------------------------------------------------------------- --->
-</div>
-</div>
-<div id="message-flow" class="section level2">
-<h2>Message flow</h2>
-<!--- --------------------------------------------------------------------- --->
-<!--- --------------------------------------------------------------------- --->
-</div>
-<div id="general-rules" class="section level2">
-<h2>General rules</h2>
-<!--- --------------------------------------------------------------------- --->
-<p>Medibus commands <span class="citation">(1. Dräger 2007)</span>
-(p.12):</p>
-<ul>
-<li>Any new command must not be sent before the response to a previous
-command has been received.</li>
-<li>New commands can be submitted 10 seconds after the last command when
-no answers have been received.</li>
-<li>A complete response must be sent within 10 sec after receiving a
-command.</li>
-</ul>
-<!--- --------------------------------------------------------------------- --->
-</div>
-<div id="initialize-communication" class="section level2">
-<h2>Initialize communication</h2>
-<!--- --------------------------------------------------------------------- --->
-<ul>
-<li>For initialization, the ICC command</li>
-<li>ICC commands always require a response <span class="citation">(1.
-Dräger 2007)</span> (p.12)</li>
-</ul>
-<!--- --------------------------------------------------------------------- --->
-</div>
-<div id="stop-communication" class="section level2">
-<h2>Stop communication</h2>
-<!--- --------------------------------------------------------------------- --->
-<ul>
-<li>Send <strong>STOP</strong> command</li>
-<li>Check command echo,</li>
-</ul>
-<div id="timeout" class="section level3">
-<h3>Timeout</h3>
-<ul>
-<li><p>The communication is stopped, when no message is sent (or
-received) for more than 3 seconds.</p></li>
-<li><p>A <code>NOP</code> – command has to be sent within
-2-second-intervals to keep the communication alive.</p></li>
-<li><p>It will suffice if the PC sends an NOP response to the Dräger
-medical device within approx. 1 second.</p></li>
-<li><p>It is better when PC sends an NOP command itself.</p></li>
-<li><p>Time changed (0x49)</p></li>
-<li><p>Configure data response (0x4A)</p></li>
-</ul>
-</div>
-</div>
-<div id="responses-1" class="section level2">
-<h2>Responses</h2>
-<ul>
-<li>SOH (0x01) Start of header</li>
-<li>Command echo</li>
-<li>Response</li>
-<li>Checksum</li>
-<li>Terminating 0x0D</li>
-</ul>
-<div id="responses-to-control-and-unknown-commands" class="section level3">
-<h3>Responses to Control and unknown commands</h3>
-<ul>
-<li>SOH</li>
-<li>Command Echo</li>
-<li>No payload (data)</li>
-<li>Checksum, CR</li>
-</ul>
-<!--- --------------------------------------------------------------------- --->
-</div>
-</div>
-<div id="payload" class="section level2">
-<h2>Payload</h2>
-<!--- --------------------------------------------------------------------- --->
-<div id="responses-to-data-request-commands" class="section level3">
-<h3>Responses to data request commands</h3>
-<p>Requested data is sent in segments of 6 bytes length:</p>
-<ul>
-<li>Two bytes <strong>data code</strong> identifying the parameter</li>
-<li>Four bytes <strong>data</strong> containing the current value</li>
-</ul>
-<p>Empty positions and leading zeros must be transmitted as space
-(0x20).</p>
-<hr />
-<!--- --------------------------------------------------------------------- --->
-</div>
-</div>
-</div>
-<div id="data-definition" class="section level1">
-<h1>Data definition</h1>
-<!--- --------------------------------------------------------------------- --->
-<hr />
-<!--- --------------------------------------------------------------------- --->
-</div>
-<div id="controller" class="section level1">
-<h1>Controller</h1>
-<!--- --------------------------------------------------------------------- --->
-<p>There are four controllers located in the <code>/controller</code>
-directory.</p>
-<div id="portcontroller" class="section level2">
-<h2>PortController</h2>
-<p>The <em>PortController</em> derives from <code>Stream.readable</code>
-and contains an instance of <em>SerialPort</em>.</p>
-</div>
-<div id="statuscontroller" class="section level2">
-<h2>StatusController</h2>
-<p>The <em>StatusController</em> (/controller/statusController) manages
-the communication status of the Port and the Medibus protocol. The
-status is one of five levels:</p>
-<table>
-<thead>
-<tr class="header">
-<th>Value</th>
-<th>Level</th>
-<th>Label</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>0</td>
-<td>Port</td>
-<td>Closed</td>
-</tr>
-<tr class="even">
-<td>1</td>
-<td>Bus</td>
-<td>Inactive</td>
-</tr>
-<tr class="odd">
-<td>2</td>
-<td>Bus</td>
-<td>Listen</td>
-</tr>
-<tr class="even">
-<td>3</td>
-<td>Bus</td>
-<td>Stopping</td>
-</tr>
-<tr class="odd">
-<td>4</td>
-<td>Bus</td>
-<td>Initializing</td>
-</tr>
-<tr class="even">
-<td>5</td>
-<td>Com</td>
-<td>Protocol</td>
-</tr>
-</tbody>
-</table>
-<p>Via emission of client notifications, the initialization and shutdown
-procedures of Medibus protocol are coordinated.</p>
-</div>
-<div id="protcolcontroller" class="section level2">
-<h2>ProtcolController</h2>
-<p>The ProtocolController on the Medibus Protocol level using the
-<code>CommandTimeout</code> class:</p>
-<ul>
-<li>initCom: Sends an <code>ICC</code> response upon receiving an ICC
-command and set StatusController to <code>initializing</code>
-status</li>
-<li>receiveMessage:</li>
-<li>sendCommand: Creates and triggers a <code>CommandTimeout</code></li>
-<li>shutdown: Closes PortController</li>
-<li>stop: Initiates regular Protocol shutdown by sending a
-<code>STOP</code> command and sets StatusController to
-<code>inactive</code> status</li>
-</ul>
-</div>
-<div id="messagecontroller" class="section level2">
-<h2>MessageController</h2>
-<hr />
-<!--- --------------------------------------------------------------------- --->
-</div>
-</div>
-<div id="event-loop" class="section level1">
-<h1>Event Loop</h1>
-<!--- --------------------------------------------------------------------- --->
-<p>The <em>EventLoop</em> (/bus/eventLoop) defines the reaction-chain
-for incoming RS-232 messages. The event loop classes are derived from
-<em>Stream.transform</em>. The processing order is</p>
-<ul>
-<li><em>Interrupt</em>:</li>
-<li><em>MessageDelimiter</em> detects the end of a Medibus-Message and
-passes related data chunks to the next instance</li>
-<li><em>MessageParser</em> constructs <em>Message</em> objects from the
-incoming chunks</li>
-<li><em>React</em> defines the type of reaction:</li>
-<li>Eventually reply to incoming commands (especially: ICC,
-Device-Id)</li>
-<li>Receive replies (Data, STOP)</li>
-</ul>
-<div id="launch-of-communication" class="section level2">
-<h2>Launch of communication</h2>
-<ul>
-<li><strong>Open Port</strong> via portController.open</li>
-<li>The portController sets Status to <code>listen</code></li>
-<li>Upon incoming ICC command, eventLoop.React calls
-protocolController.initCom</li>
-<li>protocolController.initCom
-<ul>
-<li>Sends ICC reply</li>
-<li>ProtocolController sets Status to <code>Initialising</code></li>
-<li>Sets Episode UUID via <code>initEpisodeUuid</code><br />
-</li>
-</ul></li>
-<li>Upon Status.Initialising, MessageController does:
-<ul>
-<li>Set status to <code>Protocol</code></li>
-<li>Fill Action schedule (initial messages + message cycle)</li>
-<li>Executes doNextAction which triggers transmission of first
-command.</li>
-</ul></li>
-</ul>
-</div>
-<div id="shutdown-of-communication" class="section level2">
-<h2>Shutdown of communication</h2>
-<ul>
-<li>Set Status to stopping.</li>
-<li>NextMessage calls ProtocolController.stop() which sends STOP
-command</li>
-<li>Reply is caught by EventLoop React which calls
-ProtocolController.shutdown</li>
-<li>Shutdown closes port and clears StatusController episode UUID.</li>
-</ul>
-<hr />
-<!--- --------------------------------------------------------------------- --->
-</div>
-</div>
-<div id="data-queries" class="section level1">
-<h1>Data Queries</h1>
-<!--- --------------------------------------------------------------------- --->
-<div id="querying-of-data-using-command-objects" class="section level2">
-<h2>Querying of data using Command objects</h2>
-<p>Medibus Commands are represented by <em>Message</em> objects, defined
-in <code>model/medibus/commands</code>. <em>Command</em> messages are
-stored inside of <em>Action</em> objects. See definition of query
-command messages <span class="citation">(1. Dräger 2007)</span> (p.8).
-<em>Action</em> objects coordinate the sending of commands and the
-initiation of the further data processing. An <em>Action</em> object
-contains</p>
-<ul>
-<li>a <em>Message</em> object which will be send (via
-<em>ProtocollController</em>) upon request</li>
-<li>a Callback defining the further processing of received data.</li>
-</ul>
-</div>
-<div id="scheduled-query-of-data" class="section level2">
-<h2>Scheduled query of data</h2>
-<p>The data-query Cycle is implemented in the
-<strong>MessageController</strong> (/controller/messageController). The
-<em>MessageController</em> keeps an array of <em>Action</em> objects.
-These <em>Action</em>s are executed one after another.</p>
-<p>During construction, the <em>MessageController</em> first loads the
-initial commands</p>
-<ul>
-<li>Request Device Identification <code>52H</code></li>
-<li>Request current Date and Time <code>28H</code></li>
-</ul>
-<p>together with a first cycle of data query commands. One
-<strong>Cycle</strong> contains a complete set of all Data query
-commands which are regularly queried:</p>
-<ul>
-<li>Request current measured Data (Codepage 1) <code>24H</code></li>
-<li>Request current low Alarm Limits (Codepage 1) <code>25H</code></li>
-<li>Request current high Alarm Limits (Codepage 1) <code>26H</code></li>
-<li>Request current Alarms (Codepage 1) <code>27H</code></li>
-<li>Request current Alarms (Codepage 2) <code>2EH</code></li>
-<li>Request current Text Messages <code>2AH</code></li>
-</ul>
-<div id="initialization" class="section level3">
-<h3>Initialization</h3>
-<p>When the <em>StatusController</em> signals entering of
-<code>initializing</code> status, the <em>MessageController</em> loads
-the intial set of commands together with the first cycle and finally
-calls <code>doNextAction</code> for the first time.</p>
-<p>All subsequent calls to <code>doNextAction</code> are done by
-<em>NextMessage</em> (event-loop).</p>
-</div>
-<div id="query-schedule" class="section level3">
-<h3>Query schedule</h3>
-<p>When the <em>MessageController</em> schedule array is empty, the next
-call to <code>doNextAction</code> triggers</p>
-<ul>
-<li>Reporting of the complete dataset to attached clients via
-<em>Monitor</em> (/monitor/monitor)</li>
-<li>Push dataset to <em>DataCache</em> (/model/data/cache)</li>
-</ul>
-</div>
-</div>
-<div id="reporting-via-monitor" class="section level2">
-<h2>Reporting via monitor</h2>
-<hr />
-<!--- --------------------------------------------------------------------- --->
-</div>
-</div>
 <div id="parameters" class="section level1">
 <h1>Parameters</h1>
 <!--- --------------------------------------------------------------------- --->
-<div id="settings" class="section level2">
-<h2>Settings</h2>
-</div>
-<div id="text" class="section level2">
-<h2>Text</h2>
-<p>See Medibus for Primus <span class="citation">(2. Dräger 2010)</span>
-(p.34) and additionally <span class="citation">(3. Dräger 2019)</span>
-(p.109). A text message response contains all current text messages. The
-response is divided into variable amounts of text-segments. Each
-text-segment consists of</p>
-<ul>
-<li>Text code: Two byte ascii-hex</li>
-<li>Length: One byte (0-32)</li>
-<li>Text</li>
-</ul>
-<p>The related classes are</p>
-<ul>
-<li><code>TextMessageResponse</code></li>
-<li><code>TextSegment</code>.</li>
-</ul>
-<p>The obtained data is stored in an Array of Segment data-objects. Each
-data-object is made up of the following fields:</p>
-<ul>
-<li><code>id</code>: Message-ID</li>
-<li><code>time</code>: Message time</li>
-<li><code>code</code>: String representation of text-code:
-<code>[ 0x32, 0x33 ] -&gt; &#39;23&#39;</code></li>
-<li><code>text</code>: Transmitted Text message</li>
-</ul>
-<p>After reading the text segments out of the message, the values are
-copied into a default parameter object.</p>
-<div id="device-parameters" class="section level3">
-<h3>Device parameters</h3>
-<table style="width:74%;">
-<colgroup>
-<col width="22%" />
-<col width="22%" />
-<col width="29%" />
-</colgroup>
+<div id="fhir-codes" class="section level2">
+<h2>FHIR Codes</h2>
+<p>In FHIR, <a href="https://build.fhir.org/ig/HL7/fhir-saner/ValueSet-VentilatorObservations.html">Ventilation
+Observations</a> are contained in ValueSet <code>10.97.1</code>. All
+codes are derived from <a href="http://loinc.org">LOINC</a></p>
+<table>
 <thead>
 <tr class="header">
 <th align="left">Code</th>
-<th align="left">Parameter</th>
-<th align="left">Description</th>
+<th align="left">Display</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2C</td>
-<td align="left"><code>language</code></td>
-<td align="left">Language</td>
+<td align="left">19835-8</td>
+<td align="left">Breath rate setting Ventilator synchronized
+intermittent mandatory</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
-<td align="left"><code>co2unit</code></td>
-<td align="left">CO<sub>2</sub>-Unit</td>
+<td align="left">19994-3</td>
+<td align="left">Oxygen/Total gas setting [Volume Fraction]
+Ventilator</td>
 </tr>
 <tr class="odd">
-<td align="left"></td>
-<td align="left"><code>agentunit</code></td>
-<td align="left">Agent-Unit</td>
+<td align="left">20077-4</td>
+<td align="left">Positive end expiratory pressure setting
+Ventilator</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
-<td align="left"><code>hlm</code></td>
-<td align="left">HLM mode</td>
+<td align="left">20079-0</td>
+<td align="left">Pressure support setting Ventilator</td>
 </tr>
 <tr class="odd">
-<td align="left"></td>
-<td align="left"><code>standby</code></td>
-<td align="left">Standby mode</td>
+<td align="left">20103-8</td>
+<td align="left">Tidal volume expired/Plateau pressure –post 1.5-2.0
+seconds inspiratory hold on ventilator</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
-<td align="left"><code>leaktest</code></td>
-<td align="left">Leaktest mode</td>
+<td align="left">20112-9</td>
+<td align="left">Tidal volume setting Ventilator</td>
+</tr>
+<tr class="odd">
+<td align="left">20115-2</td>
+<td align="left">Tidal volume.spontaneous/Body weight [Volume/mass] –on
+ventilator</td>
+</tr>
+<tr class="even">
+<td align="left">33438-3</td>
+<td align="left">Breath rate mechanical –on ventilator</td>
+</tr>
+<tr class="odd">
+<td align="left">57655-3</td>
+<td align="left">Tidal volume.exhaled maximum setting Ventilator
+alarm</td>
+</tr>
+<tr class="even">
+<td align="left">76530-5</td>
+<td align="left">Mean pressure Respiratory system airway –on
+ventilator</td>
+</tr>
+<tr class="odd">
+<td align="left">19839-0</td>
+<td align="left">Breath rate spontaneous –on ventilator</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="ventilation-parameters" class="section level3">
-<h3>Ventilation parameters</h3>
-<table style="width:99%;">
-<colgroup>
-<col width="17%" />
-<col width="17%" />
-<col width="63%" />
-</colgroup>
+<div id="loinc-codes" class="section level2">
+<h2>LOINC Codes</h2>
+<table>
 <thead>
 <tr class="header">
 <th align="left">Code</th>
-<th align="left">Parameter</th>
-<th align="left">Description</th>
+<th align="left">Display</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"></td>
-<td align="left"><code>inhal</code></td>
-<td align="left">Anaesthesia gas</td>
+<td align="left">88034-4</td>
+<td align="left">Ventilator settings Document</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
-<td align="left"><code>secInhal</code></td>
-<td align="left">2nd Anaesthesia gas</td>
+<td align="left">19996-8</td>
+<td align="left">FIO2 on vent</td>
 </tr>
 <tr class="odd">
-<td align="left"></td>
-<td align="left"><code>carrier</code></td>
-<td align="left">Carrier gas</td>
+<td align="left">19834-1</td>
+<td align="left">Breath rate setting Ventilator</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
-<td align="left"><code>ventmode</code></td>
-<td align="left">Ventilation mode</td>
+<td align="left">74201-5</td>
+<td align="left">Days on ventilator</td>
 </tr>
 <tr class="odd">
-<td align="left"></td>
-<td align="left"><code>sync</code></td>
-<td align="left">Synchronized vent</td>
-</tr>
-<tr class="even">
-<td align="left"></td>
-<td align="left"><code>psvadd</code></td>
-<td align="left">Pressure support added to intermittent Ventilation
-Mode</td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left"><code>autoflow</code></td>
-<td align="left">Autoflow added to Volume mode</td>
-</tr>
-<tr class="even">
-<td align="left"></td>
-<td align="left"><code>airway</code></td>
-<td align="left">Airway device configured</td>
+<td align="left">20124-4</td>
+<td align="left"><a href="https://loinc.org/20124-4/">Ventilation mode
+Ventilator</a></td>
 </tr>
 </tbody>
 </table>
-<hr />
-<!--- --------------------------------------------------------------------- --->
-</div>
-</div>
-</div>
-<div id="ontologies" class="section level1">
-<h1>Ontologies</h1>
-<!--- --------------------------------------------------------------------- --->
-<ul>
-<li><a href="https://bioportal.bioontology.org/ontologies/SNOMEDCT">Snomed-CT
-via Bioontology</a></li>
-</ul>
-<table style="width:99%;">
-<colgroup>
-<col width="17%" />
-<col width="17%" />
-<col width="63%" />
-</colgroup>
+<table>
 <thead>
 <tr class="header">
-<th align="left"></th>
-<th align="left">Snomed CT ID</th>
-<th align="left">Description</th>
+<th align="left">Code</th>
+<th align="left">Display</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"></td>
-<td align="left">371907003</td>
-<td align="left">Oxygen administration by nasal cannula</td>
+<td align="left">LP7706-7</td>
+<td align="left">Ventilator</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
-<td align="left">243142003</td>
-<td align="left">Dual pressure spontaneous ventilation support</td>
+<td align="left">LA19016-7</td>
+<td align="left">Manual</td>
 </tr>
 <tr class="odd">
-<td align="left"></td>
-<td align="left">250854009</td>
-<td align="left">Positive end expiratory pressure</td>
+<td align="left">LA12671-6</td>
+<td align="left">Assisted ventilation</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
+<td align="left">LA29246-8</td>
+<td align="left">Controlled ventilation</td>
+</tr>
+<tr class="odd">
+<td align="left">LL5054-3</td>
+<td align="left">Manual|Assist|Ctrl|Assist-Ctrl|MMV|Other</td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<div id="snomed-ct" class="section level1">
+<h1>Snomed-CT</h1>
+<div id="international-patient-summary" class="section level2">
+<h2>International Patient Summary</h2>
+<ul>
+<li><a href="https://www.snomed.org/snomed-ct/Other-SNOMED-products/international-patient-summary-terminology">International
+Patient Summary</a></li>
+<li><a href="https://www.ipsviewer.com/">IPS Viewer</a></li>
+</ul>
+<p>Contains:</p>
+<ul>
+<li>Header</li>
+<li>Patient</li>
+<li>Allergies</li>
+<li>Active Problems</li>
+<li>Current medications</li>
+<li>Observations</li>
+</ul>
+</div>
+<div id="observation-hierarchy" class="section level2">
+<h2>Observation hierarchy</h2>
+<p><a href="http://purl.bioontology.org/ontology/SNOMEDCT/53950000">Respiratory
+therapy</a> &gt; <a href="http://purl.bioontology.org/ontology/SNOMEDCT/266700009">Assisted
+breathing</a> &gt; <a href="http://purl.bioontology.org/ontology/SNOMEDCT/40617009">Artificial
+respiration</a></p>
+<div id="devices" class="section level3">
+<h3>Devices</h3>
+<ul>
+<li><a href="http://purl.bioontology.org/ontology/SNOMEDCT/272181003">Clinical
+equipment</a>
+<ul>
+<li><a href="http://purl.bioontology.org/ontology/SNOMEDCT/448703006">Pulseoxymeter</a></li>
+<li><a href="http://purl.bioontology.org/ontology/SNOMEDCT/33388001">Carbon
+dioxide analyzer</a></li>
+</ul></li>
+</ul>
+<p><a href="http://purl.bioontology.org/ontology/SNOMEDCT/243141005">Snomed
+CT</a></p>
+</div>
+</div>
+<div id="cochrane-linked-data" class="section level2">
+<h2>Cochrane Linked Data</h2>
+<ul>
+<li>Procedure <a href="https://data.cochrane.org/concepts/r4hp5zhbl4f2">Dual Pressure
+Spontaneous Ventilation</a> = BIPAP</li>
+</ul>
 <hr />
 <!--- --------------------------------------------------------------------- --->
+</div>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
 <!--- --------------------------------------------------------------------- --->
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-MbProtDef" class="csl-entry">
-Dräger, 1. 2007. <span>“Dr<span>ä</span>ger RS 232 MEDIBUS.”</span>
-Protocol Definition, Revision Level 6.00. Moislinger Allee 53 – 55,
-D-23542 Lübeck, Germany: Dräger Medical AG &amp; Co. KG.
-</div>
-<div id="ref-MbPrimus" class="csl-entry">
-Dräger, 2. 2010. <span>“MEDIBUS for Primus, Primus IE, Apollo and
-Pallas.”</span> Software protocol, Software 1.n, 2.n, 3.n, 4.n.
-Moislinger Allee 53 – 55, D-23542 Lübeck, Germany: Dräger Medical AG
-&amp; Co. KG.
-</div>
-<div id="ref-MbxProfDef" class="csl-entry">
-Dräger, 3. 2019. <span>“Profile Definition MEDIBUS.x.”</span> For data
-communication. V 1.n. Moislinger Allee 53 – 55, D-23542 Lübeck, Germany:
-Dräger Medical AG &amp; Co. KG.
-</div>
-</div>
 </div>
 
 
