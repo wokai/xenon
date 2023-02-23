@@ -481,7 +481,6 @@ into a default parameter object.
 
  - [Snomed-CT via Bioontology](https://bioportal.bioontology.org/ontologies/SNOMEDCT)
 
-
 +---------------+---------------+---------------------------------------------------------+
 |               | Snomed CT ID  | Description                                             |
 +:==============+:==============+:========================================================+
