@@ -24,7 +24,7 @@ In FHIR,
 are contained in ValueSet `10.97.1`.
 All codes are derived from [LOINC](http://loinc.org)
 
-Code      Display
+Loinc     Display
 -------   -------------------------------------------------------------------------
 19835-8   Breath rate setting Ventilator synchronized intermittent mandatory
 19994-3   Oxygen/Total gas setting [Volume Fraction] Ventilator
@@ -40,7 +40,7 @@ Code      Display
 
 ## LOINC Codes
 
-Code          Display
+Loinc         Display
 --------      -------------------------------------------------------------------------
 88034-4       Ventilator settings Document
 19996-8       FIO2 on vent
@@ -48,7 +48,7 @@ Code          Display
 74201-5       Days on ventilator
 20124-4       [Ventilation mode Ventilator](https://loinc.org/20124-4/)
 
-Code          Display
+Loinc         Display
 --------      -------------------------------------------------------------------------
 LP7706-7      Ventilator
 LA19016-7     Manual
@@ -64,7 +64,6 @@ LL5054-3      Manual|Assist|Ctrl|Assist-Ctrl|MMV|Other
 
  - [International Patient Summary](https://www.snomed.org/snomed-ct/Other-SNOMED-products/international-patient-summary-terminology)
  - [IPS Viewer](https://www.ipsviewer.com/)
-
 
 Contains:
 
@@ -91,8 +90,25 @@ Contains:
   * [Pulseoxymeter](http://purl.bioontology.org/ontology/SNOMEDCT/448703006)
   * [Carbon dioxide analyzer](http://purl.bioontology.org/ontology/SNOMEDCT/33388001)
  
-[Snomed CT](http://purl.bioontology.org/ontology/SNOMEDCT/243141005)
+ - [Snomed CT](http://purl.bioontology.org/ontology/SNOMEDCT/243141005)
+ - [IHTSDO tools](https://browser.ihtsdotools.org/)
+ - [Find-A-Code](https://www.findacode.com/snomed/)
+ - [Medizininformatik](https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Intensivmedizin/Terminologien.html)
 
+
+SCTID       Name
+----------  --------------------------------------------------------------------
+260787004   Physical object (physical object)
+
+### Ventilation
+
+SCTID       Name
+----------  --------------------------------------------------------------------
+426854004   High flow oxygen nasal cannula
+371907003   Oxygen administration by nasal cannula
+243142003   Dual pressure spontaneous ventilation support
+250854009   Positive end expiratory pressure
+286812008   Pressure controlled ventilation
 
 ## Cochrane Linked Data
 

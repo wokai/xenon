@@ -11,7 +11,7 @@
 
 
 
-<title>Xenon</title>
+<title>Ontologies</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -321,23 +321,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -378,7 +372,7 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Xenon</h1>
+<h1 class="title toc-ignore">Ontologies</h1>
 <h4 class="author">W. Kaisers</h4>
 <address class="author_afil">
 Düsseldorf<br><h4 class="date">18.02.2023</h4>
@@ -399,6 +393,7 @@ Summary</a></li>
 <li><a href="#observation-hierarchy" id="toc-observation-hierarchy">Observation hierarchy</a>
 <ul>
 <li><a href="#devices" id="toc-devices">Devices</a></li>
+<li><a href="#ventilation" id="toc-ventilation">Ventilation</a></li>
 </ul></li>
 <li><a href="#cochrane-linked-data" id="toc-cochrane-linked-data">Cochrane Linked Data</a></li>
 </ul></li>
@@ -419,7 +414,7 @@ codes are derived from <a href="http://loinc.org">LOINC</a></p>
 <table>
 <thead>
 <tr class="header">
-<th align="left">Code</th>
+<th align="left">Loinc</th>
 <th align="left">Display</th>
 </tr>
 </thead>
@@ -483,7 +478,7 @@ ventilator</td>
 <table>
 <thead>
 <tr class="header">
-<th align="left">Code</th>
+<th align="left">Loinc</th>
 <th align="left">Display</th>
 </tr>
 </thead>
@@ -514,7 +509,7 @@ Ventilator</a></td>
 <table>
 <thead>
 <tr class="header">
-<th align="left">Code</th>
+<th align="left">Loinc</th>
 <th align="left">Display</th>
 </tr>
 </thead>
@@ -545,6 +540,9 @@ Ventilator</a></td>
 </div>
 <div id="snomed-ct" class="section level1">
 <h1>Snomed-CT</h1>
+<ul>
+<li><a href="https://bioportal.bioontology.org/ontologies/SNOMEDCT">Bioontology</a></li>
+</ul>
 <div id="international-patient-summary" class="section level2">
 <h2>International Patient Summary</h2>
 <ul>
@@ -578,9 +576,59 @@ equipment</a>
 <li><a href="http://purl.bioontology.org/ontology/SNOMEDCT/33388001">Carbon
 dioxide analyzer</a></li>
 </ul></li>
+<li><a href="http://purl.bioontology.org/ontology/SNOMEDCT/243141005">Snomed
+CT</a></li>
+<li><a href="https://browser.ihtsdotools.org/">IHTSDO tools</a></li>
+<li><a href="https://www.findacode.com/snomed/">Find-A-Code</a></li>
+<li><a href="https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Intensivmedizin/Terminologien.html">Medizininformatik</a></li>
 </ul>
-<p><a href="http://purl.bioontology.org/ontology/SNOMEDCT/243141005">Snomed
-CT</a></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">SCTID</th>
+<th align="left">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">260787004</td>
+<td align="left">Physical object (physical object)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="ventilation" class="section level3">
+<h3>Ventilation</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">SCTID</th>
+<th align="left">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">426854004</td>
+<td align="left">High flow oxygen nasal cannula</td>
+</tr>
+<tr class="even">
+<td align="left">371907003</td>
+<td align="left">Oxygen administration by nasal cannula</td>
+</tr>
+<tr class="odd">
+<td align="left">243142003</td>
+<td align="left">Dual pressure spontaneous ventilation support</td>
+</tr>
+<tr class="even">
+<td align="left">250854009</td>
+<td align="left">Positive end expiratory pressure</td>
+</tr>
+<tr class="odd">
+<td align="left">286812008</td>
+<td align="left">Pressure controlled ventilation</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="cochrane-linked-data" class="section level2">

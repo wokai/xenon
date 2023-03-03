@@ -332,7 +332,6 @@ const bus = {
       [ '57', { param: 'agentUnit', value: '%',             text: 'Selected Agent Unit is %'          } ],
       
       /// Unknown messages received from evita: 0A 20 48 68 6D 6F 71 78 9F 
-      [ '0A', { param: 'ventmode',  value: 'SPN-CPAP',      text: 'Mode SPN-CPAP'                     } ],
       [ '20', { param: 'agemode',   value: 'Mode Adults',   text: 'Device is in adult mode'           } ],
       [ '48', { param: 'airway',    value: 'IV (invasive)', text: 'Device configured for intubated patient ventilation'                 } ],
       [ '49', { param: 'airway',    value: 'NIV',           text: 'Device configured for mask ventilation'                              } ],

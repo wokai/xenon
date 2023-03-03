@@ -333,8 +333,6 @@ The processing order is
  - Shutdown closes port and clears StatusController episode UUID.
 
 
-
-
 --------------------------------------------------------------------------------
 
 <!--- --------------------------------------------------------------------- --->
@@ -480,18 +478,17 @@ into a default parameter object.
 <!--- --------------------------------------------------------------------- --->
 
  - [Snomed-CT via Bioontology](https://bioportal.bioontology.org/ontologies/SNOMEDCT)
+ - [IHTSDO tools](https://browser.ihtsdotools.org/)
+ - [EBI homepage](https://www.ebi.ac.uk/ols/ontologies/snomed)
 
-+---------------+---------------+---------------------------------------------------------+
-|               | Snomed CT ID  | Description                                             |
-+:==============+:==============+:========================================================+
-|               | 371907003     | Oxygen administration by nasal cannula                  |
-+---------------+---------------+---------------------------------------------------------+
-|               | 243142003     | Dual pressure spontaneous ventilation support           |
-+---------------+---------------+---------------------------------------------------------+
-|               | 250854009     | Positive end expiratory pressure                        |
-+---------------+---------------+---------------------------------------------------------+
-|               |               |                                                         |
-+---------------+---------------+---------------------------------------------------------+
+SCTID       Name
+----------  --------------------------------------------------------------------
+426854004   High flow oxygen nasal cannula
+371907003   Oxygen administration by nasal cannula
+243142003   Dual pressure spontaneous ventilation support
+250854009   Positive end expiratory pressure
+286812008   Pressure controlled ventilation
+>>>>>>> 2ed22bf (Work on ontology mapping)
 
 --------------------------------------------------------------------------------
 

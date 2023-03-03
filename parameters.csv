@@ -1,0 +1,39 @@
+Label Name Data_Group Code SCTID "Preferred Name" 
+compliance "Patient compliance" Current_Data_24H 06H 3863008  
+peak "Peak pressure" Current_Data_24H 7DH 27913002  
+plateau "Plateau pressure" Current_Data_24H 74H 698822002  
+peep PEEP Current_Data_24H 78H 250854009  
+rate "Ventilation rate" Current_Data_24H D9H 86290005  
+tidalvolume "Tidal volume" Current_Data_24H 88H 13621006  
+minutevolume "Minute volume" Current_Data_24H B9H 250854009  
+fio2 "Inspiratory O2 concentration" Current_Data_24H F0H 250774007  
+feo2 "Exspiratory O2 concentration" Current_Data_24H EFH 250775008  
+o2uptake "O2 uptake" Current_Data_24H 64H 251832002  
+feco2 "Endtidal CO2 concentration" Current_Data_24H E6H 250790007  
+mac "Minimum alveolar concentration" Current_Data_24H ADH 860940008  
+isoflurane.insp "Inspiratory Isoflurane concentration" Current_Data_24H 54H 426504004  
+isoflurane.exp "Exspiratory Isoflurane concentration" Current_Data_24H 55H 425421000  
+isoflurane.cons "Isoflurane consumption" Current_Data_24H 1DH nn  
+desflurane.insp "Inspiratory Desflurane concentration" Current_Data_24H 56H 426748007  
+desflurane.exp "Exspiratory Desflurane concentration" Current_Data_24H 57H 425621006  
+desflurane.cons "Desflurane consumption" Current_Data_24H 1EH nn  
+sevoflurane.insp "Inspiratory Sevoflurane concentration" Current_Data_24H 58H 425724007  
+sevoflurane.exp "Exspiratory Sevoflurane concentration" Current_Data_24H 59H 427210008  
+sevoflurane.cons "Sevoflurane consumption" Current_Data_24H 1FH nn  
+ippv "Ventilation-mode IPPV" Text 01H 387727008 "Intermittent positive pressure breathing treatment" 
+Vc-ac "Ventilation-mode VC-AC" Text 02H   
+SIMV "Ventilation-mode SIMV" Text 06H 59427005 "Synchronized intermittent mandatory ventilation" 
+SPN-CPAP "Ventilation-mode SPN-CPAP" Text 0AH 47545007 "Continuous positive airway pressure ventilation treatment " 
+VC-MMC "Ventilation-mode VC-MMV" Text 0CH   
+PC-MMV "Ventilation-mode PC-MMV" Text 0DH 1186620002 "Minimum minute volume ventilation" regime/therapy
+BIPAP "Ventilation-mode BIPAP" Text 0EH 243142003 "Dual pressure spontaneous ventilation support" regime/therapy
+APNOE "Ventilation-mode Apnoe ventilation" Text 11H   
+TEST "Product test mode" Text 12H   
+Standby "Ventilation-mode Standby" Text 1EH   
+Man/Spont "Ventilation-mode Man/Spont" Text 2BH 1197780003 "Spontaneous and/or timed ventilation " regime/therapy
+PCV "Ventilation-mode PCV" Text 34H   
+PSV "Ventilation-mode PSV" Text 5BH   
+IV "Device configured for invasive ventilation"  48H   
+NIV "Device configured for non-invasive ventilation"  49H   
+CPAP    47545007 "Continuous positive airway pressure ventilation treatment" 
+    426854004 " High flow oxygen nasal cannula " "Physical object"
