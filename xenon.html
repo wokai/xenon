@@ -343,23 +343,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -492,7 +486,13 @@ parameters</a></li>
 <li><a href="#ventilation-parameters" id="toc-ventilation-parameters">Ventilation parameters</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#ontologies" id="toc-ontologies">Ontologies</a></li>
+<li><a href="#ontologies" id="toc-ontologies">Ontologies</a>
+<ul>
+<li><a href="#snomed-ct-for-standard-ventilation-modes" id="toc-snomed-ct-for-standard-ventilation-modes">Snomed-CT for Standard
+ventilation modes</a></li>
+<li><a href="#snomed-ct-for-dräger-defined-modes" id="toc-snomed-ct-for-dräger-defined-modes">Snomed-CT for Dräger defined
+modes</a></li>
+</ul></li>
 <li><a href="#references" id="toc-references">References</a></li>
 </ul>
 </div>
@@ -1155,6 +1155,7 @@ Mode</td>
 <ul>
 <li><a href="https://bioportal.bioontology.org/ontologies/SNOMEDCT">Snomed-CT
 via Bioontology</a></li>
+<li><a href="https://browser.ihtsdotools.org/">IHTSDO tools</a></li>
 <li><a href="https://www.ebi.ac.uk/ols/ontologies/snomed">EBI
 homepage</a></li>
 </ul>
@@ -1188,8 +1189,116 @@ homepage</a></li>
 </tr>
 </tbody>
 </table>
+<div id="snomed-ct-for-standard-ventilation-modes" class="section level2">
+<h2>Snomed-CT for Standard ventilation modes</h2>
+<ul>
+<li>71388002 Procedure
+<ul>
+<li>243120004 Regimes and therapies</li>
+</ul></li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th align="left">SCTID</th>
+<th align="left">Name</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1222606000</td>
+<td align="left">Continuous Mandatory Ventilation (CMV)</td>
+<td>regime/therapy</td>
+</tr>
+<tr class="even">
+<td align="left">1186749003</td>
+<td align="left">Continuous mandatory ventilation volume-control
+inflation-type (CMV-VC)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td align="left">1187023008</td>
+<td align="left">Continuous mandatory ventilation pressure-control
+inflation-type</td>
+<td></td>
+</tr>
+<tr class="even">
+<td align="left">1197612007</td>
+<td align="left">Intermittent mandatory ventilation (IMV)</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td align="left">1186622005</td>
+<td align="left">Synchronized IMV - pressure-control pressure-support
+inflation</td>
+<td></td>
+</tr>
+<tr class="even">
+<td align="left">1186621003</td>
+<td align="left">Synchronized IMV - volume control pressure-support
+inflation</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td align="left">1186733000</td>
+<td align="left">Continuous spontaneous ventilation (CSV) with effort
+support</td>
+<td></td>
+</tr>
+<tr class="even">
+<td align="left">1186731003</td>
+<td align="left">Continuous spontaneous ventilation with pressure
+support</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td align="left">1186732005</td>
+<td align="left">Continuous spontaneous ventilation with volume targeted
+pressure-support</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="snomed-ct-for-dräger-defined-modes" class="section level2">
+<h2>Snomed-CT for Dräger defined modes</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Dräger</th>
+<th align="left">SCTID</th>
+<th align="left">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">PC-BIPAP</td>
+<td align="left">243142003</td>
+<td align="left">Dual pressure spontaneous ventilation support</td>
+</tr>
+<tr class="even">
+<td align="left">MMV</td>
+<td align="left">1186620002</td>
+<td align="left">Minimum minute volume ventilation</td>
+</tr>
+<tr class="odd">
+<td align="left">APRV</td>
+<td align="left">243143008</td>
+<td align="left">Airway pressure release ventilation</td>
+</tr>
+<tr class="even">
+<td align="left">CPAP</td>
+<td align="left">47545007</td>
+<td align="left">Continuous positive airway pressure ventilation
+treatment</td>
+</tr>
+</tbody>
+</table>
+<p>PC-AC VC-MMC</p>
 <hr />
 <!--- --------------------------------------------------------------------- --->
+</div>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>

@@ -477,7 +477,11 @@ into a default parameter object.
 # Ontologies
 <!--- --------------------------------------------------------------------- --->
 
+
+## Snomed-CT
+
  - [Snomed-CT via Bioontology](https://bioportal.bioontology.org/ontologies/SNOMEDCT)
+ - [Cnomed CT Editorial Guide](https://confluence.ihtsdotools.org/display/DOCEG/SNOMED+CT+Editorial+Guide)
  - [IHTSDO tools](https://browser.ihtsdotools.org/)
  - [EBI homepage](https://www.ebi.ac.uk/ols/ontologies/snomed)
 
@@ -488,7 +492,59 @@ SCTID       Name
 243142003   Dual pressure spontaneous ventilation support
 250854009   Positive end expiratory pressure
 286812008   Pressure controlled ventilation
->>>>>>> 2ed22bf (Work on ontology mapping)
+
+
+### Snomed-CT for observable entities
+
+  * 138875005 Snomed CT Concept 
+    * 363787002  Observable entity
+
+SCTID         Name
+----------    ------------------------------------------------------------------
+250854009     Positive end expiratory pressure
+
+
+
+
+### Snomed-CT for Standard ventilation modes
+
+  * 71388002  Procedure 
+    * 243120004 Regimes and therapies
+
+
+SCTID         Name
+----------    ---------------------------------------------------------------------------   ---
+1222606000    Continuous Mandatory Ventilation (CMV)                                        regime/therapy
+1186749003    Continuous mandatory ventilation volume-control inflation-type (CMV-VC)
+1187023008    Continuous mandatory ventilation pressure-control inflation-type
+1197612007    Intermittent mandatory ventilation (IMV)
+1186622005    Synchronized IMV - pressure-control pressure-support inflation
+1186621003    Synchronized IMV - volume control pressure-support inflation
+1186733000    Continuous spontaneous ventilation (CSV) with effort support
+1186731003    Continuous spontaneous ventilation with pressure support
+1186732005    Continuous spontaneous ventilation with volume targeted pressure-support
+
+### Snomed-CT for Dräger defined modes
+
+Dräger        SCTID         Name
+----------    ----------    ----------------------------------------------------
+PC-BIPAP      243142003     Dual pressure spontaneous ventilation support
+MMV           1186620002    Minimum minute volume ventilation
+APRV          243143008     Airway pressure release ventilation
+CPAP          47545007      Continuous positive airway pressure ventilation treatment
+
+PC-AC
+VC-MMC
+
+
+## LOINC
+
+
+Code          Name
+----------    ------------------------------------------------------------------
+75162-8       Biphasic positive airway pressure (BIPAP) activity Ventilator
+
+
 
 --------------------------------------------------------------------------------
 
