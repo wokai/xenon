@@ -13,6 +13,9 @@ output:
 ---
 --------------------------------------------------------------------------------
 
+
+
+
 <!--- --------------------------------------------------------------------- --->
 # Parameters
 <!--- --------------------------------------------------------------------- --->
@@ -60,6 +63,57 @@ LL5054-3      Manual|Assist|Ctrl|Assist-Ctrl|MMV|Other
 # Snomed-CT
 
  - [Bioontology](https://bioportal.bioontology.org/ontologies/SNOMEDCT)
+ - [Bfarm](https://www.bfarm.de/DE/Kodiersysteme/Terminologien/SNOMED-CT/_node.html)
+ - [Logical Model](https://confluence.ihtsdotools.org/pages/viewpage.action?pageId=61154005)
+ - [Starter guide DE](https://confluence.ihtsdotools.org/display/DOCSTARTDE/)
+ - [Document library](https://confluence.ihtsdotools.org/display/DOC)
+ - [Community Content Browser](https://community-browser.ihtsdotools.org/?): Includes a german translation
+ 
+## Snomed-CT Structures
+
+  * Content components
+    * Concepts
+    * Descriptions
+    * Relationships
+  * Localization mechanisms
+  * Concept model
+  * Expression model
+
+A concept has
+
+  * Unique numeric identifier (&leq; 18 digits)
+  * &geq; 1 Fully specified name (FSN)
+  * &geq; 1 Synonym (Syn). A synonym can be synonym of multiple concepts
+  * A preferred term: The default display name
+
+
+Each concept is associated with several descriptions.
+Each description includes
+
+  * An unique identifier
+  * Version data
+  * The identifier of the associated concept
+  * The human readable term
+  
+Concepts contain a set of **relationships**.
+Each relationship includes
+
+  * A unique identifier
+  * Version data
+  * A source concept
+  * **is_a**: Subtype (e.g. Procedure): Maybe multiple inheritance (Graph contains cycles)
+  * **has_a**: Has an attribute (e.g. procedure site)
+  
+Attribute relationships. Examples
+
+  * Procedure-site
+  * Method
+
+See:
+
+ - [Starter guide](https://snomed.org/sg)
+ - [](https://snowstorm.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN/concepts/225796000&sa=D&source=editors&ust=1678028279118629&usg=AOvVaw0ti013dJmEFiY4kn_kaqbl)
+
 
 ## International Patient Summary
 
@@ -80,7 +134,6 @@ Contains:
 
   * Procedure on body system
     * Procedure on respiratory system (118669005)
-
 
 ## Observation hierarchy
 
@@ -116,6 +169,45 @@ SCTID       Name
 243142003   Dual pressure spontaneous ventilation support
 250854009   Positive end expiratory pressure
 286812008   Pressure controlled ventilation
+
+### Intensive care related ID's
+
+SCTID       entity
+----------  --------------------------------------------------------------------
+386534000   Arterial blood pressure (observable entity)
+271649006   Systolic blood pressure (observable entity)
+271650006   Diastolic blood pressure (observable entity)
+78564009    Heart rate measured at systemic artery (observable entity)
+364075005   Heart rate (observable entity)
+103228002   Hemoglobin saturation with oxygen (observable entity)
+442476006   Arterial oxygen saturation (observable entity)
+103228002   Hemoglobin saturation with oxygen (observable entity)
+442349007   Venous oxygen saturation (observable entity)
+713194001   Central venous oxygenation saturation (observable entity)
+442734002   Mixed venous oxygen saturation (observable entity)
+250790007   End tidal carbon dioxide tension (observable entity)
+397802005   Minute ventilation (finding)
+86290005    Respiratory rate (observable entity)
+250774007   Inspired oxygen concentration (observable entity)
+250775008   Expired oxygen concentration (observable entity)
+250778005   End tidal oxygen concentration (observable entity)
+425421000   Expired isoflurane concentration (observable entity)
+427452000   End tidal isoflurane concentration (observable entity)
+427210008   Expired sevoflurane concentration (observable entity) 
+425724007   Inspired sevoflurane concentration (observable entity)
+427597006   End tidal sevoflurane concentration (observable entity)
+426988006   End tidal desflurane concentration (observable entity)
+425621006   Expired desflurane concentration (observable entity)
+
+SCTID       physical object
+----------  --------------------------------------------------------------------
+19923001    Catheter, device (physical object)
+462514007   Arterial blood pressure catheter (physical object)
+
+
+SCTID      regime/therapy
+17146006   Arterial pressure monitoring, non-invasive method (regime/therapy)
+
 
 ## Cochrane Linked Data
 

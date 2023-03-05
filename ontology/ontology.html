@@ -388,6 +388,7 @@ Düsseldorf<br><h4 class="date">18.02.2023</h4>
 </ul></li>
 <li><a href="#snomed-ct" id="toc-snomed-ct">Snomed-CT</a>
 <ul>
+<li><a href="#snomed-ct-structures" id="toc-snomed-ct-structures">Snomed-CT Structures</a></li>
 <li><a href="#international-patient-summary" id="toc-international-patient-summary">International Patient
 Summary</a></li>
 <li><a href="#procedure-71388002" id="toc-procedure-71388002">Procedure
@@ -396,6 +397,7 @@ Summary</a></li>
 <ul>
 <li><a href="#devices" id="toc-devices">Devices</a></li>
 <li><a href="#ventilation" id="toc-ventilation">Ventilation</a></li>
+<li><a href="#intensive-care-related-ids" id="toc-intensive-care-related-ids">Intensive care related ID’s</a></li>
 </ul></li>
 <li><a href="#cochrane-linked-data" id="toc-cochrane-linked-data">Cochrane Linked Data</a></li>
 </ul></li>
@@ -549,7 +551,66 @@ Ventilator</a></td>
 <h1>Snomed-CT</h1>
 <ul>
 <li><a href="https://bioportal.bioontology.org/ontologies/SNOMEDCT">Bioontology</a></li>
+<li><a href="https://www.bfarm.de/DE/Kodiersysteme/Terminologien/SNOMED-CT/_node.html">Bfarm</a></li>
+<li><a href="https://confluence.ihtsdotools.org/pages/viewpage.action?pageId=61154005">Logical
+Model</a></li>
+<li><a href="https://confluence.ihtsdotools.org/display/DOCSTARTDE/">Starter
+guide DE</a></li>
+<li><a href="https://confluence.ihtsdotools.org/display/DOC">Document
+library</a></li>
+<li><a href="https://community-browser.ihtsdotools.org/?">Community
+Content Browser</a>: Includes a german translation</li>
 </ul>
+<div id="snomed-ct-structures" class="section level2">
+<h2>Snomed-CT Structures</h2>
+<ul>
+<li>Content components
+<ul>
+<li>Concepts</li>
+<li>Descriptions</li>
+<li>Relationships</li>
+</ul></li>
+<li>Localization mechanisms</li>
+<li>Concept model</li>
+<li>Expression model</li>
+</ul>
+<p>A concept has</p>
+<ul>
+<li>Unique numeric identifier (≤ 18 digits)</li>
+<li>≥ 1 Fully specified name (FSN)</li>
+<li>≥ 1 Synonym (Syn). A synonym can be synonym of multiple
+concepts</li>
+<li>A preferred term: The default display name</li>
+</ul>
+<p>Each concept is associated with several descriptions. Each
+description includes</p>
+<ul>
+<li>An unique identifier</li>
+<li>Version data</li>
+<li>The identifier of the associated concept</li>
+<li>The human readable term</li>
+</ul>
+<p>Concepts contain a set of <strong>relationships</strong>. Each
+relationship includes</p>
+<ul>
+<li>A unique identifier</li>
+<li>Version data</li>
+<li>A source concept</li>
+<li><strong>is_a</strong>: Subtype (e.g. Procedure): Maybe multiple
+inheritance (Graph contains cycles)</li>
+<li><strong>has_a</strong>: Has an attribute (e.g. procedure site)</li>
+</ul>
+<p>Attribute relationships. Examples</p>
+<ul>
+<li>Procedure-site</li>
+<li>Method</li>
+</ul>
+<p>See:</p>
+<ul>
+<li><a href="https://snomed.org/sg">Starter guide</a></li>
+<li><a href="https://snowstorm.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN/concepts/225796000&amp;sa=D&amp;source=editors&amp;ust=1678028279118629&amp;usg=AOvVaw0ti013dJmEFiY4kn_kaqbl"></a></li>
+</ul>
+</div>
 <div id="international-patient-summary" class="section level2">
 <h2>International Patient Summary</h2>
 <ul>
@@ -645,6 +706,147 @@ CT</a></li>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="intensive-care-related-ids" class="section level3">
+<h3>Intensive care related ID’s</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">SCTID</th>
+<th align="left">entity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">386534000</td>
+<td align="left">Arterial blood pressure (observable entity)</td>
+</tr>
+<tr class="even">
+<td align="left">271649006</td>
+<td align="left">Systolic blood pressure (observable entity)</td>
+</tr>
+<tr class="odd">
+<td align="left">271650006</td>
+<td align="left">Diastolic blood pressure (observable entity)</td>
+</tr>
+<tr class="even">
+<td align="left">78564009</td>
+<td align="left">Heart rate measured at systemic artery (observable
+entity)</td>
+</tr>
+<tr class="odd">
+<td align="left">364075005</td>
+<td align="left">Heart rate (observable entity)</td>
+</tr>
+<tr class="even">
+<td align="left">103228002</td>
+<td align="left">Hemoglobin saturation with oxygen (observable
+entity)</td>
+</tr>
+<tr class="odd">
+<td align="left">442476006</td>
+<td align="left">Arterial oxygen saturation (observable entity)</td>
+</tr>
+<tr class="even">
+<td align="left">103228002</td>
+<td align="left">Hemoglobin saturation with oxygen (observable
+entity)</td>
+</tr>
+<tr class="odd">
+<td align="left">442349007</td>
+<td align="left">Venous oxygen saturation (observable entity)</td>
+</tr>
+<tr class="even">
+<td align="left">713194001</td>
+<td align="left">Central venous oxygenation saturation (observable
+entity)</td>
+</tr>
+<tr class="odd">
+<td align="left">442734002</td>
+<td align="left">Mixed venous oxygen saturation (observable entity)</td>
+</tr>
+<tr class="even">
+<td align="left">250790007</td>
+<td align="left">End tidal carbon dioxide tension (observable
+entity)</td>
+</tr>
+<tr class="odd">
+<td align="left">397802005</td>
+<td align="left">Minute ventilation (finding)</td>
+</tr>
+<tr class="even">
+<td align="left">86290005</td>
+<td align="left">Respiratory rate (observable entity)</td>
+</tr>
+<tr class="odd">
+<td align="left">250774007</td>
+<td align="left">Inspired oxygen concentration (observable entity)</td>
+</tr>
+<tr class="even">
+<td align="left">250775008</td>
+<td align="left">Expired oxygen concentration (observable entity)</td>
+</tr>
+<tr class="odd">
+<td align="left">250778005</td>
+<td align="left">End tidal oxygen concentration (observable entity)</td>
+</tr>
+<tr class="even">
+<td align="left">425421000</td>
+<td align="left">Expired isoflurane concentration (observable
+entity)</td>
+</tr>
+<tr class="odd">
+<td align="left">427452000</td>
+<td align="left">End tidal isoflurane concentration (observable
+entity)</td>
+</tr>
+<tr class="even">
+<td align="left">427210008</td>
+<td align="left">Expired sevoflurane concentration (observable
+entity)</td>
+</tr>
+<tr class="odd">
+<td align="left">425724007</td>
+<td align="left">Inspired sevoflurane concentration (observable
+entity)</td>
+</tr>
+<tr class="even">
+<td align="left">427597006</td>
+<td align="left">End tidal sevoflurane concentration (observable
+entity)</td>
+</tr>
+<tr class="odd">
+<td align="left">426988006</td>
+<td align="left">End tidal desflurane concentration (observable
+entity)</td>
+</tr>
+<tr class="even">
+<td align="left">425621006</td>
+<td align="left">Expired desflurane concentration (observable
+entity)</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th align="left">SCTID</th>
+<th align="left">physical object</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">19923001</td>
+<td align="left">Catheter, device (physical object)</td>
+</tr>
+<tr class="even">
+<td align="left">462514007</td>
+<td align="left">Arterial blood pressure catheter (physical object)</td>
+</tr>
+</tbody>
+</table>
+<p>SCTID regime/therapy 17146006 Arterial pressure monitoring,
+non-invasive method (regime/therapy)</p>
 </div>
 </div>
 <div id="cochrane-linked-data" class="section level2">
