@@ -46,6 +46,7 @@ Loinc         Display
 19996-8       FIO2 on vent
 19834-1       Breath rate setting Ventilator
 74201-5       Days on ventilator
+75162-8       Biphasic positive airway pressure (BIPAP) activity Ventilator
 20124-4       [Ventilation mode Ventilator](https://loinc.org/20124-4/)
 
 Loinc         Display
@@ -73,6 +74,12 @@ Contains:
  - Active Problems
  - Current medications
  - Observations
+
+
+## Procedure (71388002)
+
+  * Procedure on body system
+    * Procedure on respiratory system (118669005)
 
 
 ## Observation hierarchy
