@@ -68,6 +68,11 @@ LL5054-3      Manual|Assist|Ctrl|Assist-Ctrl|MMV|Other
  - [Starter guide DE](https://confluence.ihtsdotools.org/display/DOCSTARTDE/)
  - [Document library](https://confluence.ihtsdotools.org/display/DOC)
  - [Community Content Browser](https://community-browser.ihtsdotools.org/?): Includes a german translation
+ - [Document library](https://confluence.ihtsdotools.org/display/DOC)
+ - [Starter guide](https://snomed.org/sg)
+ - [Snomed in action](https://www.snomed.org/snomed-in-action?lang=de)
+ - [Snowstorm](https://snowstorm.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN/concepts/225796000&sa=D&source=editors&ust=1678028279118629&usg=AOvVaw0ti013dJmEFiY4kn_kaqbl)
+
  
 ## Snomed-CT Structures
 
@@ -108,11 +113,6 @@ Attribute relationships. Examples
 
   * Procedure-site
   * Method
-
-See:
-
- - [Starter guide](https://snomed.org/sg)
- - [](https://snowstorm.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN/concepts/225796000&sa=D&source=editors&ust=1678028279118629&usg=AOvVaw0ti013dJmEFiY4kn_kaqbl)
 
 
 ## International Patient Summary
