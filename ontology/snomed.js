@@ -95,6 +95,32 @@ const snomed = {
                             ]
                           }
                         ]
+                      },
+                      {
+                        id: 1149092001,
+                        name: 'Positive pressure ventilation',
+                        parent: 118669005,
+                        children: [
+                          {
+                            id: 428311008,
+                            name: 'Non-invasive ventilation',
+                            parent: 1149092001,
+                            children: [
+                              {
+                                id: 447837008,
+                                name: 'Non-invasive positive pressure ventilation',
+                                parent: 428311008,
+                                children: []
+                              }
+                            ]
+                          },
+                          {
+                            id: 1197611000,
+                            name: 'Positive pressure ventilation via endotracheal tube',
+                            parent: 1149092001
+                            children: []
+                          }
+                        ]
                       }
                     ]
                   }
