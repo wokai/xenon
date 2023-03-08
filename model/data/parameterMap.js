@@ -25,9 +25,12 @@ const path = require('path');
 const general       	    = require(path.join(__dirname, '..', '..', 'config',  'general'));
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
-const { episode }         = require(path.join(__dirname, '..', '..', 'model', 'data', 'episode'));
+const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
 
-
+/// ////////////////////////////////////////////////////////////////////
+/// TimePoint includes the Medibus-Message-Id
+/// for debug purposes
+/// ////////////////////////////////////////////////////////////////////
 
 class TimePoint {
   #id     /// @ number | Medibus-Message-Id
@@ -47,23 +50,30 @@ class TimePoint {
   get time()  { return this.#time; }
 }
 
+/// ////////////////////////////////////////////////////////////////////
+///
+/// ////////////////////////////////////////////////////////////////////
 
 class ParameterElement {
   
-  
+  #code   /// @number     | Medibus-code of Parameter
+  #param  /// @object     | Object containing parameter data
+  #begin  /// @TimePoint  | First Medibus message with parameter
+  #back   /// @TimePoint  | First Medibus message without parameter
   
 } 
 
-class ExpiredSetting {
-}
 
+/// ////////////////////////////////////////////////////////////////////
+///
+/// ////////////////////////////////////////////////////////////////////
 
 class ParameterMap {
 
 
   #resp   /// @type{TextMessageResponse}
-  #map    /// @type{Map}
-  #param  /// @type{Object}
+  #map    /// @type{Map}    {current settings = under observation}
+  #expir  /// @type{array}  {expired settings }
   
   /// ////////////////////////////////////////////////////////////////////// ///
   /// Empty Object will be set in each message cycle

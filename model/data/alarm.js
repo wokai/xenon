@@ -40,7 +40,10 @@ class AlarmLimits {
   
   #obj
   
-  /// See: this.extractLowLimits
+  /**
+   * @param{res} - { DataResponse }
+   * @see  {this.extractLowLimits}
+   **/
   setLowLimits = (res) => {
     try {
       /// Time and date set by Medibus message constructor
@@ -59,7 +62,6 @@ class AlarmLimits {
     }
   }
   
-  /// See: this.extractHighLimits
   setHighLimits = (res) => {
     try {
       /// Time and date set by Medibus message constructor
@@ -97,7 +99,6 @@ class AlarmLimits {
       console.log(this.#obj);
     }
   }
-  
   
   setDefaultObject = () => {
     this.#obj = {
