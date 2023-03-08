@@ -25,30 +25,41 @@ const path = require('path');
 const general       	    = require(path.join(__dirname, '..', '..', 'config',  'general'));
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
-const { episode }         = require(path.join(__dirname, '.', 'episode'));
-const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textMessageResponse'));
+const { episode }         = require(path.join(__dirname, '..', '..', 'model', 'data', 'episode'));
 
 
-class TextData {
 
-  static #emptyParam = {
-    msgId: 0,
-    time: general.empty.time,
-    language: '',
-    co2unit: '',
-    agentunit: '',
-    hlm:      { value: 'No' },
-    standby:  { value: 'No' },
-    leaktest: { value: 'No' },
-    inhal: '',
-    secInhal: '',
-    carrier: '',
-    ventmode: '',
-    sync:   { text: 'No' },
-    psvadd: { text: 'No' },
-    autoflow: 'False',
-    airway: '(empty)'
-   };
+class TimePoint {
+  #id     /// @ number | Medibus-Message-Id
+  #time   /// @ Date
+   
+  /// There is no type checking, because it would mess up the code
+  /// This class mainly exists in order to have clean accessors...
+  constructor(id = 0, time = config.empty.time) {
+    this.#id = id;
+    this.#time = time;
+  }
+  
+  set id(i)   { this.#id   = i;    }
+  set time(t) { this.#time = t;    }
+  
+  get id()    { return this.#id;   }
+  get time()  { return this.#time; }
+}
+
+
+class ParameterElement {
+  
+  
+  
+} 
+
+class ExpiredSetting {
+}
+
+
+class ParameterMap {
+
 
   #resp   /// @type{TextMessageResponse}
   #map    /// @type{Map}
@@ -82,29 +93,7 @@ class TextData {
   fillEmptyParamObject = () => {
     try{
       if(this.#map !== null){
-        //let v;
-        let empty = TextData.#emptyParam; 
-        
-        /// ////////////////////////////////////////////////////////// ///     
-        let device = bus.text.parameters.device;
-        
-        this.#param.language 	= this.getParam(device.language,  empty.language);
-        this.#param.co2unit  	= this.getParam(device.co2unit,   empty.co2unit);
-        this.#param.agentunit = this.getParam(device.agentunit, empty.agentunit);
-        this.#param.hlm 		  = this.getParam(device.hlm,       empty.hlm);
-        this.#param.standby 	= this.getParam(device.standby,   empty.standby);
-        this.#param.leaktest 	= this.getParam(device.leaktest,  empty.leaktest);
-      
-        /// ////////////////////////////////////////////////////////// ///
-        let vent = bus.text.parameters.ventilation;
-       
-        this.#param.inhal     = this.getParam(vent.inhal,       empty.inhal);
-        this.#param.secInhal  = this.getParam(vent.secInhal,    empty.secInhal);
-        this.#param.carrier   = this.getParam(vent.carrier,     empty.carrier);
-        this.#param.ventmode  = this.getParam(vent.ventmode,    empty.ventmode);
-        this.#param.sync      = this.getParam(vent.sync,        empty.sync);
-        this.#param.psvadd    = this.getParam(vent.psvadd,      empty.psvadd);
-        this.#param.autoflow  = this.getParam(vent.autoflow,    empty.autoflow);
+ 
         
         /// ////////////////////////////////////////////////////////// ///
       }
@@ -156,7 +145,6 @@ class TextData {
 	  this.#param.msgId = this.#resp.id;
 	  this.#param.time  = this.#resp.time;
       this.createParameterMap();
-      this.fillEmptyParamObject();
       episode.setText(this);
     }
   }

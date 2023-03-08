@@ -33,7 +33,7 @@ const { text }        = require(path.join(__dirname, '..', 'model', 'data', 'tex
 const { settings }    = require(path.join(__dirname, '..', 'model', 'data', 'settings'));
 const { cache }       = require(path.join(__dirname, '..', 'model', 'data', 'cache'));
 
-const { alarmLimits, exspiredAlarms, cp1Alarms } = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
+const { alarmLimits, expiredAlarms, cp1Alarms } = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
 
 const router = express.Router();
 
@@ -57,8 +57,8 @@ router.get('/alarm/limits', function(request, result, next){
   result.status(200).json(alarmLimits.dataObject);
 });
 
-router.get('/alarm/exspired', function(request, result, next){
-  result.status(200).json(exspiredAlarms.getArray());
+router.get('/alarm/expired', function(request, result, next){
+  result.status(200).json(expiredAlarms.getArray());
 });
 
 router.get('/alarm/cp1', function(request, result, next){

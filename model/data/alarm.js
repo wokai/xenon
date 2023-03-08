@@ -204,7 +204,7 @@ class PeriodPoint {
   #id     /// @ number | Medibus-Message-Id
   #time   /// @ Date
    
-  /// There is no type checking, because this would mess up the code
+  /// There is no type checking, because it would mess up the code
   /// This class mainly exists in order to have clean accessors...
   constructor(id = 0, time = config.empty.time) {
     this.#id = id;
@@ -320,7 +320,7 @@ class AlarmPeriod extends Alarm {
 
 
 
-class ExspiredAlarms {
+class ExpiredAlarms {
   
   #periods = [];
   constructor(){}
@@ -338,7 +338,7 @@ class ExspiredAlarms {
     
     let p = period.dataObject;
     monitor.infoMsg('Alarm', `${p.label} from ${p.begin.time} to ${p.back.time}`);
-    win.def.log({ level: 'info', file: 'alarm', func: 'ExspiredAlarms.push', message:  `Alarm '${p.label}' from ${p.begin.time} (id ${p.begin.id}) to ${p.back.time} (id ${p.back.id})` });
+    win.def.log({ level: 'info', file: 'alarm', func: 'ExpiredAlarms.push', message:  `Alarm '${p.label}' from ${p.begin.time} (id ${p.begin.id}) to ${p.back.time} (id ${p.back.id})` });
   }
   
   consume = () => {
@@ -357,16 +357,16 @@ class ExspiredAlarms {
 /// CurrentAlarms
 ///  - Instance where lists of current are inserted into.
 ///  - Maintains a list of all current alarms: Must be done in current alarms
-///    because only one instance of ExspiredAlarms can exist (for downstream
+///    because only one instance of ExpiredAlarms can exist (for downstream
 ///    reasons). Thus, alarm code ambiguities must be resolved before 
 ///    i.e. in CurrentAlarms.
-///  - Checks for alarms which have become exspired 
+///  - Checks for alarms which have become expired 
 /// //////////////////////////////////////////////////////////////////////// ///
 
 
 class CurrentAlarms {
   
-  #exspired         /// {ExspiredAlarms}
+  #expired         /// {ExpiredAlarms}
   #definedAlarms    /// {Map<{id|code|label}>} - (key = alarm.code) - (config/medibus) 
   #alarms           /// {Map<AlarmPeriod>}     - (key = alarm.code) - current alarms
   
@@ -381,10 +381,10 @@ class CurrentAlarms {
   get definedAlarms () { return this.#definedAlarms; }
   
   /**
-   * @param {Map[code, ]} alarms | {ExspiredAlarms} exspired
+   * @param {Map[code, ]} alarms | {ExpiredAlarms} expired
    */
-  constructor(alarms, exspired) {
-    this.#exspired = exspired;
+  constructor(alarms, expired) {
+    this.#expired = expired;
     this.setupDefinedAlarms(alarms);
     this.#alarms = new Map();
   }
@@ -412,10 +412,10 @@ class CurrentAlarms {
   /**
    * @param {number} - Message-Id - {Medibus} (model/medibus/message)
    **/
-  checkExspiration = (id) => {
+  checkExpiration = (id) => {
     this.#alarms.forEach((alarm) => {
       if(alarm.back.id < id){
-        this.#exspired.push(alarm);
+        this.#expired.push(alarm);
         this.#alarms.delete(alarm.code);
       }
     });
@@ -427,8 +427,8 @@ class CurrentAlarms {
    * @descr  Calls conversion of Alarm related payload content from Medibus
    *         message into {AlarmStatusResponse} and further into separate
    *         {AlarmPeriod} objects residin in a {Map}.
-   *         Finally, {checkExspiration} identifies Alarm types which are no more
-   *         current and move to {ExspiredAlarms}.
+   *         Finally, {checkExpiration} identifies Alarm types which are no more
+   *         current and move to {ExpiredAlarms}.
    **/
   extractAlarm = (msg) => {
     if(msg.hasPayload()){
@@ -449,7 +449,7 @@ class CurrentAlarms {
         this.pushAlarm(as.dataObject)
       });
     }
-    this.checkExspiration(msg.id);
+    this.checkExpiration(msg.id);
   }
   
   /**
@@ -463,17 +463,17 @@ class CurrentAlarms {
 }
 
 const alarmLimits = new AlarmLimits();
-const exspiredAlarms  = new ExspiredAlarms();
+const expiredAlarms  = new ExpiredAlarms();
 
 /**
  * @descr{Code-page 1 Alarms}
  * @see  {MEDIBUS for Primus. p.14}
  **/
-const cp1Alarms = new CurrentAlarms(bus.alarms.cp1, exspiredAlarms);
-const cp2Alarms = new CurrentAlarms(bus.alarms.cp2, exspiredAlarms);
+const cp1Alarms = new CurrentAlarms(bus.alarms.cp1, expiredAlarms);
+const cp2Alarms = new CurrentAlarms(bus.alarms.cp2, expiredAlarms);
 
 module.exports = { 
-  exspiredAlarms: exspiredAlarms,
+  expiredAlarms: expiredAlarms,
   alarmLimits: alarmLimits,
   cp1Alarms: cp1Alarms,
   cp2Alarms: cp2Alarms
