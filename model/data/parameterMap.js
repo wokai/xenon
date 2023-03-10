@@ -28,8 +28,8 @@ const bus                 = require(path.join(__dirname, '..', '..', 'config', '
 const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
 
 /// ////////////////////////////////////////////////////////////////////
-/// TimePoint includes the Medibus-Message-Id
-/// for debug purposes
+/// TimePoint includes the Medibus-Message-Id:
+/// Will be used to identify if a time point is recent or older  
 /// ////////////////////////////////////////////////////////////////////
 
 class TimePoint {
@@ -51,7 +51,15 @@ class TimePoint {
 }
 
 /// ////////////////////////////////////////////////////////////////////
+/// ParameterElement
+/// Stores a Parameter-Type + 2 time points:
 ///
+/// The structure of the parameter object is not further constrained
+/// here because it may vary depending on data-types.
+///
+/// The ID and time of the first observation containing the parameter
+/// and
+/// the ID and time of the first observation without the parameter
 /// ////////////////////////////////////////////////////////////////////
 
 class ParameterElement {
@@ -59,7 +67,34 @@ class ParameterElement {
   #code   /// @number     | Medibus-code of Parameter
   #param  /// @object     | Object containing parameter data
   #begin  /// @TimePoint  | First Medibus message with parameter
+  #last   /// @TimePoint  | Last  Medibus message with parameter
   #back   /// @TimePoint  | First Medibus message without parameter
+  
+  
+  /**
+   * @param{code}     - {Medibus-code}
+   * @object{object}  - {Parameter data}
+   * @id{number}      - {Medibus message id}
+   **/
+  
+  constructor(code, object, id) {
+    this.#code = code;
+    this.#param = object;
+    this.#begin = new TimePoint(id);
+    this.#end = new TimePoint();
+  }
+  
+  get code  ()  { return this.#code;  }
+  get param ()  { return this.#param; }
+  get begin ()  { return this.#begin; }
+  get last  ()  { return this.#last;  }
+  get back  ()  { return this.#back;  }
+  
+  /**
+   * @param {t}-{TimePoint}
+   **/
+  set last  (t) { this.#last = t;     }
+  set back  (t) { this.#back = t;     }
   
 } 
 
@@ -70,24 +105,66 @@ class ParameterElement {
 
 class ParameterMap {
 
-
-  #resp   /// @type{TextMessageResponse}
-  #map    /// @type{Map}    {current settings = under observation}
-  #expir  /// @type{array}  {expired settings }
+  #map    /// @type{Map<string, ParameterElement>}  - {current settings = under observation}
+  #expir  /// @type{array<ParameterElement>}        - {expired ParameterElement objects}
   
-  /// ////////////////////////////////////////////////////////////////////// ///
+  constructor() {
+    this.#map = new Map();
+    this.#expir = [];
+  }
+  
+  /// ////////////////////////////////////////////////////////////// ///
+  /// Insert new ParameterElement
+  /// ////////////////////////////////////////////////////////////// ///
+  
+  /**
+   * @param{p}  - {ParameterElement}
+   **/
+  addParameterElement = (p) => {
+    /// 1) Check for existing Object with appropriate code
+    let elem = this.#map.get(p.code);
+    if(elem !== undefined) {
+      /// 3) If exists: Update end of ParameterElement
+      elem.last = p.begin;
+    } else {
+      /// 2) If not: Insert ParameterElement
+      this.#map.set(p.code, p);  
+    }
+  }
+  
+  /// ////////////////////////////////////////////////////////////// ///
+  /// All expired map entries:
+  /// a) Back value is set
+  /// b) ParameterElement is shifted from Map to exspired
+  /// ////////////////////////////////////////////////////////////// ///
+  
+  /**
+   * @param{tp} - {TimePoint}
+   **/
+  
+  expireElements = (tp) => {
+    this.#map.forEach((value, key, map) => {
+      if(value.last.id != tp.id){
+        value.back = tp;
+        this.#expir.push(value);
+        map.delete(key);
+      }
+    });
+  }
+  
+  /// ////////////////////////////////////////////////////////////// ///
   /// Empty Object will be set in each message cycle
-  /// ////////////////////////////////////////////////////////////////////// ///
+  /// ////////////////////////////////////////////////////////////// ///
   setEmptyParamObject = () => {
    this.#param = {};
    Object.assign(this.#param, TextData.#emptyParam);
   }
   
-  /// ////////////////////////////////////////////////////////////////////// ///
+  /// ////////////////////////////////////////////////////////////// ///
   /// Second step for creation of parameter object:
   /// Check for existence of parameter in current text message list
   /// and eventually copy value into this.#param object
-  /// ////////////////////////////////////////////////////////////////////// ///
+  /// ////////////////////////////////////////////////////////////// ///
   getParam = (key, empty) => {
    let v = this.#map.get(key);
    if(v !== undefined){
@@ -180,11 +257,7 @@ class ParameterMap {
     }
   }
   
-  constructor() {
-    this.#resp = null;
-    this.#map = new Map();
-    this.setEmptyParamObject();
-  }
+
   
   // ToDo: Check what has to be done when an empty text message 
   // has been received
@@ -219,13 +292,14 @@ class ParameterMap {
   }
 }
 
-const text = new TextData();
 
 /**
  * @descr{}
  * @see  {}
  **/
 
-module.exports = { 
-  text: text
+module.exports = {
+  TimePoint,
+  ParameterElement,
+  ParameterMap
 };
