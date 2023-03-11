@@ -28,8 +28,10 @@ const bus                 = require(path.join(__dirname, '..', '..', 'config', '
 const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
 
 /// ////////////////////////////////////////////////////////////////////
-/// TimePoint includes the Medibus-Message-Id:
-/// Will be used to identify if a time point is recent or older  
+/// TimePoint carries information about when this interface received
+/// a message, identified by two parameters:
+/// - Medibus-Message-Id
+/// - Time (for example creation-time of Medibus-Message object)
 /// ////////////////////////////////////////////////////////////////////
 
 class TimePoint {
@@ -77,13 +79,13 @@ class ParameterElement {
    * @id{number}      - {Medibus message id}
    **/
   
-  constructor(code, object, id) {
-    this.#code = code;
+  constructor(code, object, id, time = config.empty.time) {
+    this.#code  = code;
     this.#param = object;
-    this.#begin = new TimePoint(id);
-    this.#end = new TimePoint();
+    this.#begin = new TimePoint(id, time);
+    this.#end   = new TimePoint();
   }
-  
+    
   get code  ()  { return this.#code;  }
   get param ()  { return this.#param; }
   get begin ()  { return this.#begin; }
@@ -95,6 +97,13 @@ class ParameterElement {
    **/
   set last  (t) { this.#last = t;     }
   set back  (t) { this.#back = t;     }
+  
+  /**
+   * @descr {Terminates duration period of observed parameter}
+   * @param {id}   - {number}
+   * @param {time} - {Date}
+   **/
+  stop      (id, time) => { this.back = new TimePoint(id, time); }
   
 } 
 
@@ -120,7 +129,7 @@ class ParameterMap {
   /**
    * @param{p}  - {ParameterElement}
    **/
-  addParameterElement = (p) => {
+  upsertElement = (p) => {
     /// 1) Check for existing Object with appropriate code
     let elem = this.#map.get(p.code);
     if(elem !== undefined) {
@@ -133,7 +142,8 @@ class ParameterMap {
   }
   
   /// ////////////////////////////////////////////////////////////// ///
-  /// All expired map entries:
+  /// Checks all map entries and expires outdated elements based on 
+  /// Medibus-Message-id:
   /// a) Back value is set
   /// b) ParameterElement is shifted from Map to exspired
   /// ////////////////////////////////////////////////////////////// ///

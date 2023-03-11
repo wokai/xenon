@@ -153,8 +153,8 @@ class TextData {
   updateParamObject = () => {
     this.setEmptyParamObject();
     if(this.#resp !== null) {
-	  this.#param.msgId = this.#resp.id;
-	  this.#param.time  = this.#resp.time;
+    this.#param.msgId = this.#resp.id;
+    this.#param.time  = this.#resp.time;
       this.createParameterMap();
       this.fillEmptyParamObject();
       episode.setText(this);

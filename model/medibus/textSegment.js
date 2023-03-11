@@ -152,7 +152,7 @@ class TextSegment {
   /**
    * @descr{Converts property data to plain Javascript Object}
    **/
-  get dataObject      () {
+  get dataObject () {
     return {
       id: this.messageId,
       time: this.time,
