@@ -152,7 +152,9 @@ class TextData {
   
   updateParamObject = () => {
     this.setEmptyParamObject();
-    if(this.#resp !== null) {
+    /// AND will be evaluated from left to right and returns immediately 
+    /// upon the first falsy operand
+    if(this.#resp !== null && this.#resp.length > 0) {
     this.#param.msgId = this.#resp.id;
     this.#param.time  = this.#resp.time;
       this.createParameterMap();
@@ -168,9 +170,9 @@ class TextData {
   get time    () { return this.#param.time;     }  /// Date
   
   get standby () { return {
-	  msgId: this.#param.msgId,
-	  time : this.#param.time,
-	  value: this.#param.standby.value  
+    msgId: this.#param.msgId,
+    time : this.#param.time,
+    value: this.#param.standby.value  
     }
   }
   
@@ -188,11 +190,13 @@ class TextData {
     this.setEmptyParamObject();
   }
   
-  // ToDo: Check what has to be done when an empty text message 
-  // has been received
   /**
    * @usedBy{text} - (/bus/action)
-   * @param{msg}   - (Message)
+   * @param {msg}   - (Message)
+   * @rem   {
+   *     Empty message should result in TexMessageResponse.length = 0.
+   *     In this case, updateParamObject will only set #param to #emptyParam
+   *    }
    **/
   extractTextMessages = (msg) => {
     if(msg.hasPayload){

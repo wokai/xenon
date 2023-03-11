@@ -50,7 +50,7 @@ class TextMessageResponse {
       while(index < this.#hexPayload.length){
         ts =  TextSegment.from(msg, index);
         index = ts.end;
-        this.#map.set(ts.code, ts);      
+        this.#map.set(ts.code, ts);
       }
     }
     win.def.log({ level: 'debug', file: 'TextMessageResponse', func: 'constructor', message: ` MsgId: ${this.id} | Segments: ${this.#map.size}`});

@@ -129,7 +129,7 @@ class TextSegment {
   
   /**
    * @descr{Converts buffer to number and translates the ascii encoded value into text length}
-   * @see{Medibus 6.0.0 Text Message Response p.18} 
+   * @see  {Medibus 6.0.0 Text Message Response p.18} 
    **/
   get length () { return this.#length.readUInt8(0) - 0x30; }
   
