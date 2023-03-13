@@ -1,6 +1,7 @@
 {
   "name": "xenon",
   "version": "0.3.30",
+  "type": "commonjs",
   "private": true,
   "scripts": {
     "start": "DEBUG=xenon:* PORT=4000 node ./bin/www"

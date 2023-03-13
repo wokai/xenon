@@ -133,6 +133,4 @@ const snomed = {
     ]
 };
 
-
-
 module.exports = Object.freeze(snomed);

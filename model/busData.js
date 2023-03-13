@@ -21,8 +21,8 @@
  ******************************************************************************/
 
 const colors = require('colors');
-const path = require('path');
-const fs = require('fs');
+const path   = require('path');
+const fs     = require('fs');
 
 const General = require(path.join('..', 'config', 'general'));
 

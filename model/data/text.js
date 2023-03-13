@@ -25,8 +25,8 @@ const path = require('path');
 const general             = require(path.join(__dirname, '..', '..', 'config',  'general'));
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
-const { episode }         = require(path.join(__dirname, '.' , 'episode'));
-const {
+const { episode }         = require(path.join(__dirname, 'episode'));
+const param               = require(path.join(__dirname, 'parameterMap'));
 const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textMessageResponse'));
 
 

@@ -83,7 +83,7 @@ class ParameterElement {
     this.#code  = code;
     this.#param = object;
     this.#begin = new TimePoint(id, time);
-    this.#end   = new TimePoint();
+    this.#back   = new TimePoint();
   }
     
   get code  ()  { return this.#code;  }
@@ -103,7 +103,7 @@ class ParameterElement {
    * @param {id}   - {number}
    * @param {time} - {Date}
    **/
-  stop      (id, time) => { this.back = new TimePoint(id, time); }
+  stop =    (id, time) => { this.back = new TimePoint(id, time); }
   
 } 
 
@@ -160,14 +160,6 @@ class ParameterMap {
         map.delete(key);
       }
     });
-  }
-  
-  /// ////////////////////////////////////////////////////////////// ///
-  /// Empty Object will be set in each message cycle
-  /// ////////////////////////////////////////////////////////////// ///
-  setEmptyParamObject = () => {
-   this.#param = {};
-   Object.assign(this.#param, TextData.#emptyParam);
   }
   
   /// ////////////////////////////////////////////////////////////// ///
