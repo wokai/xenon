@@ -73,6 +73,14 @@ router.get('/text/param', function(request, result, next) {
   result.status(200).json(text.paramObject);
 });
 
+router.get('/text/current', function(request, result, next) {
+  result.status(200).json(text.parameterMap.current);
+});
+
+router.get('/text/expired', function(request, result, next) {
+  result.status(200).json(text.parameterMap.expired);
+});
+
 router.get('/settings', function(request, result, next) {
   result.status(200).json(settings.dataObject);
 });

@@ -242,7 +242,6 @@ Empty positions and leading zeros must be transmitted as space (0x20).
 
 
 
-
 --------------------------------------------------------------------------------
 
 <!--- --------------------------------------------------------------------- --->
@@ -404,7 +403,7 @@ When the *MessageController* schedule array is empty, the next call to
 
 ## Text
 See Medibus for Primus [@MbPrimus] (p.34) and additionally [@MbxProfDef] (p.109).
-A text message response contains all current text messages.
+A *Text Message Response* (TMR) [@MbProtDef] (p.18) contains all current text messages.
 The response is divided into variable amounts of text-segments.
 Each text-segment consists of
 
@@ -428,6 +427,30 @@ Each data-object is made up of the following fields:
 After reading the text segments out of the message, the values are copied
 into a default parameter object.
 
+### ParameterMap
+
+The ParameterMap class is designed to serve as repository for past status
+parameters.
+A TMR always contains a complete list of *current* status parameter.
+In order to get the beginning and end of a status, the current status needs to
+be checked against past TMR.
+The *ParameterMap* thus contains a *Map* of *ParameterElements* (identified by
+the message code).
+Each time, a TMR is processed, all *TextSegments* are checked against the
+Map and either inserted or updated (upsert).
+After processing all TextSegments, the expired parameters (identified by an
+outdated message-id) are shifted into an (*expired*) array.
+
+The data is accessible via REST at
+
+ - host:/data/text/current
+ - host:/data/text/expired
+
+ 
+
+
+
+
 
 ### Device parameters
 
@@ -436,15 +459,15 @@ into a default parameter object.
 +:==============+:==============+:===================+
 | 2C            | `language`    | Language           |
 +---------------+---------------+--------------------+
-|               | `co2unit`     | CO<sub>2</sub>-Unit|
+| 22, 23, 24    | `co2unit`     | CO<sub>2</sub>-Unit|
 +---------------+---------------+--------------------+
-|               | `agentunit`   | Agent-Unit         |
+| 56, 57        | `agentunit`   | Agent-Unit         |
 +---------------+---------------+--------------------+
-|               | `hlm`         | HLM mode           |
+| 58            | `hlm`         | HLM mode           |
 +---------------+---------------+--------------------+
-|               | `standby`     | Standby mode       |
+| 1E            | `standby`     | Standby mode       |
 +---------------+---------------+--------------------+
-|               | `leaktest`    | Leaktest mode      |
+| 5             | `leaktest`    | Leaktest mode      |
 +---------------+---------------+--------------------+
 
 

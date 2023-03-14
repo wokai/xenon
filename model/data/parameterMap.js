@@ -93,6 +93,29 @@ class ParameterElement {
   get back  ()  { return this.#back;  }
   
   /**
+   * @usedBy {}
+   **/
+  
+  get dataObject () {
+    return {
+      code:  this.#code,
+      param: this.#param,
+      begin: {
+        id:   this.#begin.id,
+        time: this.#begin.time
+      },
+      last: {
+        id:   this.#last.id,
+        time: this.#last.time
+      },
+      back: {
+        id:   this.#back.id,
+        time: this.#back.time
+      }
+    };
+  }
+  
+  /**
    * @param {t}-{TimePoint}
    **/
   set last  (t) { this.#last = t;     }
@@ -104,7 +127,6 @@ class ParameterElement {
    * @param {time} - {Date}
    **/
   stop =    (id, time) => { this.back = new TimePoint(id, time); }
-  
 } 
 
 
@@ -114,13 +136,23 @@ class ParameterElement {
 
 class ParameterMap {
 
-  #map    /// @type{Map<string, ParameterElement>}  - {current settings = under observation}
-  #expir  /// @type{array<ParameterElement>}        - {expired ParameterElement objects}
+  #map      /// @type{Map<string, ParameterElement>}  - {current settings = under observation}
+  #expired  /// @type{array<ParameterElement>}        - {expired ParameterElement objects}
   
   constructor() {
     this.#map = new Map();
-    this.#expir = [];
+    this.#expired = [];
   }
+
+  /**
+   * @usedBy{}
+   **/  
+  get current () {
+    return Array.from(this.#map.values()).map(r => r.dataObject);
+  }
+  
+  get expired () { return this.#expired; }
+  
   
   /// ////////////////////////////////////////////////////////////// ///
   /// Insert new ParameterElement
@@ -149,32 +181,36 @@ class ParameterMap {
   /// ////////////////////////////////////////////////////////////// ///
   
   /**
-   * @param{tp} - {TimePoint}
+   * @param{id}                - {number} - (Medibus-Message ID)
+   * @usedBy{/model/data/text} - (TextParamMap.processTextMsg)
    **/
   
-  expireElements = (tp) => {
+  expireElements = (id) => {
     this.#map.forEach((value, key, map) => {
       if(value.last.id != tp.id){
         value.back = tp;
-        this.#expir.push(value);
+        this.#expired.push(value.dataObject);
         map.delete(key);
       }
     });
   }
   
-  /// ////////////////////////////////////////////////////////////// ///
-  /// Second step for creation of parameter object:
-  /// Check for existence of parameter in current text message list
-  /// and eventually copy value into this.#param object
-  /// ////////////////////////////////////////////////////////////// ///
-  getParam = (key, empty) => {
-   let v = this.#map.get(key);
-   if(v !== undefined){
-       return v;
-   } else {
-    return empty;
-   }
+  /**
+   * @descr {Expires all current elements}
+   * @usedBy{Closing the Medibus communication} - (Shutdown)
+   **/
+  
+  expireAll = () => {
+    let l = this.#map.length;
+    let tp = new TimePoint(0, new Date());
+    this.#map.forEach((value, key, map) => {
+      value.back = tp;
+      this.#expired.push(value.dataObject);
+      map.delete(key);
+    });
+    win.def.log({ level: 'info', file: 'parameterMap', func: 'expireAll', message: `Exspiring ${l} parameters` });
   }
+  
 }
 
 

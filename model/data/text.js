@@ -26,8 +26,38 @@ const general             = require(path.join(__dirname, '..', '..', 'config',  
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const { episode }         = require(path.join(__dirname, 'episode'));
-const param               = require(path.join(__dirname, 'parameterMap'));
 const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textMessageResponse'));
+
+const { TimePoint, ParameterElement, ParameterMap } = require(path.join(__dirname, 'parameterMap'));
+
+
+class TextParamMap extends ParameterMap {
+  
+  constructor() { super(); }
+  
+  /**
+   * @param{resp} - (TextMessageResponse)
+   **/
+  
+  /// //////////////////////////////////////////////////////////////////////////
+  /// A TextMessageResponse contains a Map of TextSegment objects.
+  /// DataObjects from TextSegments have the following structure:
+  /// {
+  ///   id:   Number
+  ///   time: Date
+  ///   code: String (from two bytes: [ 0x32, 0x33 ] -> '23')
+  ///   text: String
+  /// }
+  /// //////////////////////////////////////////////////////////////////////////
+  
+  processTextMsg = (resp) => {
+    resp.dataObject.forEach((element, index, array) => {
+      let elem = new ParameterElement(parseInt(element.code, 16), element, element.id, element.time);
+      this.upsert(elem);
+    });
+    this.expireElements(resp.id);
+  }
+}
 
 
 class TextData {
@@ -51,9 +81,10 @@ class TextData {
     airway: '(empty)'
    };
 
-  #resp   /// @type{TextMessageResponse}
-  #map    /// @type{Map}
-  #param  /// @type{Object}
+  #resp     /// @type{TextMessageResponse}
+  #map      /// @type{Map}
+  #param    /// @type{Object}
+  #txtParam /// @type{TextParamMap}
   
   /// ////////////////////////////////////////////////////////////////////// ///
   /// Empty Object will be set in each message cycle
@@ -89,11 +120,11 @@ class TextData {
         /// ////////////////////////////////////////////////////////// ///     
         let device = bus.text.parameters.device;
         
-        this.#param.language 	= this.getParam(device.language,  empty.language);
-        this.#param.co2unit  	= this.getParam(device.co2unit,   empty.co2unit);
+        this.#param.language  = this.getParam(device.language,  empty.language);
+        this.#param.co2unit   = this.getParam(device.co2unit,   empty.co2unit);
         this.#param.agentunit = this.getParam(device.agentunit, empty.agentunit);
-        this.#param.hlm 		  = this.getParam(device.hlm,       empty.hlm);
-        this.#param.standby 	= this.getParam(device.standby,   empty.standby);
+        this.#param.hlm       = this.getParam(device.hlm,       empty.hlm);
+        this.#param.standby   = this.getParam(device.standby,   empty.standby);
         this.#param.leaktest 	= this.getParam(device.leaktest,  empty.leaktest);
       
         /// ////////////////////////////////////////////////////////// ///
@@ -188,6 +219,8 @@ class TextData {
   constructor() {
     this.#resp = null;
     this.#map = new Map();
+    this.#txtParam = new TextParamMap();
+    
     this.setEmptyParamObject();
   }
   
@@ -202,6 +235,7 @@ class TextData {
   extractTextMessages = (msg) => {
     if(msg.hasPayload){
       this.#resp = new TextMessageResponse(msg);
+      this.#txtParam.processTextMsg(this.#resp);      
       this.updateParamObject();
     }
   }
@@ -221,9 +255,8 @@ class TextData {
     }
   }
   
-  get paramObject () { 
-    return this.#param;
-  }
+  get paramObject  () { return this.#param; }
+  get parameterMap () { return this.#txtParam; }
 }
 
 const text = new TextData();
@@ -231,6 +264,7 @@ const text = new TextData();
 /**
  * @descr{}
  * @see  {}
+ * @usedBy  {/routes/data}-{/bus/action}
  **/
 
 module.exports = { 
