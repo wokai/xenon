@@ -60,7 +60,7 @@ class TextParamMap extends ParameterMap {
   processTextMsg = (resp) => {
     resp.dataObject.forEach((element, index, array) => {
       let elem = new ParameterElement(parseInt(element.code, 16), element, element.id, element.time);
-      this.upsert(elem);
+      this.upsertElement(elem);
     });
     this.expireElements(new TimePoint(resp.id, resp.time));
   }

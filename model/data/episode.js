@@ -84,7 +84,7 @@ class Episode {
   terminate(){
     this.end = new Date();
     /// Terminates all current Text-Status parameters
-    text.expire();
+    text.text.expire();
   }
 
   get begin () { return this.#begin; }

@@ -81,6 +81,8 @@ class Action {
           /// Promise will be rejected when timout is exceeded or command fails
           if(err.message){
             monitor.dataMsg('Action', `Rejection of command: id ${err.message.id} | code: ${err.message.code} | Status: ${err.status}`);
+            console.log('[/bus/action] sendCommand');
+            console.log(err);
             win.def.log({ level: 'warn', file: 'action', func: 'Action.sendCommand', message: `Rejected promise: Message: id ${err.message.id} | Dir: ${err.message.dirString}| Code: ${err.message.code} | Status: ${err.status}`});
           } else {
             win.def.log({ level: 'warn', file: 'action', func: 'Action.sendCommand', message: `Rejected promise: ${err.status}`});
