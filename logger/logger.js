@@ -80,15 +80,13 @@ const consTransport = new winston.transports.Console({
 /// Check and eventually create directory for logfiles
 /// ------------------------------------------------------------------------ ///
 
-let logdir = path.join(__dirname, '..', 'logfiles');
-
-if (!fs.existsSync(logdir)){
-  console.log(colors.yellow(`[logger.js] Logging directory '${logdir}' does not exist (will be created).`))
-  fs.mkdirSync(logdir);
+if (!fs.existsSync(config.logger.logdir)){
+  console.log(colors.yellow(`[logger.js] Logging directory '${config.logger.logdir}' does not exist (will be created).`))
+  fs.mkdirSync(config.logger.logdir);
 }
 
 const logfile = 'win_' + dateformat(new Date(), 'yyyy-mm-dd') + '.log';
-const logpath = path.join(logdir, logfile);
+const logpath = path.join(config.logger.logdir, logfile);
 
 const flog = fs.createWriteStream(logpath, { flags: 'a' })
 flog.on('error', function(err) {
@@ -124,9 +122,8 @@ const def = winston.createLogger({
 
 
 /// //////////////////////////////////////////////////////////////////////// ///
-/// Message diary
+/// Message repository
 /// //////////////////////////////////////////////////////////////////////// ///
-
 
 const msgfile = 'msg_' + dateformat(new Date(), 'yyyy-mm-dd') + '.log';
 const msgpath = path.join(__dirname, '..', 'logfiles', msgfile);
@@ -163,10 +160,55 @@ const msg = winston.createLogger({
   exitOnError: false
 });
 
+/// //////////////////////////////////////////////////////////////////////// ///
+/// Status repository
+/// //////////////////////////////////////////////////////////////////////// ///
+
+const statusfile = 'status_' + dateformat(new Date(), 'yyyy-mm-dd') + '.log';
+const statuspath = path.join(__dirname, '..', 'logfiles', msgfile);
+const statusStream = fs.createWriteStream(statuspath, { flags: 'a' })
+const statusTransport = new winston.transports.Stream({ stream: statusStream });
+
+
+/**
+ * @param{code}  - (String number)
+ * @param{text}  - (String)
+ * @param{begin} - (TimePoint: /model/data/parameterMap) - { id: number, time: Date }
+ * @param{end}   - (TimePoint)
+ **/
+const statusFormat = winston.format.printf( ({ code, text, begin, end }) => {
+  if(!code)   { code = '00'; }
+  if(!text)   { text = '';   }
+  if(!begin)  { begin = { id: 0, time : config.empty.time}; }
+  if(!end)    { end = { id: 0, time : config.empty.time}; }
+  
+  return `[${timestamp}] Code ${code} | Text ${text} | Begin ${begin.id}:${dateformat(begin.time, 'HH:MM:ss')} | End ${end.id}:${dateformat(end.time, 'HH:MM:ss')}`;
+});
+
+const status = winston.createLogger({
+  format: winston.format.combine(
+    winston.format.label({label: 'default'}),
+    winston.format.timestamp({ format: 'DD.MM.YYYY | HH:mm:ss' }),
+    winston.format.splat(),
+    statusFormat
+  ),
+  transports: [
+    statusTransport
+  ],
+  level: 'silly',
+  exitOnError: false
+});
+
+
+/// //////////////////////////////////////////////////////////////////////// ///
+/// Init and export
+/// //////////////////////////////////////////////////////////////////////// ///
+
 def.log({ level: 'info', file: 'logger', func: '(-)', message: `Log level: ${config.logger.level}`});
 
 module.exports = {
-  def : def,
-  msg : msg
+  def   : def,
+  msg   : msg,
+  status: status
 };
 

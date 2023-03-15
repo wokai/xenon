@@ -236,8 +236,33 @@ Empty positions and leading zeros must be transmitted as space (0x20).
 --------------------------------------------------------------------------------
 
 <!--- --------------------------------------------------------------------- --->
-# Data definition
+# Logging
 <!--- --------------------------------------------------------------------- --->
+
+Xenon uses [npm winston](https://www.npmjs.com/package/winston) for logging.
+The location of the logfiles is defined the configuration:
+
+ - Path: `/config/general`
+ - Property: `logger.logdir`
+
+
+## Status logging
+
+Status logging is intended to save changes of settings, defined in 
+*Text-Message-Response* to a file.
+
+The status logger takes an object containing four properties:
+
+ - code: Textual representation of numeric value
+ - text: Text content as received from message
+ - begin: TimePoint (id, time)
+ - end: TimePoint
+ 
+ Status changes will be logged, by `ParameterMap` upon call of
+ 
+  - `expireElements`
+  - `exprieAll`
+  
 
 
 

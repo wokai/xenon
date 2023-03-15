@@ -34,7 +34,7 @@ class Message {
   
   static #lastId = 0; /// Counter for creation of (session) unique message id's
   
-  #id                 /// Message id (application unique)
+  #id                 /// @type{Number} - (Message id; application unique)
   #buffer             /// Complete buffer or null (when not created from buffer)
   #body               /// Array where checksum is calculated from
   #checksum           /// {Buffer} - (Two hexadecimal values)
@@ -45,9 +45,9 @@ class Message {
   #payload            /// Hexadecimal payload (optional, may be null). Type: Buffer.
 
   #direction          /// Direction of message flow ('inc' or 'out')
-  #dateTime           /// DateTime of object creation
-  #date               /// Date part
-  #time               /// Time part
+  #dateTime           /// @type{Date}   - (DateTime of object creation)
+  #date               /// @type{String} - (Date part)
+  #time               /// @type{String} - (Time part)
   
   
   constructor(data, cmd, payload){

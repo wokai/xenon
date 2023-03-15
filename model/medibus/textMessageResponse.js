@@ -26,8 +26,8 @@ const bus         = require(path.join(__dirname, '..', '..', 'config', 'medibus'
 
 class TextMessageResponse {
 
-  #msgid
-  #time
+  #msgid        /// @type{Number}
+  #time         /// @type{Date}
   #code         /// Message.code
   #hexPayload   /// Message.hexPayload
   #map          /// Map key = Text-Message-Code | value = TextSegment

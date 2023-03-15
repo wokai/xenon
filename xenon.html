@@ -450,8 +450,11 @@ and unknown commands</a></li>
 commands</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#data-definition" id="toc-data-definition">Data
-definition</a></li>
+<li><a href="#logging" id="toc-logging">Logging</a>
+<ul>
+<li><a href="#status-logging" id="toc-status-logging">Status
+logging</a></li>
+</ul></li>
 <li><a href="#controller" id="toc-controller">Controller</a>
 <ul>
 <li><a href="#portcontroller" id="toc-portcontroller">PortController</a></li>
@@ -800,11 +803,36 @@ medical device within approx. 1 second.</p></li>
 </div>
 </div>
 </div>
-<div id="data-definition" class="section level1">
-<h1>Data definition</h1>
+<div id="logging" class="section level1">
+<h1>Logging</h1>
 <!--- --------------------------------------------------------------------- --->
+<p>Xenon uses <a href="https://www.npmjs.com/package/winston">npm
+winston</a> for logging. The location of the logfiles is defined the
+configuration:</p>
+<ul>
+<li>Path: <code>/config/general</code></li>
+<li>Property: <code>logger.logdir</code></li>
+</ul>
+<div id="status-logging" class="section level2">
+<h2>Status logging</h2>
+<p>Status logging is intended to save changes of settings, defined in
+<em>Text-Message-Response</em> to a file.</p>
+<p>The status logger takes an object containing four properties:</p>
+<ul>
+<li>code: Textual representation of numeric value</li>
+<li>text: Text content as received from message</li>
+<li>begin: TimePoint (id, time)</li>
+<li>end: TimePoint</li>
+</ul>
+<p>Status changes will be logged, by <code>ParameterMap</code> upon call
+of</p>
+<ul>
+<li><code>expireElements</code></li>
+<li><code>exprieAll</code></li>
+</ul>
 <hr />
 <!--- --------------------------------------------------------------------- --->
+</div>
 </div>
 <div id="controller" class="section level1">
 <h1>Controller</h1>
@@ -1054,7 +1082,7 @@ a TMR is processed, all <em>TextSegments</em> are checked against the
 Map and either inserted or updated (upsert). After processing all
 TextSegments, the expired parameters (identified by an outdated
 message-id) are shifted into an (<em>expired</em>) array.</p>
-<p>The data is accessible via REST under</p>
+<p>The data is accessible via REST at</p>
 <ul>
 <li>host:/data/text/current</li>
 <li>host:/data/text/expired</li>

@@ -27,6 +27,8 @@ const fs     = require('fs');
 const win     = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const general = require(path.join(__dirname, '..', '..', 'config', 'general'));
 
+const text    = require(path.join(__dirname, 'text'));
+
 
 class Episode {
   
@@ -81,12 +83,15 @@ class Episode {
   
   terminate(){
     this.end = new Date();
+    /// Terminates all current Text-Status parameters
+    text.expire();
   }
 
   get begin () { return this.#begin; }
   get ventilationPeriods () { return this.#ventModePeriods; }
   
   beginVentPeriod = (standby) => {
+    //win.status.log({code: value.code, text: value.text, begin: value.begin, end: value.back });
     win.def.log({ level: 'debug', file: 'model/data/episode', func: 'beginVentPeriod', message: `[Episode] Begin vent period: id: ${standby.msgId}, time: ${standby.time.toLocaleTimeString()},  ${standby.value}`});
     this.#currentVentilationPeriod = standby;
   }

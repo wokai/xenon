@@ -22,10 +22,9 @@
  
 const path = require('path'); 
 
-const general             = require(path.join(__dirname, '..', '..', 'config',  'general'));
-const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
-const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
-const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
+const win     = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
+const bus     = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
+const config  = require(path.join(__dirname, '..', '..', 'config', 'general'));
 
 /// ////////////////////////////////////////////////////////////////////
 /// TimePoint carries information about when this interface received
@@ -73,6 +72,13 @@ class ParameterElement {
   #back   /// @TimePoint  | First Medibus message without parameter
   
   
+  /// //////////////////////////////////////////////////////////////////////////
+  /// This shall be overrided by subclasses
+  /// The intention is, that the depicted text appears in status messages
+  /// which are logged upon expiration 
+  /// //////////////////////////////////////////////////////////////////////////
+  getText = () => { return ''; }
+  
   /**
    * @param{code}     - {Medibus-code}
    * @object{object}  - {Parameter data}
@@ -87,6 +93,7 @@ class ParameterElement {
   }
     
   get code  ()  { return this.#code;  }
+  get text  ()  { return this.getText(); }
   get param ()  { return this.#param; }
   get begin ()  { return this.#begin; }
   get last  ()  { return this.#last;  }
@@ -181,14 +188,15 @@ class ParameterMap {
   /// ////////////////////////////////////////////////////////////// ///
   
   /**
-   * @param{id}                - {number} - (Medibus-Message ID)
+   * @param{tp}                - (TimePoint)
    * @usedBy{/model/data/text} - (TextParamMap.processTextMsg)
    **/
   
-  expireElements = (id) => {
+  expireElements = (tp) => {
     this.#map.forEach((value, key, map) => {
       if(value.last.id != tp.id){
         value.back = tp;
+        win.status.log({code: value.code, text: value.text, begin: value.begin, end: value.back });
         this.#expired.push(value.dataObject);
         map.delete(key);
       }
@@ -205,6 +213,7 @@ class ParameterMap {
     let tp = new TimePoint(0, new Date());
     this.#map.forEach((value, key, map) => {
       value.back = tp;
+      win.status.log({code: value.code, text: value.text, begin: value.begin, end: value.back });
       this.#expired.push(value.dataObject);
       map.delete(key);
     });

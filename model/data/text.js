@@ -22,14 +22,32 @@
  
 const path = require('path'); 
 
-const general             = require(path.join(__dirname, '..', '..', 'config',  'general'));
+const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
-const { episode }         = require(path.join(__dirname, 'episode'));
+//const { episode }         = require(path.join(__dirname, 'episode'));
 const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textMessageResponse'));
 
 const { TimePoint, ParameterElement, ParameterMap } = require(path.join(__dirname, 'parameterMap'));
 
+
+/// ////////////////////////////////////////////////////////////////////////////
+/// A TextMessageResponse contains a Map of TextSegment objects.
+/// DataObjects from TextSegments have the following structure:
+/// {
+///   id:   Number
+///   time: Date
+///   code: String (from two bytes: [ 0x32, 0x33 ] -> '23')
+///   text: String
+/// }
+/// ////////////////////////////////////////////////////////////////////////////
+class TextElement extends ParameterElement { 
+  constructor(code, object, id, time = config.empty.time){
+    super(code, object, id, time);
+  }
+  
+  getText = () => { return this.param.text; }
+}
 
 class TextParamMap extends ParameterMap {
   
@@ -39,23 +57,12 @@ class TextParamMap extends ParameterMap {
    * @param{resp} - (TextMessageResponse)
    **/
   
-  /// //////////////////////////////////////////////////////////////////////////
-  /// A TextMessageResponse contains a Map of TextSegment objects.
-  /// DataObjects from TextSegments have the following structure:
-  /// {
-  ///   id:   Number
-  ///   time: Date
-  ///   code: String (from two bytes: [ 0x32, 0x33 ] -> '23')
-  ///   text: String
-  /// }
-  /// //////////////////////////////////////////////////////////////////////////
-  
   processTextMsg = (resp) => {
     resp.dataObject.forEach((element, index, array) => {
       let elem = new ParameterElement(parseInt(element.code, 16), element, element.id, element.time);
       this.upsert(elem);
     });
-    this.expireElements(resp.id);
+    this.expireElements(new TimePoint(resp.id, resp.time));
   }
 }
 
@@ -64,7 +71,7 @@ class TextData {
 
   static #emptyParam = {
     msgId: 0,
-    time: general.empty.time,
+    time: config.empty.time,
     language: '',
     co2unit: '',
     agentunit: '',
@@ -191,7 +198,7 @@ class TextData {
     this.#param.time  = this.#resp.time;
       this.createParameterMap();
       this.fillEmptyParamObject();
-      episode.setText(this);
+      //episode.setText(this);
     }
   }
   
@@ -257,6 +264,11 @@ class TextData {
   
   get paramObject  () { return this.#param; }
   get parameterMap () { return this.#txtParam; }
+  
+  /**
+   * @usedBy{Episode.terminate} - (/model/data/episode)
+   **/
+  expire = () => { this.parameterMap.expireAll(); }
 }
 
 const text = new TextData();
