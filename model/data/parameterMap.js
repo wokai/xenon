@@ -197,7 +197,7 @@ class ParameterMap {
     this.#map.forEach((value, key, map) => {
       if(value.last.id != tp.id){
         value.back = tp;
-        //win.status.log({code: value.code, text: value.text, begin: value.begin, end: value.back });
+        win.status.log({ level: 'info', code: value.code, text: value.text, begin: value.begin, end: value.back });
         this.#expired.push(value.dataObject);
         map.delete(key);
       }
@@ -214,7 +214,7 @@ class ParameterMap {
     let tp = new TimePoint(0, new Date());
     this.#map.forEach((value, key, map) => {
       value.back = tp;
-      //win.status.log({code: value.code, text: value.text, begin: value.begin, end: value.back });
+      win.status.log({ level: 'info', code: value.code, text: value.text, begin: value.begin, end: value.back });
       this.#expired.push(value.dataObject);
       map.delete(key);
     });

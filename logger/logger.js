@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2021, Wolfgang Kaisers
+ * Copyright 2023, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -52,87 +52,68 @@ const config = require(path.join(__dirname, '..', 'config', 'general'));
 
 
 /// //////////////////////////////////////////////////////////////////////// ///
-/// Use winston predefined logger container
+/// Default logger
 /// //////////////////////////////////////////////////////////////////////// ///
 
-const logformat = winston.format.printf( ({ level, label, message, timestamp, file, func, stack}) => {
+/// FileTransport: Dayly rotating file log (eventually create directory)
+if (!fs.existsSync(config.logger.logdir)){
+  console.log(colors.yellow(`[logger.js] Logging directory '${config.logger.logdir}' does not exist (will be created).`))
+  fs.mkdirSync(config.logger.logdir);
+}
+const defLogFile = 'win_' + dateformat(new Date(), 'yyyy-mm-dd') + '.log';
+const defLogPath = path.join(config.logger.logdir, defLogFile);
+const defFileStream = fs.createWriteStream(defLogPath, { flags: 'a' })
+defFileStream.on('error', function(err) {
+  console.log(colors.brightRed(`[logger/logger] createWriteStream Error on file (flag: ${fflag}): ${defLogPath} `))
+  defFileStream.end();
+});
+const fileTransport = new winston.transports.Stream({ stream: defFileStream });
+/// Second transport
+const consTransport = new winston.transports.Console({
+      format: winston.format.colorize({ all: true })
+})
 
+/// Define logging-format
+const defFormat = winston.format.printf( ({ level, label, message, timestamp, file, func, stack}) => {
   if(!file)  { file = '-'; }
   if(!func)  { func = '-';  }
-  if(!stack) { stack = '-'; }
-  
+  if(!stack) { stack = '-'; } 
   /// Can be parsed as csv-format with delimiter |
   return `[${timestamp}] | Level: ${level} | File: ${file} | Function: ${func} | Message: ${message} | Stack: ${stack}`
 });
 
 
-const consTransport = new winston.transports.Console({
-      format: winston.format.colorize({ all: true })
-})
-
-
-/// //////////////////////////////////////////////////////////////////////// ///
-/// Dayly rotating file log
-/// //////////////////////////////////////////////////////////////////////// ///
-
-
-/// ------------------------------------------------------------------------ ///
-/// Check and eventually create directory for logfiles
-/// ------------------------------------------------------------------------ ///
-
-if (!fs.existsSync(config.logger.logdir)){
-  console.log(colors.yellow(`[logger.js] Logging directory '${config.logger.logdir}' does not exist (will be created).`))
-  fs.mkdirSync(config.logger.logdir);
-}
-
-const logfile = 'win_' + dateformat(new Date(), 'yyyy-mm-dd') + '.log';
-const logpath = path.join(config.logger.logdir, logfile);
-
-const flog = fs.createWriteStream(logpath, { flags: 'a' })
-flog.on('error', function(err) {
-  console.log(colors.brightRed(`[logger/logger] createWriteStream Error on file (flag: ${fflag}): ${logpath} `))
-  flog.end();
-});
-
-
-/// //////////////////////////////////////////////////////////////////////// ///
-/// Winston logger
-/// //////////////////////////////////////////////////////////////////////// ///
-
-const fileTransport = new winston.transports.Stream({ stream: flog });
-
- 
 const def = winston.createLogger({
   format: winston.format.combine(
     winston.format.label({label: 'default'}),
     winston.format.timestamp({ format: 'DD.MM.YYYY | HH:mm:ss' }),
     winston.format.splat(),
-    logformat
+    defFormat
   ),
   transports: [
     consTransport,
     fileTransport
   ],
-  /** See app.js : uncaughtException
-  exceptionHandlers: [ redisTransport ],
-  **/
-  level: config.logger.level, //'info',  /// Default: info
+  level: config.logger.level, /// Default: info
   exitOnError: false
 });
-
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Message repository
 /// //////////////////////////////////////////////////////////////////////// ///
 
-const msgfile = 'msg_' + dateformat(new Date(), 'yyyy-mm-dd') + '.log';
-const msgpath = path.join(__dirname, '..', 'logfiles', msgfile);
+/// Create file-transport
+const msgFile = 'msg_' + dateformat(new Date(), 'yyyy-mm-dd') + '.log';
+const msgPath = path.join(config.logger.logdir, msgFile);
+const msgFileStream = fs.createWriteStream(msgPath, { flags: 'a' });
+msgFileStream.on('error', function(err) {
+  console.log(colors.brightRed(`[logger/logger] createWriteStream Error on file (flag: ${fflag}): ${defLogPath} `))
+  msgFileStream.end();
+});
+const msgFileTransport = new winston.transports.Stream({ stream: msgFileStream });
 
-const msgstream = fs.createWriteStream(msgpath, { flags: 'a' })
-const msgTransport = new winston.transports.Stream({ stream: msgstream });
-
-const msgformat = winston.format.printf( ({ id, msg, timestamp }) => {
-  
+/// Define format
+const msgformat = winston.format.printf( ({ msg, timestamp }) => {
   if(!msg){
     var msg = {
       id : 0,
@@ -142,9 +123,9 @@ const msgformat = winston.format.printf( ({ id, msg, timestamp }) => {
       code: '-'
     }
   }
-  
   return `[${timestamp}] Id: ${msg.id} | ${msg.dir ? 'out' : ' in'} | ${msg.typestr} | code: ${msg.code}`;
 });
+
 
 const msg = winston.createLogger({
   format: winston.format.combine(
@@ -154,9 +135,9 @@ const msg = winston.createLogger({
     msgformat
   ),
   transports: [
-    msgTransport
+    msgFileTransport
   ],
-  level: 'silly',
+  level: config.logger.level,
   exitOnError: false
 });
 
@@ -164,11 +145,10 @@ const msg = winston.createLogger({
 /// Status repository
 /// //////////////////////////////////////////////////////////////////////// ///
 
-const statusfile = 'status_' + dateformat(new Date(), 'yyyy-mm-dd') + '.log';
-const statuspath = path.join(__dirname, '..', 'logfiles', msgfile);
-const statusStream = fs.createWriteStream(statuspath, { flags: 'a' })
+const statusFile = 'status_' + dateformat(new Date(), 'yyyy-mm-dd') + '.log';
+const statusPath = path.join(config.logger.logdir, statusFile);
+const statusStream = fs.createWriteStream(statusPath, { flags: 'a' })
 const statusTransport = new winston.transports.Stream({ stream: statusStream });
-
 
 /**
  * @param{code}  - (String number)
@@ -182,7 +162,7 @@ const statusFormat = winston.format.printf( ({ code, text, begin, end }) => {
   if(!begin)  { begin = { id: 0, time : config.empty.time}; }
   if(!end)    { end = { id: 0, time : config.empty.time}; }
   
-  return `Code ${code} | Text ${text} | Begin ${begin.id}:${dateformat(begin.time, 'HH:MM:ss')} | End ${end.id}:${dateformat(end.time, 'HH:MM:ss')}`;
+  return `Code ${code} | Text: ${text} | Begin: ${begin.id}:${dateformat(begin.time, 'HH:MM:ss')} | End: ${end.id}:${dateformat(end.time, 'HH:MM:ss')}`;
 });
 
 const status = winston.createLogger({
@@ -195,9 +175,10 @@ const status = winston.createLogger({
   transports: [
     statusTransport
   ],
-  level: 'info',
+  level: config.logger.level,
   exitOnError: false
 });
+
 
 
 /// //////////////////////////////////////////////////////////////////////// ///

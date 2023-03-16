@@ -91,7 +91,7 @@ class Episode {
   get ventilationPeriods () { return this.#ventModePeriods; }
   
   beginVentPeriod = (standby) => {
-    //win.status.log({code: value.code, text: value.text, begin: value.begin, end: value.back });
+    win.status.log({ level: 'info', code: value.code, text: value.text, begin: value.begin, end: value.back });
     win.def.log({ level: 'debug', file: 'model/data/episode', func: 'beginVentPeriod', message: `[Episode] Begin vent period: id: ${standby.msgId}, time: ${standby.time.toLocaleTimeString()},  ${standby.value}`});
     this.#currentVentilationPeriod = standby;
   }
