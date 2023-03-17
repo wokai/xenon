@@ -30,6 +30,10 @@ const general = require(path.join(__dirname, '..', '..', 'config', 'general'));
 const text    = require(path.join(__dirname, 'text'));
 
 
+/**
+ * @importedBy{/routes/episode}
+ **/
+
 class Episode {
   
   #nEpisodes
@@ -74,7 +78,7 @@ class Episode {
     
   }
   
-  init = () => {
+  begin = () => {
     ++this.#nEpisodes;
     this.#begin = new Date();
     this.#uuid  = crypto.randomBytes(16).toString("hex");
