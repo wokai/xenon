@@ -24,9 +24,9 @@ const path = require('path');
 
 const general       = require(path.join(__dirname, '..', '..', 'config',  'general'));
 const win           = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
-const DataResponse  = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
 const status        = require(path.join(__dirname, '..', '..', 'controller', 'statusController'));
 const { port }      = require(path.join(__dirname, '..', '..', 'controller', 'portController'));
+const DataResponse  = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
 const { cp1Alarms } = require(path.join(__dirname, 'alarm'));
 const { text }      = require(path.join(__dirname, 'text' ));
 const { settings }  = require(path.join(__dirname, 'settings'));

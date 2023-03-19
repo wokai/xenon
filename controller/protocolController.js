@@ -20,12 +20,14 @@
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 
-const config     = require('../config/medibus');
-const win        = require('../logger/logger');
-const status     = require('./statusController');
-const responses  = require('../model/medibus/responses');
-const commands   = require('../model/medibus/commands');
-const { port }   = require('./portController');
+const config      = require('../config/medibus');
+const win         = require('../logger/logger');
+const responses   = require('../model/medibus/responses');
+const commands    = require('../model/medibus/commands');
+
+const status      = require('./statusController');
+const { port }    = require('./portController');
+const { episode } = require('./episodeController');
 
 
 /// //////////////////////////////////////////////////////////////////////// ///
@@ -113,7 +115,7 @@ class ProtocolController {
   /**
    * @usedBy{React._transform} - (/bus/react) - (event-loop)
    **/
-  /// ToDoRetry | recovery strategy ?
+  /// ToDo: Retry | recovery strategy ?
   initCom = () => {
     if(status.controller.listen) {
       port.sendMessage(responses.icc)

@@ -20,13 +20,11 @@
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 
-
 /// //////////////////////////////////////////////////////////////////////// ///
 /// General description:
 /// The status controller manages the status of the communication of the
 /// Medibus standard.
 /// //////////////////////////////////////////////////////////////////////// ///
-
 
 const path         = require('path');
 const EventEmitter = require('events');
@@ -34,7 +32,6 @@ const EventEmitter = require('events');
 const general = require(path.join(__dirname, '..', 'config',  'general'));
 const win     = require(path.join(__dirname, '..', 'logger',  'logger'));
 const monitor = require(path.join(__dirname, '..', 'monitor', 'monitor'));
-
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Status levels

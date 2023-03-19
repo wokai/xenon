@@ -20,12 +20,13 @@
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
  
-const path   = require('path');
-const crypto = require("crypto"); /// Generates 'Episode' UUID.
-const fs     = require('fs');
+const path    = require('path');
+const crypto  = require("crypto"); /// Generates 'Episode' UUID.
+const fs      = require('fs');
 
 const win     = require(path.join(__dirname, '..', 'logger', 'logger'));
 const general = require(path.join(__dirname, '..', 'config', 'general'));
+const status  = require(path.join(__dirname, 'statusController'));
 
 const text    = require(path.join(__dirname, '..', 'model', 'data', 'text'));
 
@@ -33,6 +34,14 @@ const text    = require(path.join(__dirname, '..', 'model', 'data', 'text'));
 /**
  * @importedBy{/routes/episode}
  **/
+
+/// ////////////////////////////////////////////////////////////////////////////
+/// Thalas definition:
+/// Episode: Series of uninterrupted observations captured by a single device
+///          on a single patient in a single location.
+/// ////////////////////////////////////////////////////////////////////////////
+
+// ToDo: Remove episode from portController
 
 class Episode {
   
@@ -76,6 +85,14 @@ class Episode {
     this.#currentVentModePeriod = null;
     this.#ventModePeriods = [];
     
+    
+    status.controller.on('protocol', (data) => {
+      this.begin();
+    });
+    
+    status.controller.on('stopping', (data) => {
+      this.terminate();
+    });
   }
   
   begin = () => {
@@ -85,11 +102,15 @@ class Episode {
     this.#end = null;
   }
   
-  terminate(){
+  terminate = () => {
     this.end = new Date();
     /// Terminates all current Text-Status parameters
     text.text.expire();
   }
+  
+  
+  
+  
 
   get begin () { return this.#begin; }
   get ventilationPeriods () { return this.#ventModePeriods; }
