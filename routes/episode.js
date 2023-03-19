@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2022, Wolfgang Kaisers
+ * Copyright 2023, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -23,7 +23,7 @@
 const express = require('express');
 const path    = require('path');
 
-const { episode } = require(path.join(__dirname, '..', 'model', 'data', 'episode'));
+const { episode } = require(path.join(__dirname, '..', 'controller', 'episodeController'));
 
 
 const router = express.Router();

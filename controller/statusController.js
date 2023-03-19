@@ -72,9 +72,7 @@ class StatusController extends EventEmitter {
       create:   new Date(),
       uptime:   0
     };
-    
   }
-  
   
   /// ////////////////////////////////////////////////////////////////////// ///
   /// Status

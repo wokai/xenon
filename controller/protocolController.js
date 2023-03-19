@@ -58,10 +58,8 @@ class CommandTimeout {
   
   /// ////////////////////////////////////////////////////////////////////// ///
   /// The promise is the only connection to downstream processing of reply
-  /// to a pending command:
-  /// Either, 
+  /// to a pending command.
   /// ////////////////////////////////////////////////////////////////////// ///
-  
   get promise() { return this.#promise; }
   
   
@@ -69,7 +67,6 @@ class CommandTimeout {
    * @usedBy{ProtocolController.receiveMessage} - (Triggered by React)
    * @param {msg} - (Message) - (/model/medibus/message)
    **/
-  
   onReply = (msg) => {
     if(msg.hexCode == this.#msg.hexCode){
       win.def.log({ level: 'verbose', file: 'protocolController', func: 'CommandTimeout.onReply', message: `Resolving reply: ID ${msg.id} | Code ${msg.code}`});
@@ -81,10 +78,9 @@ class CommandTimeout {
     }
   }
   
-  /// Required here in order to re-throw Promise rejection
-  
   /**
    * @usedBy{ProtocolController.sendCommand} - (Triggered by Action.sendCommand)
+   * @descr{Required here in order to re-throw Promise rejection}
    **/
   sendCommand = () => {
     port.sendMessage(this.#msg)
@@ -104,7 +100,6 @@ class CommandTimeout {
 ///
 /// Intermediate between EventLoop and MessageLayer
 /// //////////////////////////////////////////////////////////////////////// ///
-
 
 class ProtocolController {
   

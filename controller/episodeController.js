@@ -24,10 +24,10 @@ const path   = require('path');
 const crypto = require("crypto"); /// Generates 'Episode' UUID.
 const fs     = require('fs');
 
-const win     = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
-const general = require(path.join(__dirname, '..', '..', 'config', 'general'));
+const win     = require(path.join(__dirname, '..', 'logger', 'logger'));
+const general = require(path.join(__dirname, '..', 'config', 'general'));
 
-const text    = require(path.join(__dirname, 'text'));
+const text    = require(path.join(__dirname, '..', 'model', 'data', 'text'));
 
 
 /**
