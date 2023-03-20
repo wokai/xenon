@@ -60,7 +60,7 @@ class TextMessageResponse {
   get id        () { return this.#msgid; }
   get time      () { return this.#time; }
   get rawLength () { return this.#hexPayload.length; }
-  get length    () { return this.#map.length; }
+  get length    () { return this.#map.size; }
   get payload   () { return this.#hexPayload; }
   get array     () { return [...this.#map.values()]; }
   get map       () { return this.#map; }

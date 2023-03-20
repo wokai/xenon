@@ -193,7 +193,7 @@ class TextData {
     this.setEmptyParamObject();
     /// AND will be evaluated from left to right and returns immediately 
     /// upon the first falsy operand
-    if(this.#resp !== null && this.#resp.length > 0) {
+    if(this.#resp !== null && this.#resp.length > 0 ) {
     this.#param.msgId = this.#resp.id;
     this.#param.time  = this.#resp.time;
       this.createParameterMap();
