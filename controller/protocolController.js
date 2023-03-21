@@ -20,14 +20,15 @@
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 
-const config      = require('../config/medibus');
-const win         = require('../logger/logger');
-const responses   = require('../model/medibus/responses');
-const commands    = require('../model/medibus/commands');
+const path        = require('path');
+const config      = require(path.join(__dirname, '..', 'config', 'medibus'));
+const win         = require(path.join(__dirname, '..', 'logger', 'logger'));
+const responses   = require(path.join(__dirname, '..', 'model', 'medibus', 'responses'));
+const commands    = require(path.join(__dirname, '..', 'model', 'medibus', 'commands'));
 
-const status      = require('./statusController');
-const { port }    = require('./portController');
-const { episode } = require('./episodeController');
+const status      = require(path.join(__dirname, 'statusController'));
+const { port }    = require(path.join(__dirname, 'portController'));
+const { episode } = require(path.join(__dirname, '..', 'model', 'episode'));
 
 
 /// //////////////////////////////////////////////////////////////////////// ///

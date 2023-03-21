@@ -23,7 +23,7 @@
 const express = require('express');
 const path    = require('path');
 
-const { episode } = require(path.join(__dirname, '..', 'controller', 'episodeController'));
+const { episode } = require(path.join(__dirname, '..', 'model', 'episode'));
 
 
 const router = express.Router();

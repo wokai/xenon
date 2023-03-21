@@ -26,7 +26,7 @@ const fs      = require('fs');
 
 const win     = require(path.join(__dirname, '..', 'logger', 'logger'));
 const general = require(path.join(__dirname, '..', 'config', 'general'));
-const status  = require(path.join(__dirname, 'statusController'));
+const status  = require(path.join(__dirname, '..', 'controller', 'statusController'));
 
 const text    = require(path.join(__dirname, '..', 'model', 'data', 'text'));
 
@@ -109,9 +109,6 @@ class Episode {
   }
   
   
-  
-  
-
   get begin () { return this.#begin; }
   get ventilationPeriods () { return this.#ventModePeriods; }
   
