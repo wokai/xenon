@@ -57,17 +57,19 @@ Loinc     Display
 57655-3   Tidal volume.exhaled maximum setting Ventilator alarm
 76530-5   Mean pressure Respiratory system airway --on ventilator
 19839-0   Breath rate spontaneous --on ventilator
+50984-4   Horowitz index in Arterial blood
 
 ## LOINC Codes
 
-Loinc         Display
---------      -------------------------------------------------------------------------
-88034-4       Ventilator settings Document
-19996-8       FIO2 on vent
-19834-1       Breath rate setting Ventilator
-74201-5       Days on ventilator
-75162-8       Biphasic positive airway pressure (BIPAP) activity Ventilator
-20124-4       [Ventilation mode Ventilator](https://loinc.org/20124-4/)
+Loinc     Display
+--------  --------------------------------------------------------------------------
+88034-4   Ventilator settings Document
+19996-8   FIO2 on vent
+19834-1   Breath rate setting Ventilator
+74201-5   Days on ventilator
+75162-8   Biphasic positive airway pressure (BIPAP) activity Ventilator
+76275-7   Inspiratory flow setting Ventilator
+20124-4   [Ventilation mode Ventilator](https://loinc.org/20124-4/)
 
 Loinc         Display
 --------      -------------------------------------------------------------------------
