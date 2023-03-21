@@ -37,11 +37,11 @@ const text    = require(path.join(__dirname, '..', 'model', 'data', 'text'));
 
 /// ////////////////////////////////////////////////////////////////////////////
 /// Thalas definition:
+/// Connection: A period of successful network communication between an 
+///             interface (Xenon) and a (Dräger) device
 /// Episode: Series of uninterrupted observations captured by a single device
-///          on a single patient in a single location.
+///             on a single patient in a single location.
 /// ////////////////////////////////////////////////////////////////////////////
-
-// ToDo: Remove episode from portController
 
 class Episode {
   
@@ -85,14 +85,8 @@ class Episode {
     this.#currentVentModePeriod = null;
     this.#ventModePeriods = [];
     
-    
-    status.controller.on('protocol', (data) => {
-      this.begin();
-    });
-    
-    status.controller.on('stopping', (data) => {
-      this.terminate();
-    });
+    status.controller.on('protocol', (data) => { this.begin(); });
+    status.controller.on('stopping', (data) => { this.terminate(); });
   }
   
   begin = () => {

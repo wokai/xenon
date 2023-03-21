@@ -54,7 +54,7 @@ class PortController extends Stream.Readable {
   #port
   #params
   #message    /// String: Status message from last action
-  #episode    /// Episode: { begin: Date , uuid: randomBytes(16) }
+  //#episode    /// Episode: { begin: Date , uuid: randomBytes(16) }
   
   constructor() {
     super()
@@ -62,13 +62,14 @@ class PortController extends Stream.Readable {
     this.initializePort();
     this.#message = '';
     
+    /*
     this.#episode = {
       nEpisodes: 0,
       begin: general.empty.time,
       uuid:  general.empty.uuid,
       end:   null
     }
-    
+    */
   }
   
   _read(size) {
@@ -82,6 +83,7 @@ class PortController extends Stream.Readable {
   
   /// Called by portController inside open() which then returns the current
   /// episode data
+  /*
   startEpisode = () => {
     this.#episode.nEpisodes++;
     this.#episode.begin = new Date().toISOString();
@@ -89,14 +91,17 @@ class PortController extends Stream.Readable {
     this.#episode.end   = null;
     //episode.init();
   }
+  */
   
+  /*
   endEpisode = () => { 
     this.#episode.end = new Date().toISOString();
     //episode.terminate();
   }
+  get episode () { return this.#episode; }  
+  */
   
-  
-  get episode () { return this.#episode; }
+
   
   /// //////////////////////////////////////////////////////////////////////////
   /// Parameter accessors
@@ -131,7 +136,7 @@ class PortController extends Stream.Readable {
       message: this.#message,
       busStatus: status.controller.status.val,
       busStatusText: status.controller.label,
-      episode: this.#episode, ///status.controller.episode,
+      //episode: this.#episode, ///status.controller.episode,
       summary: status.controller.summary
     };
   }
@@ -407,8 +412,6 @@ class PortController extends Stream.Readable {
         });
     });
   }
-  
-  
 }
 
 const controller = new PortController();
