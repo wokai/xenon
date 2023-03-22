@@ -104,6 +104,7 @@ class Episode {
   
   
   get begin () { return this.#begin; }
+  get uuid  () { return this.#begin.uuid; }
   get ventilationPeriods () { return this.#ventModePeriods; }
   
   beginVentPeriod = (standby) => {

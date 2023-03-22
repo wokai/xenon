@@ -104,16 +104,18 @@ class TextSegment {
   }
   
   /**************************************************************************
-   * @param{txtMsgRes}  - (TextMessageResonse}
+   * @param{txtMsgRes}  - (Message) - (/model/medibus/message)
    * @param{begin}      - (number: 0-based index of current position in payload)
    **/
   constructor(txtMsgRes, begin) {
 
-    this.#msgid = txtMsgRes.id;     /// number
-    this.#time  = txtMsgRes.time;   /// Date
+    this.#msgid = txtMsgRes.id;         /// number
+    this.#time  = txtMsgRes.dateTime;   /// Date
     this.readSegmentFromBuffer(txtMsgRes.hexPayload, begin);
     win.def.log({ level: 'debug', file: 'TextSegment', func: 'constructor', message: `[TextSegment] MsgId: ${this.messageId} | Code: ${this.code} | Size: ${this.length} | Text: ${this.text}`});
   }
+  
+  
   
   static from(txtMsgRes, begin){
     return new TextSegment(txtMsgRes, begin);

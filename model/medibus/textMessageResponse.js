@@ -21,8 +21,8 @@
  ******************************************************************************/
 const path        = require('path');
 const win         = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
-const TextSegment = require(path.join(__dirname, 'textSegment'));
 const bus         = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
+const TextSegment = require(path.join(__dirname, 'textSegment'));
 
 class TextMessageResponse {
 
@@ -33,13 +33,13 @@ class TextMessageResponse {
   #map          /// Map key = Text-Message-Code | value = TextSegment
 
   /**
-   * @param{Message} - (/model/medibus/message)
+   * @param{msg} - (/model/medibus/message)
    * @usedBy{Text}   - (/model/data/text)
    **/
   constructor(msg) {
     this.#map   = new Map();
     this.#msgid = msg.id;
-    this.#time  = msg.dateTime;
+    this.#time  = msg.dateTime; /// @type{Date}
     this.#code  = msg.code;
      
     if(msg.hasPayload){

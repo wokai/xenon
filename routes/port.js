@@ -136,7 +136,6 @@ router.get('/stop', function(request, result, next){
   if(status.controller.sending) {
     win.def.log({ level: 'verbose', file: 'port', func: 'get /stop', message: 'Init com STOP'});
     status.controller.setStatus(status.status.stopping);
-    port.endEpisode();
   }
   result.status(200).json(port.status);  
 });

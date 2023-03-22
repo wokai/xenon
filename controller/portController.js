@@ -320,7 +320,7 @@ class PortController extends Stream.Readable {
             this.#message = `Port open failed: ${err.message}`;
             reject(this.status);
           } else {
-            this.startEpisode();
+            //this.startEpisode();
             win.msg.log({ level: 'debug', file: 'portController', func: 'Port open', message: 'Port opened'});
             this.#message = 'Port open success';
             resolve(this.status);
@@ -348,7 +348,7 @@ class PortController extends Stream.Readable {
           } else {
             win.def.log({ level: 'verbose', file: 'portController', func: 'close', message: 'Port closed' });
             this.#message = 'Port close: success';
-            this.endEpisode();
+            //this.endEpisode();
             resolve({ result: 'Success', text: 'Port closed', status: this.status });
           }
         });
