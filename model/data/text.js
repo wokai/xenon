@@ -25,7 +25,7 @@ const path = require('path');
 const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
-//const { episode }         = require(path.join(__dirname, 'episode'));
+const { episode }         = require(path.join(__dirname, 'episode'));
 const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textMessageResponse'));
 
 const { TimePoint, ParameterElement, ParameterMap } = require(path.join(__dirname, 'parameterMap'));
@@ -198,7 +198,7 @@ class TextData {
     this.#param.time  = this.#resp.time;
       this.createParameterMap();
       this.fillEmptyParamObject();
-      //episode.setText(this);
+      episode.setText(this);
     }
   }
   

@@ -28,20 +28,26 @@ const win     = require(path.join(__dirname, '..', 'logger', 'logger'));
 const general = require(path.join(__dirname, '..', 'config', 'general'));
 const status  = require(path.join(__dirname, '..', 'controller', 'statusController'));
 
-const text    = require(path.join(__dirname, '..', 'model', 'data', 'text'));
-
 
 /**
  * @importedBy{/routes/episode}
  **/
 
-/// ////////////////////////////////////////////////////////////////////////////
+/// ////////////////////////////////////////////////////////////////////
 /// Thalas definition:
 /// Connection: A period of successful network communication between an 
 ///             interface (Xenon) and a (Dräger) device
-/// Episode: Series of uninterrupted observations captured by a single device
-///             on a single patient in a single location.
-/// ////////////////////////////////////////////////////////////////////////////
+/// Episode: Series of uninterrupted observations captured by a single 
+///             device on a single patient in a single location.
+///
+/// There are multiple types of episodes:
+/// 1) Port-Episode: Port-opened to Port-closed
+/// 2) Vent-Episode: Change StandBy -> Active to Change Active->StandBy
+///
+/// Thus, Episode is a central resource receiving signals from different
+/// instances.
+/// It must be constructed early from a minimal set of requirements.
+/// ////////////////////////////////////////////////////////////////////
 
 class Episode {
   
@@ -60,6 +66,14 @@ class Episode {
   #lastVentMode
   #currentVentModePeriod
   #ventModePeriods
+  
+  #portEpisode  = {
+      nEpisodes: 0,
+      begin: general.empty.time,
+      uuid:  general.empty.uuid,
+      end:   null
+    };
+  
   
   constructor() {
     this.#nEpisodes = 0;
@@ -99,11 +113,14 @@ class Episode {
   terminate = () => {
     this.end = new Date();
     /// Terminates all current Text-Status parameters
-    text.text.expire();
+    //text.text.expire();
   }
   
-  
   get begin () { return this.#begin; }
+  
+  
+  setPortEpisode = (e) => {
+  }
   
   /**
    * @usedBy{PortController.open}
