@@ -54,22 +54,18 @@ class PortController extends Stream.Readable {
   #port
   #params
   #message    /// String: Status message from last action
-  //#episode    /// Episode: { begin: Date , uuid: randomBytes(16) }
+  #episode = {
+      nEpisodes: 0,
+      begin: general.empty.time,
+      uuid:  general.empty.uuid,
+      end:   null
+    };
   
   constructor() {
     super()
     this.setDefaultParameters();
     this.initializePort();
     this.#message = '';
-    
-    /*
-    this.#episode = {
-      nEpisodes: 0,
-      begin: general.empty.time,
-      uuid:  general.empty.uuid,
-      end:   null
-    }
-    */
   }
   
   _read(size) {
@@ -83,24 +79,21 @@ class PortController extends Stream.Readable {
   
   /// Called by portController inside open() which then returns the current
   /// episode data
-  /*
-  startEpisode = () => {
+
+  beginEpisode = () => {
     this.#episode.nEpisodes++;
     this.#episode.begin = new Date().toISOString();
     this.#episode.uuid  = crypto.randomBytes(16).toString("hex");
     this.#episode.end   = null;
     //episode.init();
   }
-  */
   
-  /*
   endEpisode = () => { 
     this.#episode.end = new Date().toISOString();
     //episode.terminate();
   }
-  get episode () { return this.#episode; }  
-  */
   
+  get episode () { return this.#episode; }  
 
   
   /// //////////////////////////////////////////////////////////////////////////
@@ -124,6 +117,12 @@ class PortController extends Stream.Readable {
     return this.#port.isOpen;
   }
   
+  /**
+   * @usedBy{/routes/port} - (/status)
+   * @usedBy{this.open, close, update, reset}
+   * @usedBy{this.checkParamValidity, initializePort}
+   * @usedBy{this.handlePortOpened, handlePortClosed}
+   **/
   get status () {
     return {
       open: this.isOpen,
@@ -136,7 +135,7 @@ class PortController extends Stream.Readable {
       message: this.#message,
       busStatus: status.controller.status.val,
       busStatusText: status.controller.label,
-      //episode: this.#episode, ///status.controller.episode,
+      episode: this.#episode.uuid,
       summary: status.controller.summary
     };
   }
@@ -320,7 +319,7 @@ class PortController extends Stream.Readable {
             this.#message = `Port open failed: ${err.message}`;
             reject(this.status);
           } else {
-            //this.startEpisode();
+            this.beginEpisode();
             win.msg.log({ level: 'debug', file: 'portController', func: 'Port open', message: 'Port opened'});
             this.#message = 'Port open success';
             resolve(this.status);
@@ -348,7 +347,7 @@ class PortController extends Stream.Readable {
           } else {
             win.def.log({ level: 'verbose', file: 'portController', func: 'close', message: 'Port closed' });
             this.#message = 'Port close: success';
-            //this.endEpisode();
+            this.endEpisode();
             resolve({ result: 'Success', text: 'Port closed', status: this.status });
           }
         });

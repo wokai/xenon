@@ -104,7 +104,11 @@ class Episode {
   
   
   get begin () { return this.#begin; }
-  get uuid  () { return this.#begin.uuid; }
+  
+  /**
+   * @usedBy{PortController.open}
+   **/
+  get uuid  () { return this.#uuid; }
   get ventilationPeriods () { return this.#ventModePeriods; }
   
   beginVentPeriod = (standby) => {
