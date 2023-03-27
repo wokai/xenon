@@ -25,7 +25,8 @@ const crypto  = require("crypto"); /// Generates 'Episode' UUID.
 const fs      = require('fs');
 
 const win            = require(path.join(__dirname, '..', 'logger', 'logger'));
-const { dateformat } = require(path.join(__dirname, '..', 'logger', 'dateformat'));
+const { epilog }     = require(path.join(__dirname, '..', 'logger', 'fslog'));
+//const { dateformat } = require(path.join(__dirname, '..', 'logger', 'dateformat'));
 const general        = require(path.join(__dirname, '..', 'config', 'general'));
 const status         = require(path.join(__dirname, '..', 'controller', 'statusController'));
 
@@ -133,6 +134,7 @@ class Episode {
   endPortEpisode = (time) => { 
     this.#portEpisode.end = time;
     win.status.log({ level: 'info', code: 'Port Episode', text: this.#portEpisode.uuid, begin: { id: 0, time: this.#portEpisode.begin }, end: { id: 0,  time: this.#portEpisode.end } });
+    epilog.writeTimes(this.#portEpisode.begin, this.#portEpisode.end);
   }
   
   /**

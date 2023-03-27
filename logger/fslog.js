@@ -23,6 +23,7 @@
 const path    = require('path');
 const fs      = require('fs');
 
+const general        = require(path.join(__dirname, '..', 'config', 'general'));
 const { dateformat } = require(path.join(__dirname, '..', 'logger', 'dateformat'));
 
 
@@ -32,25 +33,40 @@ class FsLog {
   #label
   #separator
   
-  constructor(filename, label, sep='|') {
+  /**
+   * @param{filename} - (string)
+   * @param{label}    - (string)
+   * @param{sep}      - (string)
+   **/
+  constructor(filename='fslog.log', label='fslog', sep='|') {
     this.#stream = fs.createWriteStream(filename, {flags:'a'});
     this.#label = label;
     this.#separator = sep;
   }
   
   head = () => {
-    this.#stream.write(`[${this.#label}] ${dateformat(new Date(), 'dd.mm.yy | HH:mm:ss')} ${this.#separator}`);
+    this.#stream.write(`[${this.#label}] ${dateformat(new Date(), general.logger.dateformat)} ${this.#separator}`);
+    return this;
   }
   
-  tail = () => {
-    this.#stream.write(`${this.#separator}\n`);
+  tail = () => { this.#stream.write(`\n`); return this; }
+  
+  write     = (text) => {
+    if(Array.isArray(text)){
+      text.forEach((element) => { this.#stream.write(`${element}${this.#separator}`); });
+    } else {
+      this.#stream.write(`${text}${this.#separator}`);
+    }
+    return this;
   }
+  writeLine = (text) => { this.head().write(text).tail(); }
+}
+
+class EpisodeLog extends FsLog {
+  constructor(filename) { super(filename ='Episode.log', 'Episode'); }
   
-  
-  log = (text) => {
-    this.head();
-    this.#stream.write(`text`)
-    this.tail();
+  writeTimes(begin, end) {
+    this.write([`${dateformat(begin, general.logger.dateformat)}`, `${dateformat(end, general.logger.dateformat)}`]);
   }
   
 }
@@ -59,9 +75,11 @@ class FsLog {
 /// Export
 /// //////////////////////////////////////////////////////////////////////// ///
 
-var fsLog = new FsLog();
+var fslog = new FsLog();
+var epilog = new EpisodeLog();
 
 module.exports = {
-  fslog: fslog
+  fslog: fslog,
+  epilog: epilog
 };
 

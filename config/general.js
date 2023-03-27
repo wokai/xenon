@@ -31,7 +31,8 @@ const config = {
   logger: {
     logdir: path.join(__dirname, '..', 'logfiles'),
     //filename: path.join( __dirname, '..', 'msg_log.txt'),
-    level: 'info'     /// { error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6 } 
+    level: 'info',     /// { error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6 }
+    dateformat: 'dd.mm.yy | HH:mm:ss'
   },
   content : {
     params : {
