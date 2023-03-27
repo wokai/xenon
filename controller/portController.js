@@ -85,12 +85,13 @@ class PortController extends Stream.Readable {
     this.#episode.begin = new Date().toISOString();
     this.#episode.uuid  = crypto.randomBytes(16).toString("hex");
     this.#episode.end   = null;
-    //episode.init();
+    episode.setPortEpisode(this.#episode);
   }
   
-  endEpisode = () => { 
-    this.#episode.end = new Date().toISOString();
-    //episode.terminate();
+  endEpisode = () => {
+    var d = new Date();
+    this.#episode.end = d.toISOString();
+    episode.endPortEpisode(d);
   }
   
   get episode () { return this.#episode; }  

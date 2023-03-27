@@ -68,11 +68,11 @@ class Episode {
   #ventModePeriods
   
   #portEpisode  = {
-      nEpisodes: 0,
-      begin: general.empty.time,
-      uuid:  general.empty.uuid,
-      end:   null
-    };
+    nEpisodes: 0,
+    uuid:  general.empty.uuid,
+    begin: general.empty.time,
+    end:   null
+  };
   
   
   constructor() {
@@ -119,7 +119,19 @@ class Episode {
   get begin () { return this.#begin; }
   
   
-  setPortEpisode = (e) => {
+  /**
+   * @param {e} - {nEpisodes: number, uuid: string, begin: Date, end: Date}
+   * @usedBy{portController.beginEpisode}
+   **/
+  setPortEpisode = (e) => { Object.assign(this.#portEpisode, e); }
+  
+  /**
+   * @param {time} - { Date }
+   * @usedBy{portControler.endEpisode}
+   **/
+  endPortEpisode = (time) => { 
+    this.#portEpisode.end = time;
+    win.status.log({ level: 'info', code: 'Port Episode', text: this.#portEpisode.uuid, begin: { id: 0 time: this.#portEpisode.begin}, end: { id:0  time: this.#portEpisode.end} });
   }
   
   /**
