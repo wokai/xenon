@@ -131,7 +131,7 @@ class Episode {
    **/
   endPortEpisode = (time) => { 
     this.#portEpisode.end = time;
-    win.status.log({ level: 'info', code: 'Port Episode', text: this.#portEpisode.uuid, begin: { id: 0 time: this.#portEpisode.begin}, end: { id:0  time: this.#portEpisode.end} });
+    win.status.log({ level: 'info', code: 'Port Episode', text: this.#portEpisode.uuid, begin: { id: 0, time: this.#portEpisode.begin }, end: { id: 0,  time: this.#portEpisode.end } });
   }
   
   /**

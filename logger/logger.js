@@ -20,8 +20,8 @@
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 
-const colors  = require('colors/safe');
-const winston = require('winston');
+const colors     = require('colors/safe');
+const winston    = require('winston');
 const dateformat = require("dateformat");
 const { format } = winston;
 const { combine, label, json } = format;
