@@ -468,12 +468,8 @@ outdated message-id) are shifted into an (*expired*) array.
 
 The data is accessible via REST at
 
- - host:/data/text/current
- - host:/data/text/expired
-
- 
-
-
+ - `host:/data/text/current`
+ - `host:/data/text/expired`
 
 
 

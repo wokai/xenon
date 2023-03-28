@@ -121,6 +121,10 @@ class Episode {
   get begin () { return this.#begin; }
   
   
+  /// //////////////////////////////////////////////////////////////////
+  /// Port-Episode
+  /// //////////////////////////////////////////////////////////////////
+  
   /**
    * @param {e} - {nEpisodes: number, uuid: string, begin: Date, end: Date}
    * @usedBy{portController.beginEpisode}
@@ -136,6 +140,10 @@ class Episode {
     win.status.log({ level: 'info', code: 'Port Episode', text: this.#portEpisode.uuid, begin: { id: 0, time: this.#portEpisode.begin }, end: { id: 0,  time: this.#portEpisode.end } });
     epilog.writeTimes(this.#portEpisode.begin, this.#portEpisode.end);
   }
+  
+  /// //////////////////////////////////////////////////////////////////
+  /// Ventilation-Episode
+  /// //////////////////////////////////////////////////////////////////
   
   /**
    * @usedBy{PortController.open}

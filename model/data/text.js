@@ -24,6 +24,7 @@ const path = require('path');
 
 const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
+const { epilog }          = require(path.join(__dirname, '..', '..', 'logger', 'fslog'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const { episode }         = require(path.join(__dirname, '..', 'episode'));
 const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textMessageResponse'));
@@ -54,6 +55,26 @@ class TextParamMap extends ParameterMap {
   constructor() { super(); }
   
   /**
+   * {
+   *  code: number,
+   *  param: {
+   *     id: number,
+   *     time: String<Date>,
+   *     code: string (2),
+   *     text: String
+   *  },
+   * begin: { id: number, time: String<Date> },
+   * last:  { id: number, time: String<Date> },
+   * back:  { id: number, time: String<Date> }
+   * }
+   **/
+  
+  logExpiredDataObject = (dataObj) => {
+    //console.log(`[Text] Code ${dataObj.code} | Param: ${dataObj.param.text} | begin: ${dataObj.begin.id} | end: ${dataObj.back.id}`);
+    epilog.writeParamEpisode(dataObj.param, dataObj.begin, dataObj.back);
+  }
+  
+  /**
    * @param{resp} - (TextMessageResponse)
    **/
   
@@ -69,7 +90,7 @@ class TextParamMap extends ParameterMap {
 
 class TextData {
 
-  static #emptyParam = {
+  static emptyParamObject = {
     msgId: 0,
     time: config.empty.time,
     language: '',
@@ -93,68 +114,25 @@ class TextData {
   #param    /// @type{Object}
   #txtParam /// @type{TextParamMap}
   
+  constructor() {
+    this.#resp = null;
+    this.#map = new Map();
+    this.#txtParam = new TextParamMap();
+    
+    this.setEmptyParamObject();
+  }
+  
   /// ////////////////////////////////////////////////////////////////////// ///
-  /// Empty Object will be set in each message cycle
+  /// Reset parameter object will be set in each message cycle
   /// ////////////////////////////////////////////////////////////////////// ///
   setEmptyParamObject = () => {
    this.#param = {};
-   Object.assign(this.#param, TextData.#emptyParam);
+   Object.assign(this.#param, TextData.emptyParamObject);
   }
   
-  /// ////////////////////////////////////////////////////////////////////// ///
-  /// Second step for creation of parameter object:
-  /// Check for existence of parameter in current text message list
-  /// and eventually copy value into this.#param object
-  /// ////////////////////////////////////////////////////////////////////// ///
-  getParam = (key, empty) => {
-   let v = this.#map.get(key);
-   if(v !== undefined){
-       return v;
-   } else {
-    return empty;
-   }
-  }
-
-  /**
-   * @usedBy{this.updateParamObject}
-   */
-  fillEmptyParamObject = () => {
-    try{
-      if(this.#map !== null){
-
-        let empty = TextData.#emptyParam; 
-        
-        /// ////////////////////////////////////////////////////////// ///     
-        let device = bus.text.parameters.device;
-        
-        this.#param.language  = this.getParam(device.language,  empty.language);
-        this.#param.co2unit   = this.getParam(device.co2unit,   empty.co2unit);
-        this.#param.agentunit = this.getParam(device.agentunit, empty.agentunit);
-        this.#param.hlm       = this.getParam(device.hlm,       empty.hlm);
-        this.#param.standby   = this.getParam(device.standby,   empty.standby);
-        this.#param.leaktest 	= this.getParam(device.leaktest,  empty.leaktest);
-      
-        /// ////////////////////////////////////////////////////////// ///
-        let vent = bus.text.parameters.ventilation;
-       
-        this.#param.inhal     = this.getParam(vent.inhal,       empty.inhal);
-        this.#param.secInhal  = this.getParam(vent.secInhal,    empty.secInhal);
-        this.#param.carrier   = this.getParam(vent.carrier,     empty.carrier);
-        this.#param.ventmode  = this.getParam(vent.ventmode,    empty.ventmode);
-        this.#param.sync      = this.getParam(vent.sync,        empty.sync);
-        this.#param.psvadd    = this.getParam(vent.psvadd,      empty.psvadd);
-        this.#param.autoflow  = this.getParam(vent.autoflow,    empty.autoflow);
-        
-        /// ////////////////////////////////////////////////////////// ///
-      }
-    } catch (error) {
-      win.def.log({ level: 'warn', file: 'text', func: 'fillEmptyParamObject', message: error.message });
-      console.log('[Text.fillEmptyParamObject]')
-      console.log(error);
-    }
-  }
   
   /// ////////////////////////////////////////////////////////////////////// ///
+  /// (A) Parameter Map
   /// Preparation for reading text message data into a status object:
   /// Copy data into a Map which uses 
   /// parameter definition @see{bus.medibus.text.parameters} - (/config/medibus)
@@ -188,25 +166,111 @@ class TextData {
       });
     }
   }
+
+  /**
+   * @usedBy{Episode.terminate} - (/model/data/episode)
+   **/
+  expire = () => { this.parameterMap.expireAll(); }
+  
+  /// ////////////////////////////////////////////////////////////////////// ///
+  /// (B) Parameter-Object
+  /// Second step of processing.
+  /// Check for existence of parameter in current text message list
+  /// and eventually copy value into this.#param object
+  /// ////////////////////////////////////////////////////////////////////// ///
+  getParam = (key, empty) => {
+   let v = this.#map.get(key);
+   if(v !== undefined){
+       return v;
+   } else {
+    return empty;
+   }
+  }
+
+  /**
+   * @usedBy{this.updateParamObject}
+   */
+  copyParamMapToObject = () => {
+    try{
+      if(this.#map !== null){
+
+        /// Provide empty values for each parameter in parameter-object
+        let empty = TextData.emptyParamObject; 
+        
+        /// ////////////////////////////////////////////////////////// ///     
+        let device = bus.text.parameters.device;
+        
+        this.#param.language  = this.getParam(device.language,  empty.language);
+        this.#param.co2unit   = this.getParam(device.co2unit,   empty.co2unit);
+        this.#param.agentunit = this.getParam(device.agentunit, empty.agentunit);
+        this.#param.hlm       = this.getParam(device.hlm,       empty.hlm);
+        this.#param.standby   = this.getParam(device.standby,   empty.standby);
+        this.#param.leaktest 	= this.getParam(device.leaktest,  empty.leaktest);
+      
+        /// ////////////////////////////////////////////////////////// ///
+        let vent = bus.text.parameters.ventilation;
+       
+        this.#param.inhal     = this.getParam(vent.inhal,       empty.inhal);
+        this.#param.secInhal  = this.getParam(vent.secInhal,    empty.secInhal);
+        this.#param.carrier   = this.getParam(vent.carrier,     empty.carrier);
+        this.#param.ventmode  = this.getParam(vent.ventmode,    empty.ventmode);
+        this.#param.sync      = this.getParam(vent.sync,        empty.sync);
+        this.#param.psvadd    = this.getParam(vent.psvadd,      empty.psvadd);
+        this.#param.autoflow  = this.getParam(vent.autoflow,    empty.autoflow);
+        
+        /// ////////////////////////////////////////////////////////// ///
+      }
+    } catch (error) {
+      win.def.log({ level: 'warn', file: 'text', func: 'copyParamMapToObject', message: error.message });
+      console.log('[Text.copyParamMapToObject]')
+      console.log(error);
+    }
+  }
+  
   
   updateParamObject = () => {
     this.setEmptyParamObject();
     /// AND will be evaluated from left to right and returns immediately 
     /// upon the first falsy operand
     if(this.#resp !== null && this.#resp.length > 0 ) {
-    this.#param.msgId = this.#resp.id;
-    this.#param.time  = this.#resp.time;
+      this.#param.msgId = this.#resp.id;
+      this.#param.time  = this.#resp.time;
       this.createParameterMap();
-      this.fillEmptyParamObject();
+      this.copyParamMapToObject();
       episode.setText(this);
+    } else {
+      this.expire();
+    }
+  }
+  
+  
+  /// ////////////////////////////////////////////////////////////// ///
+  /// Externally triggered worker method
+  /// ////////////////////////////////////////////////////////////// ///
+  /**
+   * @usedBy{text} - (/bus/action)
+   * @param {msg}   - (Message)
+   * @rem   {
+   *     Empty message should result in TexMessageResponse.length = 0.
+   *     In this case, updateParamObject will only set #param to emptyParamObject
+   *    }
+   **/
+  extractTextMessages = (msg) => {
+    if(msg.hasPayload){
+      this.#resp = new TextMessageResponse(msg);
+      this.#txtParam.processTextMsg(this.#resp);      
+      this.updateParamObject();
     }
   }
   
   /// ////////////////////////////////////////////////////////////// ///
   /// Convenience getter for selected parameters
   /// ////////////////////////////////////////////////////////////// ///
-  get id      () { return this.#param.msgId;    }  /// Number
-  get time    () { return this.#param.time;     }  /// Date
+  get id           () { return this.#param.msgId;    }  /// Number
+  get time         () { return this.#param.time;     }  /// Date
+  get paramObject  () { return this.#param;          }
+  get parameterMap () { return this.#txtParam;       }  
+  
   
   get standby () { return {
     msgId: this.#param.msgId,
@@ -220,30 +284,6 @@ class TextData {
       time:  this.#param.time,
       code:  parseInt(this.#param.ventmode.code),
       text:  this.#param.ventmode.text
-    }
-  }
-  
-  constructor() {
-    this.#resp = null;
-    this.#map = new Map();
-    this.#txtParam = new TextParamMap();
-    
-    this.setEmptyParamObject();
-  }
-  
-  /**
-   * @usedBy{text} - (/bus/action)
-   * @param {msg}   - (Message)
-   * @rem   {
-   *     Empty message should result in TexMessageResponse.length = 0.
-   *     In this case, updateParamObject will only set #param to #emptyParam
-   *    }
-   **/
-  extractTextMessages = (msg) => {
-    if(msg.hasPayload){
-      this.#resp = new TextMessageResponse(msg);
-      this.#txtParam.processTextMsg(this.#resp);      
-      this.updateParamObject();
     }
   }
   
@@ -262,13 +302,6 @@ class TextData {
     }
   }
   
-  get paramObject  () { return this.#param; }
-  get parameterMap () { return this.#txtParam; }
-  
-  /**
-   * @usedBy{Episode.terminate} - (/model/data/episode)
-   **/
-  expire = () => { this.parameterMap.expireAll(); }
 }
 
 const text = new TextData();

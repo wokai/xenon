@@ -188,6 +188,14 @@ class ParameterMap {
   /// b) ParameterElement is shifted from Map to exspired
   /// ////////////////////////////////////////////////////////////// ///
   
+  /// Serves as an empty template which can be overloaded in derived
+  /// classes.
+  
+  /**
+   * @param{dataObj} - (See ParameterElement.dataObject)
+   **/
+  logExpiredDataObject = (dataObj) => {}
+  
   /**
    * @param{tp}                - (TimePoint)
    * @usedBy{/model/data/text} - (TextParamMap.processTextMsg)
@@ -199,6 +207,7 @@ class ParameterMap {
         value.back = tp;
         win.status.log({ level: 'info', code: value.code, text: value.text, begin: value.begin, end: value.back });
         this.#expired.push(value.dataObject);
+        this.logExpiredDataObject(value.dataObject);
         map.delete(key);
       }
     });
@@ -216,6 +225,7 @@ class ParameterMap {
       value.back = tp;
       win.status.log({ level: 'info', code: value.code, text: value.text, begin: value.begin, end: value.back });
       this.#expired.push(value.dataObject);
+      this.logExpiredDataObject(value.dataObject);
       map.delete(key);
     });
     win.def.log({ level: 'info', file: 'parameterMap', func: 'expireAll', message: `Exspiring ${l} parameters` });

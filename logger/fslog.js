@@ -38,14 +38,28 @@ class FsLog {
    * @param{label}    - (string)
    * @param{sep}      - (string)
    **/
-  constructor(filename='fslog.log', label='fslog', sep='|') {
+  constructor(filename=path.join(__dirname, '..', 'logfiles', 'fslog.log'), label='fslog', sep='|') {
     this.#stream = fs.createWriteStream(filename, {flags:'a'});
     this.#label = label;
     this.#separator = sep;
   }
   
+  /**
+   * @param{param} - (parameter) - {id:number, time:String<Date>, code:String(2), text:String}
+   **/
+  
+  writeHead = (param) => {
+    this.#stream.write(`${param.id}${this.#separator}${param.code}${this.#separator}${param.text}`);
+    return this;
+  }
+  
+  writeTimePoint = (time) => {
+    this.#stream.write(``);
+    return this;
+  }
+  
   head = () => {
-    this.#stream.write(`[${this.#label}] ${dateformat(new Date(), general.logger.dateformat)} ${this.#separator}`);
+    this.#stream.write(`[${this.#label}] ${dateformat(new Date(), general.logger.dateformat)} ${this.#separator} `);
     return this;
   }
   
@@ -63,10 +77,21 @@ class FsLog {
 }
 
 class EpisodeLog extends FsLog {
-  constructor(filename) { super(filename ='Episode.log', 'Episode'); }
+  constructor(filename) { super(filename=path.join(__dirname, '..', 'logfiles', 'Episode.log'), 'Episode'); }
   
-  writeTimes(begin, end) {
-    this.write([`${dateformat(begin, general.logger.dateformat)}`, `${dateformat(end, general.logger.dateformat)}`]);
+  writeTimes = (begin, end) => {
+    this.writeLine([`${dateformat(begin, general.logger.dateformat)}`, `${dateformat(end, general.logger.dateformat)}`]);
+  }
+  
+  /**
+   * @param{param} - (parameter) - {id:number, time:String<Date>, code:String(2), text:String}
+   * @param{begin} - { id: number, time: String<Date> }
+   * @param{end  } - { id: number, time: String<Date> }
+   **/
+  
+  /// Used for logging of expired Text Parameter Episodes
+  writeParamEpisode = (param, begin, end) => {
+    this.head().write([param.text, dateformat(begin.time, general.logger.dateformat), dateformat(end.time, general.logger.dateformat)]).tail();
   }
   
 }
