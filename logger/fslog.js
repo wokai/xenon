@@ -44,6 +44,11 @@ class FsLog {
     this.#separator = sep;
   }
   
+  tail = () => { this.#stream.write(`\n`); return this; }
+  
+  /// //////////////////////////////////////////////////////////////////
+  /// Parameter related functions
+  /// //////////////////////////////////////////////////////////////////
   /**
    * @param{param} - (parameter) - {id:number, time:String<Date>, code:String(2), text:String}
    **/
@@ -53,17 +58,42 @@ class FsLog {
     return this;
   }
   
-  writeTimePoint = (time) => {
-    this.#stream.write(``);
+  /**
+   * @param {tp} - { id:number, time: String<Date> }
+   * @output{10|03/29/23 10:03:39}
+   **/
+  writeTimePoint = (tp) => {
+    this.#stream.write(`${this.#separator}${tp.id}${this.#separator}${dateformat(tp.time, general.logger.dateformat)}`);
     return this;
   }
   
+  /**
+   * @param {t} - { String<Date> }
+   * @output{0|03/29/23 10:03:39}
+   **/
+  writeTime = (t) => {
+    this.#stream.write(`${this.#separator}0${this.#separator}${dateformat(t, general.logger.dateformat)}`);
+    return this;
+  }
+  
+  /**
+   * @param{param} - (parameter) - {id:number, time:String<Date>, code:String(2), text:String}
+   * @param{begin} - { id: number, time: String<Date> }
+   * @param{end  } - { id: number, time: String<Date> }
+   * @descr{Used for logging of expired Text Parameter Episodes}
+   **/
+  writeParamEpisode = (param, begin, end) => {
+    this.writeHead(param).writeTimePoint(begin).writeTimePoint(end).tail();
+  }
+  
+  
+  /// //////////////////////////////////////////////////////////////////
+  /// Plain model
+  /// //////////////////////////////////////////////////////////////////
   head = () => {
     this.#stream.write(`[${this.#label}] ${dateformat(new Date(), general.logger.dateformat)} ${this.#separator} `);
     return this;
   }
-  
-  tail = () => { this.#stream.write(`\n`); return this; }
   
   write     = (text) => {
     if(Array.isArray(text)){
@@ -77,21 +107,15 @@ class FsLog {
 }
 
 class EpisodeLog extends FsLog {
+  
   constructor(filename) { super(filename=path.join(__dirname, '..', 'logfiles', 'Episode.log'), 'Episode'); }
   
-  writeTimes = (begin, end) => {
-    this.writeLine([`${dateformat(begin, general.logger.dateformat)}`, `${dateformat(end, general.logger.dateformat)}`]);
-  }
-  
   /**
-   * @param{param} - (parameter) - {id:number, time:String<Date>, code:String(2), text:String}
-   * @param{begin} - { id: number, time: String<Date> }
-   * @param{end  } - { id: number, time: String<Date> }
+   * @param{begin} - { Date | String<Date> }
+   * @param{end}   - { Date | String<Date> }
    **/
-  
-  /// Used for logging of expired Text Parameter Episodes
-  writeParamEpisode = (param, begin, end) => {
-    this.head().write([param.text, dateformat(begin.time, general.logger.dateformat), dateformat(end.time, general.logger.dateformat)]).tail();
+  writeTimes = (begin, end) => {
+    this.writeHead({id: 0, code: '0', text: 'Episode' }).writeTime(begin).writeTime(end).tail();
   }
   
 }

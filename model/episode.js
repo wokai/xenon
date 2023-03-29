@@ -26,7 +26,6 @@ const fs      = require('fs');
 
 const win            = require(path.join(__dirname, '..', 'logger', 'logger'));
 const { epilog }     = require(path.join(__dirname, '..', 'logger', 'fslog'));
-//const { dateformat } = require(path.join(__dirname, '..', 'logger', 'dateformat'));
 const general        = require(path.join(__dirname, '..', 'config', 'general'));
 const status         = require(path.join(__dirname, '..', 'controller', 'statusController'));
 
