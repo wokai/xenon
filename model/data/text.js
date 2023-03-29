@@ -70,7 +70,6 @@ class TextParamMap extends ParameterMap {
    **/
   
   logExpiredDataObject = (dataObj) => {
-    //console.log(`[Text] Code ${dataObj.code} | Param: ${dataObj.param.text} | begin: ${dataObj.begin.id} | end: ${dataObj.back.id}`);
     epilog.writeParamEpisode(dataObj.param, dataObj.begin, dataObj.back);
   }
   

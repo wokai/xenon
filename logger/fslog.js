@@ -86,6 +86,20 @@ class FsLog {
     this.writeHead(param).writeTimePoint(begin).writeTimePoint(end).tail();
   }
   
+  /// //////////////////////////////////////////////////////////////////
+  /// Alarm model
+  /// //////////////////////////////////////////////////////////////////
+  
+  /**
+   * @param{p} - {AlarmPeriod}
+   * @uses { id, code, text, begin={id, time}, back={id,time} }
+   * @usedBy{ /model/data/alarm } - { ExpiredAlarms.push(period) }
+   **/
+  writeAlarmPeriod = (p) => { 
+    this.writeHead(p).writeTimePoint(p.begin).writeTimePoint(p.back).tail();
+    return this;
+  }
+  
   
   /// //////////////////////////////////////////////////////////////////
   /// Plain model

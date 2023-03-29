@@ -23,6 +23,7 @@
 const path = require('path'); 
 
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
+const { epilog }          = require(path.join(__dirname, '..', '..', 'logger', 'fslog'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const monitor             = require(path.join(__dirname, '..', '..', 'monitor', 'monitor'));
 const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
@@ -248,6 +249,7 @@ class Alarm {
   get code()      { return this.#code;      }
   get phrase()    { return this.#phrase;    }
   get label()     { return this.#label;     }
+  get text()      { return this.#label;     }
   
   get begin()      { return this.#begin;     }
   
@@ -306,6 +308,7 @@ class AlarmPeriod extends Alarm {
       label: this.label,
       priority: this.priority,
       code: this.code,
+      text: this.text,    /// @usedBy{/logger/fslog}
       phrase: this.phrase,
       begin: {
         id: this.begin.id,
@@ -340,6 +343,7 @@ class ExpiredAlarms {
     let p = period.dataObject;
     monitor.infoMsg('Alarm', `${p.label} from ${p.begin.time} to ${p.back.time}`);
     win.def.log({ level: 'info', file: 'alarm', func: 'ExpiredAlarms.push', message:  `Alarm '${p.label}' from ${p.begin.time} (id ${p.begin.id}) to ${p.back.time} (id ${p.back.id})` });
+    epilog.writeAlarmPeriod(period);
   }
   
   consume = () => {
