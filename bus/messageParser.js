@@ -55,6 +55,7 @@ class MessageParser extends Stream.Transform {
   _transform(chunk, encoding, callback){
     /// Create message object from Buffer. Checksum is verified
     // ToDo: Reply NAK when checksum verification fails ...
+    
     var msg = Medibus.Message.fromBuffer(chunk);
     win.def.log({ level: 'verbose', file: 'messageParser', func: '_transform', message: `Msg ID ${msg.id} |  Type: ${msg.typestr} | Msg-code ${msg.code}.`});
     this.push(msg);

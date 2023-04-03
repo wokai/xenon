@@ -22,7 +22,10 @@
 
 const colors     = require('colors/safe');
 const winston    = require('winston');
-const dateformat = require("dateformat");
+
+//const dateformat = require("dateformat");
+const { dateformat } = require('./dateformat');
+
 const { format } = winston;
 const { combine, label, json } = format;
 
