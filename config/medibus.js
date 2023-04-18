@@ -277,8 +277,9 @@ const bus = {
     },
     
     /**
-     * @usedBy{/param/text/messages}   - (/routes/param)
-     * @see   {Medibus for Primnus }   - (p.34)
+     * @usedBy{/param/text/messages}         - (/routes/param)
+     * @see   {Medibus for Primnus }         - (p.34)
+     * @see   {Medibux.X Profile Definition} - (p.109 - 127)
      **/
     messages: new Map([
       [ '01', { param: 'ventmode'      , value: 'IPPV'            , text: 'Ventilationmode IPPV'                } ],
@@ -306,48 +307,52 @@ const bus = {
       [ '22', { param: 'co2unit'       , value: 'mmHg'            , text: 'CO<sub>2</sub> unit mmHg'            } ],
       [ '23', { param: 'co2unit'       , value: 'kPa'             , text: 'CO<sub>2</sub> unit kPa'             } ],
       [ '24', { param: 'co2unit'       , value: '%'               , text: 'CO<sub>2</sub> unit is %'            } ],
-      
       [ '25', { param: 'inhal'         , value: 'Halothane'       , text: 'Halothane detected'                  } ],
       [ '26', { param: 'inhal'         , value: 'Enflurane'       , text: 'Enflurane detected'                  } ],
       [ '27', { param: 'inhal'         , value: 'Isoflurane'      , text: 'Isoflurane detected'                 } ],
       [ '28', { param: 'inhal'         , value: 'Desflurane'      , text: 'Desflurane detected'                 } ],
       [ '29', { param: 'inhal'         , value: 'Sevoflurane'     , text: 'Sevoflurane detected'                } ],
       [ '2A', { param: 'inhal'         , value: 'None'            , text: 'No Anaesthesia Gas detected'         } ],
+      [ '2B', { param: 'ventmode'      , value: 'Man/Spont'       , text: 'Ventilationmode man./spont.'         } ],
+      [ '2C', { param: 'language'      , value: ''                , text: 'Selected Language'                   } ],
+      [ '34', { param: 'ventmode'      , value: 'PCV'             , text: 'Ventilationmode PCV'                 } ],
+      [ '35', { param: 'ventmode'      , value: 'SPN-PPS'         , text: 'Ventilationmode SPN-PPS'             } ],
+      [ '36', { param: 'ventmode'      , value: 'Fresh Gas'       , text: 'Ventilationmode FRESH GAS EXTERNAL'  } ],
+      [ '37', { param: 'carrier'       , value: 'Air'             , text: 'Selected Carrier Gas is Air'         } ],
+      [ '38', { param: 'carrier'       , value: 'N<sub>2</sub>O'  , text: 'Selected Carrier Gas is N<sub>2</sub>O'              } ],
+      [ '3A', { param: 'agemode'       , value: 'Pediatric mode'  , text: 'Pediatric device mode'               } ], 
+      [ '3B', { param: 'incuwarmermode', value: 'Manual mode'     , text: 'Manual mode'                         } ],
+      [ '3C', { param: 'icuwarmeropen' , value: 'Open care'       , text: 'Open care therapy'                   } ],
+      [ '3D', { param: 'bililuxmode'   , value: 'Photo on'        , text: 'Photo therapy on'                    } ],
+      [ '3E', { param: 'ventmode'      , value: 'PC-PSV'          , text: 'Ventilationmode PC-PSV'              } ],
+      [ '42', { param: 'gender'        , value: 'Female'          , text: 'Female patient gender'               } ],
+      [ '43', { param: 'gender'        , value: 'Male'            , text: 'Male patient gender'                 } ],
+      [ '45', { param: 'eeagentctrl'   , value: 'EE Agent control', text: 'End expiratory Agent control'        } ],
+      [ '47', { param: 'ventmode'      , value: 'PC-AC'           , text: 'Ventilation mode PC-AC'              } ],
+      [ '48', { param: 'airway'        , value: 'IV'              , text: 'Device configured for intubated patient ventilation' } ],
+      [ '49', { param: 'airway'        , value: 'NIV'             , text: 'Device configured for mask ventilation'              } ],      
+      [ '4A', { param: 'secInhal'      , value: 'Halothane'       , text: '2nd Agent Halothane detected'        } ],
+      [ '4B', { param: 'secInhal'      , value: 'Enflurane'       , text: '2nd Agent Enflurane detected'        } ],
+      [ '4C', { param: 'secInhal'      , value: 'Isoflurane'      , text: '2nd Agent Isoflurane detected'       } ],
+      [ '4D', { param: 'secInhal'      , value: 'Desflurane'      , text: '2nd Agent Desflurane detected'       } ],
+      [ '4E', { param: 'secInhal'      , value: 'Sevoflurane'     , text: '2nd Agent Sevoflurne detected'       } ],
+      [ '4F', { param: 'secInhal'      , value: 'None'            , text: 'No 2nd Anesthesia Gas detected'      } ],
       
-      [ '2B', { param: 'ventmode'      ,  value: 'Man/Spont'      , text: 'Ventilationmode man./spont.'         } ],
-      [ '2C', { param: 'language'      ,  value: ''               , text: 'Selected Language'                   } ],
-      [ '34', { param: 'ventmode'      ,  value: 'PCV'            , text: 'Ventilationmode PCV'                 } ],
-      [ '36', { param: 'ventmode'      ,  value: 'Fresh Gas'      , text: 'Ventilationmode FRESH GAS EXTERNAL'  } ],
-      [ '53', { param: 'leaktest'      ,  value: 'Leaktest'       , text: 'Device is performing leakage test'   } ],
-      [ '54', { param: 'standby'       ,  value: 'Standby'        , text: 'Device is in Standby-Mode'           } ],
-      [ '58', { param: 'hlm'           ,  value: 'Yes',           text: 'HLM Mode active'                   } ],      
-      [ '59', { param: 'ventmode'      ,  value: 'Vol control'    , text: 'Volume controlled Ventilation Mode'  } ],
-      [ '5A', { param: 'ventmode'      ,  value: 'Press control'  , text: 'Pressure controlled Ventilation Mode'} ],
-      [ '5B', { param: 'ventmode'      ,  value: 'PSV'            , text: 'Pressure Support Mode'               } ],
-      [ '5C', { param: 'psvadd'        ,  value: 'PSV added'      , text: 'Pressure Support added to intermittend Ventilation Mode'            } ],
-      [ '5D', { param: 'sync'          ,  value: 'Synchronized'   , text: 'Synchronized intermittend Ventilation'                              } ],
-      [ '5E', { param: 'autoflow'      ,  value: 'True'           , text: 'AutoFlow added to Volume Mode'       } ],
+      // 50...
+      
+      [ '53', { param: 'leaktest'      , value: 'Leaktest'       , text: 'Device is performing leakage test'   } ],
+      [ '54', { param: 'standby'       , value: 'Standby'        , text: 'Device is in Standby-Mode'           } ],      
+      [ '56', { param: 'agentUnit'     , value: 'kPa'            , text: 'Selected Agent Unit is kPa'          } ],
+      [ '57', { param: 'agentUnit'     , value: '%'              , text: 'Selected Agent Unit is %'            } ],      
+      [ '58', { param: 'hlm'           , value: 'HLM'            , text: 'HLM Mode active'                     } ],      
+      [ '59', { param: 'ventmode'      , value: 'Vol control'    , text: 'Volume controlled Ventilation Mode'  } ],
+      [ '5A', { param: 'ventmode'      , value: 'Press control'  , text: 'Pressure controlled Ventilation Mode'} ],
+      [ '5B', { param: 'ventmode'      , value: 'PSV'            , text: 'Pressure Support Mode'               } ],
+      [ '5C', { param: 'psvadd'        , value: 'PSV added'      , text: 'Pressure Support added to intermittend Ventilation Mode'  } ],
+      [ '5D', { param: 'sync'          , value: 'Synchronized'   , text: 'Synchronized intermittend Ventilation'                    } ],
+      [ '5E', { param: 'autoflow'      , value: 'True'           , text: 'AutoFlow added to Volume Mode'       } ],
       
 
-
-      
-      [ '37', { param: 'carrier',   value: 'Air',           text: 'Selected Carrier Gas is Air'       } ],
-      [ '38', { param: 'carrier',   value: 'N2O',           text: 'Selected Carrier Gas is N2O'       } ],
-      
-      [ '4A', { param: 'secInhal',  value: 'Halothane',     text: '2nd Agent Halothane detected'      } ],
-      [ '4B', { param: 'secInhal',  value: 'Enflurane',     text: '2nd Agent Enflurane detected'      } ],
-      [ '4C', { param: 'secInhal',  value: 'Isoflurane',    text: '2nd Agent Isoflurane detected'     } ],
-      [ '4D', { param: 'secInhal',  value: 'Desflurane',    text: '2nd Agent Desflurane detected'     } ],
-      [ '4E', { param: 'secInhal',  value: 'Sevoflurane',   text: '2nd Agent Sevoflurne detected'     } ],
-      [ '4F', { param: 'secInhal',  value: 'None',          text: 'No 2nd Anesthesia Gas detected'    } ],
-      
-      [ '56', { param: 'agentUnit', value: 'kPa',           text: 'Selected Agent Unit is kPa'        } ],
-      [ '57', { param: 'agentUnit', value: '%',             text: 'Selected Agent Unit is %'          } ],
-      
-      /// Unknown messages received from evita:
-      [ '20', { param: 'agemode',   value: 'Mode Adults',   text: 'Device is in adult mode'           } ],
-      [ '48', { param: 'airway',    value: 'IV (invasive)', text: 'Device configured for intubated patient ventilation'                 } ],
-      [ '49', { param: 'airway',    value: 'NIV',           text: 'Device configured for mask ventilation'                              } ],
       [ '68', { param: 'tubetype',  value: 'Endodracheal',  text: 'Tube type endotracheal'            } ],
       [ '6D', { param: 'atcauto',   value: 'Automatic',     text: 'Automatic tube compensation (ATC) added to current ventilation mode' } ],
       [ '6E', { param: 'atctype',   value: 'Exspiratory',   text: 'Expiratory ATC enabled'            } ],

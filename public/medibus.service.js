@@ -288,12 +288,35 @@ app.component('txtStatusParam', {
   }
 });
 
+app.component('ventModeIndicator', {
+  template: '<span>{{ data.vent.text.ventmode.text }}</span>',
+  controller: function($scope, MedibusService) {
+    $scope.data = MedibusService.data;
+  }
+});
+
 app.component('settingsParam', {
   templateUrl: 'settingsParam.html',
   controller: function($scope, MedibusService) {
     $scope.data = MedibusService.data;
   }
 });
+
+
+app.component('settingsIdIndicator', {
+  template: '<span>ID {{ data.vent.settings.msgId }}</span>',
+  controller: function($scope, MedibusService) {
+    $scope.data = MedibusService.data;
+  }
+});
+
+app.component('settingsTimeIndicator', {
+  template: "<span>Time {{ data.vent.settings.time | date:'HH:mm:ss' }}</span>",
+  controller: function($scope, MedibusService) {
+    $scope.data = MedibusService.data;
+  }
+});
+
 
 app.component('alarmParam', {
   templateUrl: 'alarmParam.html',

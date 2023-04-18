@@ -450,8 +450,6 @@ into a default parameter object.
 
 ### Text Messages
 
-
-
 Code  Text Message[@MbPrimus]
 ----- --------------------------------------------
 01H   Ventilationmode IPPV
@@ -490,7 +488,7 @@ Code  Text Message[@MbPrimus]
 5DH   Synchronized intermittent Ventilation
 4EH   AutoFlow added to Volume Mode
 
-Code  Text Message[@MbxProfDef] (p.109-)
+Code  Text Message[@MbxProfDef] (p.109-127)
 ----- --------------------------------------------
 01H   Mode VC-CMV
 02H   Mode VC-AC
@@ -502,6 +500,10 @@ Code  Text Message[@MbxProfDef] (p.109-)
 18H   Mode PC-SIMV
 1AH   Mode PC-APRV
 1BH   Mode PC-HFO
+47H   Mode PC-AC
+6AH   Mode PC-CMV
+6BH   Mode O2 therapy
+
 1EH   Ventilator is in standby mode
 
 20H   Device is in adult mode
@@ -530,6 +532,7 @@ Code                Parameter           Description             Modes
 56H, 57H            `agentunit`         Agent-Unit              kPa, %
 58H, 1EH, 53H       `devicemode`        Device-mode             HLM, Standby, Leaktest
 37H, 38H            `carrier`           Carrier-gas             Air, N<sub>2</sub>O
+
 
 
 ### Ventilation parameters

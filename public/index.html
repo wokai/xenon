@@ -106,7 +106,7 @@
           <div class="accordion-item">
             <div class="accordion-header" id="headingOne">
               <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-               Port &nbsp; <port-open-indicator></port-open-indicator>
+               <span style="width:80px">Port</span><port-open-indicator></port-open-indicator>
               </button>
             </div>
             <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#bodyAccordion">
@@ -126,25 +126,36 @@
           <div class="accordion-item">
             <div class="accordion-header" id="headingTwo">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Device: &nbsp; <device-name-indicator></device-name-indicator>
+                <span style="width:80px">Device</span><device-name-indicator></device-name-indicator>
               </button>
-
             </div>
             <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#bodyAccordion">
               <div class="accordion-body">
                 <device-status-indicator></device-status-indicator>
-                <txt-status-param></txt-status-param>
               </div>
             </div>
           </div> <!--- accordion-item --->
       
           <div class="accordion-item">
             <div class="accordion-header" id="headingThree">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                 Current Alarms &nbsp; <current-alarm-number></current-alarm-number>
+              <button class="accordion-button collapsed", type="button" data-bs-toggle="collapse", data-bs-target="#collapseThree" data-bs-parent="#bodyAccordion">
+                <span style="width:80px">Text</span><vent-mode-indicator></vent-mode-indicator>
               </button>
             </div>
             <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#bodyAccordion">
+              <div class="accordion-body">
+                <txt-status-param></txt-status-param>
+              </div>
+            </div>
+          </div> <!--- accordion-item --->
+      
+          <div class="accordion-item">
+            <div class="accordion-header" id="headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree">
+                 <span style="width:80px">Alarms</span><current-alarm-number></current-alarm-number>
+              </button>
+            </div>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#bodyAccordion">
               <div class="accordion-body">
                 <alarm-status-indicator></alarm-status-indicator>
               </div>
@@ -153,12 +164,12 @@
           
 
           <div class="accordion-item">
-            <div class="accordion-header" id="headingFour">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                 Settings
+            <div class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFour">
+                 <span style="width:80px">Settings</span><settings-id-indicator></settings-id-indicator>&nbsp;|&nbsp;<settings-time-indicator></settings-time-indicator>
               </button>
             </div>
-            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#bodyAccordion">
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#bodyAccordion">
               <div class="accordion-body">
                 <settings-param></settings-param>
               </div>

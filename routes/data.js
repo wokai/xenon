@@ -23,12 +23,10 @@
 const express = require('express');
 const path    = require('path');
 
-const medibus       = require(path.join(__dirname, '..', 'config', 'medibus'));
-
+const medibus         = require(path.join(__dirname, '..', 'config', 'medibus'));
 const { ventilation } = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));
 const { device }      = require(path.join(__dirname, '..', 'model', 'data', 'device'));
 const { dateTime }    = require(path.join(__dirname, '..', 'model', 'data', 'dateTime'));
-
 const { text }        = require(path.join(__dirname, '..', 'model', 'data', 'text'));
 const { settings }    = require(path.join(__dirname, '..', 'model', 'data', 'settings'));
 const { cache }       = require(path.join(__dirname, '..', 'model', 'data', 'cache'));
