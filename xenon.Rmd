@@ -263,10 +263,6 @@ The status logger takes an object containing four properties:
   - `expireElements`
   - `exprieAll`
   
-
-
-
-
 --------------------------------------------------------------------------------
 
 <!--- --------------------------------------------------------------------- --->
@@ -426,7 +422,7 @@ When the *MessageController* schedule array is empty, the next call to
 
 ## Settings
 
-## Text
+## Text Message response
 See Medibus for Primus [@MbPrimus] (p.34) and additionally [@MbxProfDef] (p.109).
 A *Text Message Response* (TMR) [@MbProtDef] (p.18) contains all current text messages.
 The response is divided into variable amounts of text-segments.
@@ -452,44 +448,88 @@ Each data-object is made up of the following fields:
 After reading the text segments out of the message, the values are copied
 into a default parameter object.
 
-### ParameterMap
-
-The ParameterMap class is designed to serve as repository for past status
-parameters.
-A TMR always contains a complete list of *current* status parameter.
-In order to get the beginning and end of a status, the current status needs to
-be checked against past TMR.
-The *ParameterMap* thus contains a *Map* of *ParameterElements* (identified by
-the message code).
-Each time, a TMR is processed, all *TextSegments* are checked against the
-Map and either inserted or updated (upsert).
-After processing all TextSegments, the expired parameters (identified by an
-outdated message-id) are shifted into an (*expired*) array.
-
-The data is accessible via REST at
-
- - `host:/data/text/current`
- - `host:/data/text/expired`
+### Text Messages
 
 
 
-### Device parameters
+Code  Text Message[@MbPrimus]
+----- --------------------------------------------
+01H   Ventilationmode IPPV
+06H   Ventilationmode SIMV
+1EH   Ventilator is in Standby-Mode
+22H   Selected CO2 Unit is mmHg
+23H   Selected CO2 Unit is kPa
+24H   Selected CO2 Unit is %
+25H   Halothane detected
+26H   Enflurane detected
+27H   Isoflurane detected
+28H   Desflurane detected
+29H   Sevoflurane detected
+2AH   No Anaesthesia Gas detected
+2BH   Ventilationmode man./spont.
+2CH   Selected Language
+34H   Ventilationmode PCV
+36H   Ventilationmode FRESH GAS EXTERNAL
+37H   Selected Carrier Gas is Air
+38H   Selected Carrier Gas is N2O
+4AH   2nd Agent Halothane detected
+4BH   2nd Agent Enflurane detected
+4CH   2nd Agent Isoflurane detected
+4DH   2nd Agent Desflurane detected
+4EH   2nd Agent Sevoflurane detected
+4FH   No 2nd Anesthesia Gas detected
+53H   Device is performing leakage test
+54H   Device is in Standby-Mode
+56H   Selected Agent Unit is kPa
+57H   Selected Agent Unit is %
+58H   HLM Mode active
+59H   Volume controlled Ventilation Mode
+5AH   Pressure controlled Ventilation Mode
+5BH   Pressure Support Mode
+5CH   Pressure Support added to intermittent Ventilation Mode
+5DH   Synchronized intermittent Ventilation
+4EH   AutoFlow added to Volume Mode
 
-+---------------+---------------+--------------------+
-| Code          | Parameter     | Description        |
-+:==============+:==============+:===================+
-| 2C            | `language`    | Language           |
-+---------------+---------------+--------------------+
-| 22, 23, 24    | `co2unit`     | CO<sub>2</sub>-Unit|
-+---------------+---------------+--------------------+
-| 56, 57        | `agentunit`   | Agent-Unit         |
-+---------------+---------------+--------------------+
-| 58            | `hlm`         | HLM mode           |
-+---------------+---------------+--------------------+
-| 1E            | `standby`     | Standby mode       |
-+---------------+---------------+--------------------+
-| 5             | `leaktest`    | Leaktest mode      |
-+---------------+---------------+--------------------+
+Code  Text Message[@MbxProfDef] (p.109-)
+----- --------------------------------------------
+01H   Mode VC-CMV
+02H   Mode VC-AC
+04H   Mode SPN-CPAP
+06H   Mode VC-SIMV
+0CH   Mode VC-MMV
+0DH   Mode PC-MMV
+0EH   Mode PC-BIPAP
+18H   Mode PC-SIMV
+1AH   Mode PC-APRV
+1BH   Mode PC-HFO
+1EH   Ventilator is in standby mode
+
+20H   Device is in adult mode
+21H   Device is in neonatal mode
+
+11H   Automatic apnea ventilation active
+12H   Device in PRODUCT TEST mode
+
+
+#### Derived parameters
+
+The text messages often describe entities where different modes are
+represented by different message types.
+There are for example multiple messages describing ventilation mode or 
+detected anesthesia gas or 2nd agent.
+Derivation of parameters tries to condense out the described entities
+together with their modes.
+
+##### Derived device parameters
+
+
+Code                Parameter           Description             Modes
+----------------    -----------------   --------------------    ----------------
+2CH                 `language`          Language                D: deutsch, GB: english, ...
+22H, 23H, 24H       `co2unit`           CO<sub>2</sub>-Unit     mmHg, kPa, %
+56H, 57H            `agentunit`         Agent-Unit              kPa, %
+58H, 1EH, 53H       `devicemode`        Device-mode             HLM, Standby, Leaktest
+37H, 38H            `carrier`           Carrier-gas             Air, N<sub>2</sub>O
 
 
 ### Ventilation parameters
@@ -515,11 +555,42 @@ The data is accessible via REST at
 +---------------+---------------+---------------------------------------------------------+
 
 
+
+### ParameterMap
+
+The ParameterMap class is designed to serve as repository for past status
+parameters.
+A TMR always contains a complete list of *current* status parameter.
+In order to get the beginning and end of a status, the current status needs to
+be checked against past TMR.
+The *ParameterMap* thus contains a *Map* of *ParameterElements* (identified by
+the message code).
+Each time, a TMR is processed, all *TextSegments* are checked against the
+Map and either inserted or updated (upsert).
+After processing all TextSegments, the expired parameters (identified by an
+outdated message-id) are shifted into an (*expired*) array.
+
+The data is accessible via REST at
+
+ - `host:/data/text/current`
+ - `host:/data/text/expired`
+
+
+
 --------------------------------------------------------------------------------
 
 <!--- --------------------------------------------------------------------- --->
 # Ontologies
 <!--- --------------------------------------------------------------------- --->
+
+## Parameter
+
+ID    Label                                             Reference
+---   ----------------------------------------------    -------------------------
+1     Measured Data, Low and High Alarm Limits          Primus [@MbPrimus] (p. 8)
+2     Device Settings                                   Primus [@MbPrimus] (p.13)
+3     Text Messages                                     Primus [@MbPrimus] (p.34)
+
 
 
 ## Snomed-CT

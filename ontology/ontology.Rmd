@@ -13,6 +13,13 @@ output:
 ---
 --------------------------------------------------------------------------------
 
+<!--- --------------------------------------------------------------------- --->
+# Organisationen
+<!--- --------------------------------------------------------------------- --->
+
+ - [SITiG](https://www.sitig.de/mitglieder.html) (Spitzenverband IT-Standards im Gesundheitswesen)
+ - [PCHAlliance](https://www.pchalliance.org/) (Personal Connected Health Alliance)
+ - Bundesverband Gesundheits-IT [bvitg e. V.](https://www.bvitg.de/)
 
 <!--- --------------------------------------------------------------------- --->
 # Medizininformatik Initiative (MII)
@@ -28,6 +35,37 @@ See [MII Kerndatensatz](https://www.medizininformatik-initiative.de/de/der-kernd
  - [MII Modul ICU 2022](https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Intensivmedizin/IGMIIKDSModulICU.html)
  - [MII Modul ICU Terminologien](https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Intensivmedizin/Terminologien.html)
  - [Art-Decor](https://art-decor.org/art-decor/decor-datasets--mide-): Quite rudimentary
+ - [Simplifier](https://simplifier.net/)
+
+
+
+Laut *EU Recommendation on European Electronic Health Record exchange format* [2019/243](https://eur-lex.europa.eu/eli/reco/2019/243/oj) soll die
+Ausgangsbasis für ein europäisches Ausgangsformat für elektronische 
+Patientenakten folgende Bestandteile enthalten:
+
+ - Patientenkurzakte (Patient summary)
+ - elektronische Verschreibung („ePrescription“)/elektronische Verabreichung („eDispensation“)
+ - Laborbefunde (Laboratory results)
+ - Medizinische Bildgebung und ärztliche Berichte (Medical imaging and reports)
+ - Krankenhaus-Entlassungsberichte (Hospital discharge reports)
+
+## Cocir
+
+[Cocir](https://www.cocir.org/index.html) is the European Trade Association 
+representing the medical imaging, radiotherapy, health ICT and electromedical
+industries.
+Recommendations:
+
+1. Consider API standards and profiles
+2. Apply a consistent and proven end-to-end strategy
+3. Apply the COCIR ’Six steps’
+
+ 
+## Medcom
+
+[Medcom](https://medcom.dk/medcom-in-english/) (The Danish Health Data Network)
+develops, tests and certifies (and help implement) digital standards that enable
+systems in the healthcare sector to exchange relevant data in a secure way.
 
 <!--- --------------------------------------------------------------------- --->
 # Parameters
@@ -42,13 +80,23 @@ All codes are derived from [LOINC](http://loinc.org)
 
 Loinc     Display
 -------   -------------------------------------------------------------------------
+8302-2    Body height
+29463-7   Body weight
+50064-5   Ideal body weight
+9279-1    Respiratory Rate
+
+
+Loinc     Display
+-------   -------------------------------------------------------------------------
 19835-8   Breath rate setting Ventilator synchronized intermittent mandatory
 19994-3   Oxygen/Total gas setting [Volume Fraction] Ventilator
 20077-4   Positive end expiratory pressure setting Ventilator
 20079-0   Pressure support setting Ventilator
+8741-1    Left ventricular Cardiac output    
 20103-8   Tidal volume expired/Plateau pressure --post 1.5-2.0 seconds inspiratory hold on ventilator
 20112-9   Tidal volume setting Ventilator
 20115-2   Tidal volume.spontaneous/Body weight [Volume/mass] --on ventilator
+76009-0   Inspired minute Volume during Mechanical ventilation
 33438-3   Breath rate mechanical --on ventilator
 57655-3   Tidal volume.exhaled maximum setting Ventilator alarm
 76530-5   Mean pressure Respiratory system airway --on ventilator
@@ -77,17 +125,18 @@ LL5054-3      Manual|Assist|Ctrl|Assist-Ctrl|MMV|Other
 
 # Snomed-CT
 
- - [Bioontology](https://bioportal.bioontology.org/ontologies/SNOMEDCT)
+ - [Bioontology](https://bioportal.bioontology.org/ontologies/SNOMEDCT): TreeView browsing portal
+ - [Community Content Browser](https://community-browser.ihtsdotools.org/?): Includes a german translation
  - [Bfarm](https://www.bfarm.de/DE/Kodiersysteme/Terminologien/SNOMED-CT/_node.html)
+ - [Confluence](https://confluence.ihtsdotools.org/display/DOCSQLPG/A.1+Download+the+SNOMED+CT+Example+Database+Package)
  - [Logical Model](https://confluence.ihtsdotools.org/pages/viewpage.action?pageId=61154005)
  - [Starter guide DE](https://confluence.ihtsdotools.org/display/DOCSTARTDE/)
  - [Document library](https://confluence.ihtsdotools.org/display/DOC)
- - [Community Content Browser](https://community-browser.ihtsdotools.org/?): Includes a german translation
  - [Document library](https://confluence.ihtsdotools.org/display/DOC)
  - [Starter guide](https://snomed.org/sg)
  - [Snomed in action](https://www.snomed.org/snomed-in-action?lang=de)
  - [Snowstorm](https://snowstorm.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN/concepts/225796000&sa=D&source=editors&ust=1678028279118629&usg=AOvVaw0ti013dJmEFiY4kn_kaqbl)
-
+ - [Download Database](https://confluence.ihtsdotools.org/display/DOCSQLPG/A.1+Download+the+SNOMED+CT+Example+Database+Package)
  
 ## Snomed-CT Structures
 
@@ -175,6 +224,16 @@ SCTID       Name
 ----------  --------------------------------------------------------------------
 260787004   Physical object (physical object)
 
+### Vital signs
+
+SCTID       Name
+----------  --------------------------------------------------------------------
+424144002   Current chronological age (observable entity) 
+1153637007  Body height (observable entity)
+27113001    Body weight (observable entity)
+170804003   Ideal body weight (observable entity)
+86290005    Respiratory rate (observable entity)
+
 ### Ventilation
 
 SCTID       Name
@@ -187,6 +246,8 @@ SCTID       Name
 
 ### Intensive care related ID's
 
+ - [Intensiv](https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Intensivmedizin/BeschreibungModul.html)
+
 SCTID       entity
 ----------  --------------------------------------------------------------------
 386534000   Arterial blood pressure (observable entity)
@@ -194,6 +255,7 @@ SCTID       entity
 271650006   Diastolic blood pressure (observable entity)
 78564009    Heart rate measured at systemic artery (observable entity)
 364075005   Heart rate (observable entity)
+82799009    Cardiac output (observable entity)
 103228002   Hemoglobin saturation with oxygen (observable entity)
 442476006   Arterial oxygen saturation (observable entity)
 103228002   Hemoglobin saturation with oxygen (observable entity)
@@ -202,6 +264,7 @@ SCTID       entity
 442734002   Mixed venous oxygen saturation (observable entity)
 250790007   End tidal carbon dioxide tension (observable entity)
 397802005   Minute ventilation (finding)
+250875001   Ventilator delivered minute volume (observable entity)
 86290005    Respiratory rate (observable entity)
 250774007   Inspired oxygen concentration (observable entity)
 250775008   Expired oxygen concentration (observable entity)
@@ -220,13 +283,17 @@ SCTID       physical object
 462514007   Arterial blood pressure catheter (physical object)
 
 
-SCTID      regime/therapy
-17146006   Arterial pressure monitoring, non-invasive method (regime/therapy)
+SCTID       regime/therapy
+----------  --------------------------------------------------------------------
+17146006    Arterial pressure monitoring, non-invasive method (regime/therapy)
 
 
 ## Cochrane Linked Data
 
  - Procedure [Dual Pressure Spontaneous Ventilation](https://data.cochrane.org/concepts/r4hp5zhbl4f2) = BIPAP
+
+
+
 
 
 --------------------------------------------------------------------------------

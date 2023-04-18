@@ -381,8 +381,13 @@ Düsseldorf<br><h4 class="date">18.02.2023</h4>
 
 <div id="TOC">
 <ul>
+<li><a href="#organisationen" id="toc-organisationen">Organisationen</a></li>
 <li><a href="#medizininformatik-initiative-mii" id="toc-medizininformatik-initiative-mii">Medizininformatik Initiative
-(MII)</a></li>
+(MII)</a>
+<ul>
+<li><a href="#cocir" id="toc-cocir">Cocir</a></li>
+<li><a href="#medcom" id="toc-medcom">Medcom</a></li>
+</ul></li>
 <li><a href="#parameters" id="toc-parameters">Parameters</a>
 <ul>
 <li><a href="#fhir-codes" id="toc-fhir-codes">FHIR Codes</a></li>
@@ -398,6 +403,7 @@ Summary</a></li>
 <li><a href="#observation-hierarchy" id="toc-observation-hierarchy">Observation hierarchy</a>
 <ul>
 <li><a href="#devices" id="toc-devices">Devices</a></li>
+<li><a href="#vital-signs" id="toc-vital-signs">Vital signs</a></li>
 <li><a href="#ventilation" id="toc-ventilation">Ventilation</a></li>
 <li><a href="#intensive-care-related-ids" id="toc-intensive-care-related-ids">Intensive care related ID’s</a></li>
 </ul></li>
@@ -409,6 +415,19 @@ Summary</a></li>
 
 <hr />
 <!--- --------------------------------------------------------------------- --->
+<div id="organisationen" class="section level1">
+<h1>Organisationen</h1>
+<!--- --------------------------------------------------------------------- --->
+<ul>
+<li><a href="https://www.sitig.de/mitglieder.html">SITiG</a>
+(Spitzenverband IT-Standards im Gesundheitswesen)</li>
+<li><a href="https://www.pchalliance.org/">PCHAlliance</a> (Personal
+Connected Health Alliance)</li>
+<li>Bundesverband Gesundheits-IT <a href="https://www.bvitg.de/">bvitg
+e. V.</a></li>
+</ul>
+<!--- --------------------------------------------------------------------- --->
+</div>
 <div id="medizininformatik-initiative-mii" class="section level1">
 <h1>Medizininformatik Initiative (MII)</h1>
 <!--- --------------------------------------------------------------------- --->
@@ -422,25 +441,83 @@ Kerndatensatz</a>:</p>
 <li><a href="https://github.com/medizininformatik-initiative">GitHub</a></li>
 <li><a href="https://www.medizininformatik-initiative.de/de/jahresversammlung2021">MII
 Jahresversammlung 2021</a></li>
+<li><a href="https://www.medizininformatik-initiative.de/de/der-kerndatensatz-der-medizininformatik-initiative">Medizininformatik
+Initiative der Kerndatensatz</a></li>
 <li><a href="https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Intensivmedizin/IGMIIKDSModulICU.html">MII
 Modul ICU 2022</a></li>
+<li><a href="https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Intensivmedizin/Terminologien.html">MII
+Modul ICU Terminologien</a></li>
 <li><a href="https://art-decor.org/art-decor/decor-datasets--mide-">Art-Decor</a>:
 Quite rudimentary</li>
+<li><a href="https://simplifier.net/">Simplifier</a></li>
 </ul>
+<p>Laut <em>EU Recommendation on European Electronic Health Record
+exchange format</em> <a href="https://eur-lex.europa.eu/eli/reco/2019/243/oj">2019/243</a> soll
+die Ausgangsbasis für ein europäisches Ausgangsformat für elektronische
+Patientenakten folgende Bestandteile enthalten:</p>
+<ul>
+<li>Patientenkurzakte (Patient summary)</li>
+<li>elektronische Verschreibung („ePrescription“)/elektronische
+Verabreichung („eDispensation“)</li>
+<li>Laborbefunde (Laboratory results)</li>
+<li>Medizinische Bildgebung und ärztliche Berichte (Medical imaging and
+reports)</li>
+<li>Krankenhaus-Entlassungsberichte (Hospital discharge reports)</li>
+</ul>
+<div id="cocir" class="section level2">
+<h2>Cocir</h2>
+<p><a href="https://www.cocir.org/index.html">Cocir</a> is the European
+Trade Association representing the medical imaging, radiotherapy, health
+ICT and electromedical industries. Recommendations:</p>
+<ol style="list-style-type: decimal">
+<li>Consider API standards and profiles</li>
+<li>Apply a consistent and proven end-to-end strategy</li>
+<li>Apply the COCIR ’Six steps’</li>
+</ol>
+</div>
+<div id="medcom" class="section level2">
+<h2>Medcom</h2>
+<p><a href="https://medcom.dk/medcom-in-english/">Medcom</a> (The Danish
+Health Data Network) develops, tests and certifies (and help implement)
+digital standards that enable systems in the healthcare sector to
+exchange relevant data in a secure way.</p>
 <!--- --------------------------------------------------------------------- --->
+</div>
 </div>
 <div id="parameters" class="section level1">
 <h1>Parameters</h1>
 <!--- --------------------------------------------------------------------- --->
-<p>See <a href="https://www.medizininformatik-initiative.de/de/der-kerndatensatz-der-medizininformatik-initiative">Medizininformatik
-Initiative Kerndatensatz</a></p>
-<p>See <a href="https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Intensivmedizin/Terminologien.html">Medizininformatik
-Initiative Kerndatensatz Intensiv</a></p>
 <div id="fhir-codes" class="section level2">
 <h2>FHIR Codes</h2>
 <p>In FHIR, <a href="https://build.fhir.org/ig/HL7/fhir-saner/ValueSet-VentilatorObservations.html">Ventilation
 Observations</a> are contained in ValueSet <code>10.97.1</code>. All
 codes are derived from <a href="http://loinc.org">LOINC</a></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Loinc</th>
+<th align="left">Display</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">8302-2</td>
+<td align="left">Body height</td>
+</tr>
+<tr class="even">
+<td align="left">29463-7</td>
+<td align="left">Body weight</td>
+</tr>
+<tr class="odd">
+<td align="left">50064-5</td>
+<td align="left">Ideal body weight</td>
+</tr>
+<tr class="even">
+<td align="left">9279-1</td>
+<td align="left">Respiratory Rate</td>
+</tr>
+</tbody>
+</table>
 <table>
 <thead>
 <tr class="header">
@@ -469,18 +546,27 @@ Ventilator</td>
 <td align="left">Pressure support setting Ventilator</td>
 </tr>
 <tr class="odd">
+<td align="left">8741-1</td>
+<td align="left">Left ventricular Cardiac output</td>
+</tr>
+<tr class="even">
 <td align="left">20103-8</td>
 <td align="left">Tidal volume expired/Plateau pressure –post 1.5-2.0
 seconds inspiratory hold on ventilator</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">20112-9</td>
 <td align="left">Tidal volume setting Ventilator</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">20115-2</td>
 <td align="left">Tidal volume.spontaneous/Body weight [Volume/mass] –on
 ventilator</td>
+</tr>
+<tr class="odd">
+<td align="left">76009-0</td>
+<td align="left">Inspired minute Volume during Mechanical
+ventilation</td>
 </tr>
 <tr class="even">
 <td align="left">33438-3</td>
@@ -586,6 +672,7 @@ Ventilator</a></td>
 <ul>
 <li><a href="https://bioportal.bioontology.org/ontologies/SNOMEDCT">Bioontology</a></li>
 <li><a href="https://www.bfarm.de/DE/Kodiersysteme/Terminologien/SNOMED-CT/_node.html">Bfarm</a></li>
+<li><a href="https://confluence.ihtsdotools.org/display/DOCSQLPG/A.1+Download+the+SNOMED+CT+Example+Database+Package">Confluence</a></li>
 <li><a href="https://confluence.ihtsdotools.org/pages/viewpage.action?pageId=61154005">Logical
 Model</a></li>
 <li><a href="https://confluence.ihtsdotools.org/display/DOCSTARTDE/">Starter
@@ -600,6 +687,8 @@ library</a></li>
 <li><a href="https://www.snomed.org/snomed-in-action?lang=de">Snomed in
 action</a></li>
 <li><a href="https://snowstorm.ihtsdotools.org/snowstorm/snomed-ct/browser/MAIN/concepts/225796000&amp;sa=D&amp;source=editors&amp;ust=1678028279118629&amp;usg=AOvVaw0ti013dJmEFiY4kn_kaqbl">Snowstorm</a></li>
+<li><a href="https://confluence.ihtsdotools.org/display/DOCSQLPG/A.1+Download+the+SNOMED+CT+Example+Database+Package">Download
+Database</a></li>
 </ul>
 <div id="snomed-ct-structures" class="section level2">
 <h2>Snomed-CT Structures</h2>
@@ -709,6 +798,39 @@ CT</a></li>
 </tbody>
 </table>
 </div>
+<div id="vital-signs" class="section level3">
+<h3>Vital signs</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">SCTID</th>
+<th align="left">Name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">424144002</td>
+<td align="left">Current chronological age (observable entity)</td>
+</tr>
+<tr class="even">
+<td align="left">1153637007</td>
+<td align="left">Body height (observable entity)</td>
+</tr>
+<tr class="odd">
+<td align="left">27113001</td>
+<td align="left">Body weight (observable entity)</td>
+</tr>
+<tr class="even">
+<td align="left">170804003</td>
+<td align="left">Ideal body weight (observable entity)</td>
+</tr>
+<tr class="odd">
+<td align="left">86290005</td>
+<td align="left">Respiratory rate (observable entity)</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div id="ventilation" class="section level3">
 <h3>Ventilation</h3>
 <table>
@@ -744,6 +866,9 @@ CT</a></li>
 </div>
 <div id="intensive-care-related-ids" class="section level3">
 <h3>Intensive care related ID’s</h3>
+<ul>
+<li><a href="https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Intensivmedizin/BeschreibungModul.html">Intensiv</a></li>
+</ul>
 <table>
 <thead>
 <tr class="header">
@@ -774,40 +899,49 @@ entity)</td>
 <td align="left">Heart rate (observable entity)</td>
 </tr>
 <tr class="even">
+<td align="left">82799009</td>
+<td align="left">Cardiac output (observable entity)</td>
+</tr>
+<tr class="odd">
 <td align="left">103228002</td>
 <td align="left">Hemoglobin saturation with oxygen (observable
 entity)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">442476006</td>
 <td align="left">Arterial oxygen saturation (observable entity)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">103228002</td>
 <td align="left">Hemoglobin saturation with oxygen (observable
 entity)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">442349007</td>
 <td align="left">Venous oxygen saturation (observable entity)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">713194001</td>
 <td align="left">Central venous oxygenation saturation (observable
 entity)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">442734002</td>
 <td align="left">Mixed venous oxygen saturation (observable entity)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">250790007</td>
 <td align="left">End tidal carbon dioxide tension (observable
 entity)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">397802005</td>
 <td align="left">Minute ventilation (finding)</td>
+</tr>
+<tr class="odd">
+<td align="left">250875001</td>
+<td align="left">Ventilator delivered minute volume (observable
+entity)</td>
 </tr>
 <tr class="even">
 <td align="left">86290005</td>
@@ -880,8 +1014,21 @@ entity)</td>
 </tr>
 </tbody>
 </table>
-<p>SCTID regime/therapy 17146006 Arterial pressure monitoring,
-non-invasive method (regime/therapy)</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">SCTID</th>
+<th align="left">regime/therapy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">17146006</td>
+<td align="left">Arterial pressure monitoring, non-invasive method
+(regime/therapy)</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="cochrane-linked-data" class="section level2">

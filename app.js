@@ -34,7 +34,6 @@ const express = require('express');
 const http    = require('http');
 const path    = require('path');
 const fs      = require('fs');
-const cookie  = require('cookie-parser');
 
 const app = express();
 
@@ -56,7 +55,6 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms', 
   stream: log
 }));
 
-
 /// Colored morgan output on console:
 app.use(
   morgan(function (tokens, req, res) {
@@ -76,7 +74,6 @@ app.use(
 /// ////////////////////////////////////////////////////////////////////////////
 
 const { eventLoop } = require('./bus/eventLoop');
-
 
 /// ////////////////////////////////////////////////////////////////////////////
 /// Create HTTP and IO server.
@@ -101,7 +98,6 @@ const epi_router   = require(path.join(__dirname, 'routes', 'episode'));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookie());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index_router);

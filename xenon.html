@@ -482,16 +482,18 @@ schedule</a></li>
 <li><a href="#parameters" id="toc-parameters">Parameters</a>
 <ul>
 <li><a href="#settings" id="toc-settings">Settings</a></li>
-<li><a href="#text" id="toc-text">Text</a>
+<li><a href="#text-message-response" id="toc-text-message-response">Text
+Message response</a>
 <ul>
-<li><a href="#parametermap" id="toc-parametermap">ParameterMap</a></li>
-<li><a href="#device-parameters" id="toc-device-parameters">Device
-parameters</a></li>
+<li><a href="#text-messages" id="toc-text-messages">Text
+Messages</a></li>
 <li><a href="#ventilation-parameters" id="toc-ventilation-parameters">Ventilation parameters</a></li>
+<li><a href="#parametermap" id="toc-parametermap">ParameterMap</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#ontologies" id="toc-ontologies">Ontologies</a>
 <ul>
+<li><a href="#parameter" id="toc-parameter">Parameter</a></li>
 <li><a href="#snomed-ct" id="toc-snomed-ct">Snomed-CT</a>
 <ul>
 <li><a href="#snomed-ct-for-observable-entities" id="toc-snomed-ct-for-observable-entities">Snomed-CT for observable
@@ -1042,8 +1044,8 @@ call to <code>doNextAction</code> triggers</p>
 <div id="settings" class="section level2">
 <h2>Settings</h2>
 </div>
-<div id="text" class="section level2">
-<h2>Text</h2>
+<div id="text-message-response" class="section level2">
+<h2>Text Message response</h2>
 <p>See Medibus for Primus <span class="citation">(2. Dräger 2010)</span>
 (p.34) and additionally <span class="citation">(3. Dräger 2019)</span>
 (p.109). A <em>Text Message Response</em> (TMR) <span class="citation">(1. Dräger 2007)</span> (p.18) contains all current
@@ -1070,72 +1072,271 @@ data-object is made up of the following fields:</p>
 </ul>
 <p>After reading the text segments out of the message, the values are
 copied into a default parameter object.</p>
-<div id="parametermap" class="section level3">
-<h3>ParameterMap</h3>
-<p>The ParameterMap class is designed to serve as repository for past
-status parameters. A TMR always contains a complete list of
-<em>current</em> status parameter. In order to get the beginning and end
-of a status, the current status needs to be checked against past TMR.
-The <em>ParameterMap</em> thus contains a <em>Map</em> of
-<em>ParameterElements</em> (identified by the message code). Each time,
-a TMR is processed, all <em>TextSegments</em> are checked against the
-Map and either inserted or updated (upsert). After processing all
-TextSegments, the expired parameters (identified by an outdated
-message-id) are shifted into an (<em>expired</em>) array.</p>
-<p>The data is accessible via REST at</p>
-<ul>
-<li>host:/data/text/current</li>
-<li>host:/data/text/expired</li>
-</ul>
-</div>
-<div id="device-parameters" class="section level3">
-<h3>Device parameters</h3>
-<table style="width:74%;">
-<colgroup>
-<col width="22%" />
-<col width="22%" />
-<col width="29%" />
-</colgroup>
+<div id="text-messages" class="section level3">
+<h3>Text Messages</h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Code</th>
+<th align="left">Text Message<span class="citation">(2. Dräger
+2010)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">01H</td>
+<td align="left">Ventilationmode IPPV</td>
+</tr>
+<tr class="even">
+<td align="left">06H</td>
+<td align="left">Ventilationmode SIMV</td>
+</tr>
+<tr class="odd">
+<td align="left">1EH</td>
+<td align="left">Ventilator is in Standby-Mode</td>
+</tr>
+<tr class="even">
+<td align="left">22H</td>
+<td align="left">Selected CO2 Unit is mmHg</td>
+</tr>
+<tr class="odd">
+<td align="left">23H</td>
+<td align="left">Selected CO2 Unit is kPa</td>
+</tr>
+<tr class="even">
+<td align="left">24H</td>
+<td align="left">Selected CO2 Unit is %</td>
+</tr>
+<tr class="odd">
+<td align="left">25H</td>
+<td align="left">Halothane detected</td>
+</tr>
+<tr class="even">
+<td align="left">26H</td>
+<td align="left">Enflurane detected</td>
+</tr>
+<tr class="odd">
+<td align="left">27H</td>
+<td align="left">Isoflurane detected</td>
+</tr>
+<tr class="even">
+<td align="left">28H</td>
+<td align="left">Desflurane detected</td>
+</tr>
+<tr class="odd">
+<td align="left">29H</td>
+<td align="left">Sevoflurane detected</td>
+</tr>
+<tr class="even">
+<td align="left">2AH</td>
+<td align="left">No Anaesthesia Gas detected</td>
+</tr>
+<tr class="odd">
+<td align="left">2BH</td>
+<td align="left">Ventilationmode man./spont.</td>
+</tr>
+<tr class="even">
+<td align="left">2CH</td>
+<td align="left">Selected Language</td>
+</tr>
+<tr class="odd">
+<td align="left">34H</td>
+<td align="left">Ventilationmode PCV</td>
+</tr>
+<tr class="even">
+<td align="left">36H</td>
+<td align="left">Ventilationmode FRESH GAS EXTERNAL</td>
+</tr>
+<tr class="odd">
+<td align="left">37H</td>
+<td align="left">Selected Carrier Gas is Air</td>
+</tr>
+<tr class="even">
+<td align="left">38H</td>
+<td align="left">Selected Carrier Gas is N2O</td>
+</tr>
+<tr class="odd">
+<td align="left">4AH</td>
+<td align="left">2nd Agent Halothane detected</td>
+</tr>
+<tr class="even">
+<td align="left">4BH</td>
+<td align="left">2nd Agent Enflurane detected</td>
+</tr>
+<tr class="odd">
+<td align="left">4CH</td>
+<td align="left">2nd Agent Isoflurane detected</td>
+</tr>
+<tr class="even">
+<td align="left">4DH</td>
+<td align="left">2nd Agent Desflurane detected</td>
+</tr>
+<tr class="odd">
+<td align="left">4EH</td>
+<td align="left">2nd Agent Sevoflurane detected</td>
+</tr>
+<tr class="even">
+<td align="left">4FH</td>
+<td align="left">No 2nd Anesthesia Gas detected</td>
+</tr>
+<tr class="odd">
+<td align="left">53H</td>
+<td align="left">Device is performing leakage test</td>
+</tr>
+<tr class="even">
+<td align="left">54H</td>
+<td align="left">Device is in Standby-Mode</td>
+</tr>
+<tr class="odd">
+<td align="left">56H</td>
+<td align="left">Selected Agent Unit is kPa</td>
+</tr>
+<tr class="even">
+<td align="left">57H</td>
+<td align="left">Selected Agent Unit is %</td>
+</tr>
+<tr class="odd">
+<td align="left">58H</td>
+<td align="left">HLM Mode active</td>
+</tr>
+<tr class="even">
+<td align="left">59H</td>
+<td align="left">Volume controlled Ventilation Mode</td>
+</tr>
+<tr class="odd">
+<td align="left">5AH</td>
+<td align="left">Pressure controlled Ventilation Mode</td>
+</tr>
+<tr class="even">
+<td align="left">5BH</td>
+<td align="left">Pressure Support Mode</td>
+</tr>
+<tr class="odd">
+<td align="left">5CH</td>
+<td align="left">Pressure Support added to intermittent Ventilation
+Mode</td>
+</tr>
+<tr class="even">
+<td align="left">5DH</td>
+<td align="left">Synchronized intermittent Ventilation</td>
+</tr>
+<tr class="odd">
+<td align="left">4EH</td>
+<td align="left">AutoFlow added to Volume Mode</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Code</th>
+<th align="left">Text Message<span class="citation">(3. Dräger
+2019)</span> (p.109-)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">01H</td>
+<td align="left">Mode VC-CMV</td>
+</tr>
+<tr class="even">
+<td align="left">02H</td>
+<td align="left">Mode VC-AC</td>
+</tr>
+<tr class="odd">
+<td align="left">04H</td>
+<td align="left">Mode SPN-CPAP</td>
+</tr>
+<tr class="even">
+<td align="left">06H</td>
+<td align="left">Mode VC-SIMV</td>
+</tr>
+<tr class="odd">
+<td align="left">0CH</td>
+<td align="left">Mode VC-MMV</td>
+</tr>
+<tr class="even">
+<td align="left">0DH</td>
+<td align="left">Mode PC-MMV</td>
+</tr>
+<tr class="odd">
+<td align="left">0EH</td>
+<td align="left">Mode PC-BIPAP</td>
+</tr>
+<tr class="even">
+<td align="left">18H</td>
+<td align="left">Mode PC-SIMV</td>
+</tr>
+<tr class="odd">
+<td align="left">1AH</td>
+<td align="left">Mode PC-APRV</td>
+</tr>
+<tr class="even">
+<td align="left">1BH</td>
+<td align="left">Mode PC-HFO</td>
+</tr>
+<tr class="odd">
+<td align="left">1EH</td>
+<td align="left">Ventilator is in standby mode</td>
+</tr>
+</tbody>
+</table>
+<p>20H Device is in adult mode 21H Device is in neonatal mode</p>
+<p>11H Automatic apnea ventilation active 12H Device in PRODUCT TEST
+mode</p>
+<div id="derived-parameters" class="section level4">
+<h4>Derived parameters</h4>
+<p>The text messages often describe entities where different modes are
+represented by different message types. There are for example multiple
+messages describing ventilation mode or detected anesthesia gas or 2nd
+agent. Derivation of parameters tries to condense out the described
+entities together with their modes.</p>
+<div id="derived-device-parameters" class="section level5">
+<h5>Derived device parameters</h5>
+<table>
 <thead>
 <tr class="header">
 <th align="left">Code</th>
 <th align="left">Parameter</th>
 <th align="left">Description</th>
+<th align="left">Modes</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2C</td>
+<td align="left">2CH</td>
 <td align="left"><code>language</code></td>
 <td align="left">Language</td>
+<td align="left">D: deutsch, GB: english, …</td>
 </tr>
 <tr class="even">
-<td align="left">22, 23, 24</td>
+<td align="left">22H, 23H, 24H</td>
 <td align="left"><code>co2unit</code></td>
 <td align="left">CO<sub>2</sub>-Unit</td>
+<td align="left">mmHg, kPa, %</td>
 </tr>
 <tr class="odd">
-<td align="left">56, 57</td>
+<td align="left">56H, 57H</td>
 <td align="left"><code>agentunit</code></td>
 <td align="left">Agent-Unit</td>
+<td align="left">kPa, %</td>
 </tr>
 <tr class="even">
-<td align="left">58</td>
-<td align="left"><code>hlm</code></td>
-<td align="left">HLM mode</td>
+<td align="left">58H, 1EH, 53H</td>
+<td align="left"><code>devicemode</code></td>
+<td align="left">Device-mode</td>
+<td align="left">HLM, Standby, Leaktest</td>
 </tr>
 <tr class="odd">
-<td align="left">1E</td>
-<td align="left"><code>standby</code></td>
-<td align="left">Standby mode</td>
-</tr>
-<tr class="even">
-<td align="left">5</td>
-<td align="left"><code>leaktest</code></td>
-<td align="left">Leaktest mode</td>
+<td align="left">37H, 38H</td>
+<td align="left"><code>carrier</code></td>
+<td align="left">Carrier-gas</td>
+<td align="left">Air, N<sub>2</sub>O</td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
 </div>
 <div id="ventilation-parameters" class="section level3">
 <h3>Ventilation parameters</h3>
@@ -1196,6 +1397,24 @@ Mode</td>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="parametermap" class="section level3">
+<h3>ParameterMap</h3>
+<p>The ParameterMap class is designed to serve as repository for past
+status parameters. A TMR always contains a complete list of
+<em>current</em> status parameter. In order to get the beginning and end
+of a status, the current status needs to be checked against past TMR.
+The <em>ParameterMap</em> thus contains a <em>Map</em> of
+<em>ParameterElements</em> (identified by the message code). Each time,
+a TMR is processed, all <em>TextSegments</em> are checked against the
+Map and either inserted or updated (upsert). After processing all
+TextSegments, the expired parameters (identified by an outdated
+message-id) are shifted into an (<em>expired</em>) array.</p>
+<p>The data is accessible via REST at</p>
+<ul>
+<li><code>host:/data/text/current</code></li>
+<li><code>host:/data/text/expired</code></li>
+</ul>
 <hr />
 <!--- --------------------------------------------------------------------- --->
 </div>
@@ -1204,6 +1423,38 @@ Mode</td>
 <div id="ontologies" class="section level1">
 <h1>Ontologies</h1>
 <!--- --------------------------------------------------------------------- --->
+<div id="parameter" class="section level2">
+<h2>Parameter</h2>
+<table>
+<thead>
+<tr class="header">
+<th align="left">ID</th>
+<th align="left">Label</th>
+<th align="left">Reference</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="left">Measured Data, Low and High Alarm Limits</td>
+<td align="left">Primus <span class="citation">(2. Dräger 2010)</span>
+(p. 8)</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="left">Device Settings</td>
+<td align="left">Primus <span class="citation">(2. Dräger 2010)</span>
+(p.13)</td>
+</tr>
+<tr class="odd">
+<td align="left">3</td>
+<td align="left">Text Messages</td>
+<td align="left">Primus <span class="citation">(2. Dräger 2010)</span>
+(p.34)</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div id="snomed-ct" class="section level2">
 <h2>Snomed-CT</h2>
 <ul>
