@@ -26,6 +26,7 @@ const fs      = require('fs');
 
 const win            = require(path.join(__dirname, '..', 'logger', 'logger'));
 const { epilog }     = require(path.join(__dirname, '..', 'logger', 'fslog'));
+const monitor        = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 const general        = require(path.join(__dirname, '..', 'config', 'general'));
 const status         = require(path.join(__dirname, '..', 'controller', 'statusController'));
 
@@ -109,12 +110,13 @@ class Episode {
     this.#begin = new Date();
     this.#uuid  = crypto.randomBytes(16).toString("hex");
     this.#end = null;
+    monitor.infoMsg('Episode', `Begin: ${this.#begin.toISOString().substr(11, 8)} | Number of episodes: ${this.#nEpisodes}`);
   }
   
   terminate = () => {
     this.end = new Date();
-    /// Terminates all current Text-Status parameters
-    //text.text.expire();
+    monitor.infoMsg('Episode', `End. Periode Begin: ${this.#begin.toISOString().substr(11, 8)} - End: ${this.#end.toISOString().substr(11, 8)}`);
+    /// Terminates all current Text-Status parameters via shutdown
   }
   
   get begin () { return this.#begin; }

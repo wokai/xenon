@@ -200,7 +200,6 @@ class ParameterMap {
    * @param{tp}                - (TimePoint)
    * @usedBy{/model/data/text} - (TextParamMap.processTextMsg)
    **/
-  
   expireElements = (tp) => {
     this.#map.forEach((value, key, map) => {
       if(value.last.id != tp.id){
@@ -217,7 +216,6 @@ class ParameterMap {
    * @descr {Expires all current elements}
    * @usedBy{Closing the Medibus communication} - (Shutdown)
    **/
-  
   expireAll = () => {
     let l = this.#map.length;
     let tp = new TimePoint(0, new Date());
@@ -230,7 +228,6 @@ class ParameterMap {
     });
     win.def.log({ level: 'info', file: 'parameterMap', func: 'expireAll', message: `Exspiring ${l} parameters` });
   }
-  
 }
 
 

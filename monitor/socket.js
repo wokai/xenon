@@ -73,7 +73,7 @@ class SocketController {
       if(this.#io.engine.clientsCount == 1) { this.connectMonitor(monitor); }
       
       var n = this.#io.engine.clientsCount;
-      win.def.log({ level: 'info', file: 'socket', func: 'Connect', message: `N: ${n} | Socket: ${socket.id}`});
+      //win.def.log({ level: 'info', file: 'socket', func: 'Connect', message: `N: ${n} | Socket: ${socket.id}`});
       
       
       /// ////////////////////////////////////////////////////////////////// ///
@@ -85,7 +85,7 @@ class SocketController {
         this.#sockets.splice(i, 1);
         
         var n = this.#io.engine.clientsCount;
-        win.def.log({ level: 'info', file: 'socket', func: 'Disconnect', message: `N: ${n} | Socket: ${socket.id}` });
+        //win.def.log({ level: 'info', file: 'socket', func: 'Disconnect', message: `N: ${n} | Socket: ${socket.id}` });
         if(this.#sockets.length == 0) { this.disconnnectMonitor(); }
       });
       
