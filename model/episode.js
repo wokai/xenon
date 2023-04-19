@@ -114,7 +114,7 @@ class Episode {
   }
   
   terminate = () => {
-    this.end = new Date();
+    this.#end = new Date();
     monitor.infoMsg('Episode', `End. Periode Begin: ${this.#begin.toISOString().substr(11, 8)} - End: ${this.#end.toISOString().substr(11, 8)}`);
     /// Terminates all current Text-Status parameters via shutdown
   }
@@ -158,7 +158,9 @@ class Episode {
     this.#currentVentilationPeriod = standby;
   }
   
-  
+  /// //////////////////////////////////////////////////////////////////
+  /// StandBy period
+  /// //////////////////////////////////////////////////////////////////
   beginStandbyPeriod = (standby) => {
     win.def.log({ level: 'debug', file: 'model/data/episode', func: 'beginStandbyPeriod', message: `[Episode] Begin standby period: id: ${standby.msgId}, time: ${standby.time.toLocaleTimeString()},  ${standby.value}`});
     this.#currentStandbyPeriod = {
@@ -187,7 +189,6 @@ class Episode {
     }
   }
   
-  
   /**
    * @param{standby} - ({ msgid, time, value });
    **/
@@ -200,7 +201,22 @@ class Episode {
   }
   
   
+  /// //////////////////////////////////////////////////////////////////
+  /// Ventilation Mode
+  /// //////////////////////////////////////////////////////////////////
+  
+  
+  endVentModePeriod = (ventmode) => {
+    if(this.#currentVentModePeriod !== null){
+      this.#currentVentModePeriod.end = ventmode;
+      this.#ventModePeriods.push(this.#currentVentModePeriod);
+      win.def.log({ level: 'info', file: 'model/data/episode', func: 'endVentModePeriod', message: `[Episode] Vent-Mode-Period: Begin: ${this.#currentVentModePeriod.begin.time}, End: ${this.#currentVentModePeriod.end.time}`});      
+      this.#currentVentModePeriod = null;
+    }
+  }
+  
   /**
+   * @usedBy{this.setText}
    * @param{ventmode} - ({ msgId, time, code, text })
    **/
   beginVentModePeriod = (ventmode) => {
@@ -213,6 +229,12 @@ class Episode {
       end  : null
     }
   }
+  
+  
+  /**
+   * @usedBy{this.setText}
+   * @param{ventmode} - ({ msgId, time, code, text })
+   **/
   
   setVentmode = (ventmode) => {
     if(this.#lastVentMode === null) {
