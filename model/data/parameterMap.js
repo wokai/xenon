@@ -139,7 +139,7 @@ class ParameterElement {
 
 
 /// ////////////////////////////////////////////////////////////////////
-///
+/// Wrapper around a map of generic parameters
 /// ////////////////////////////////////////////////////////////////////
 
 class ParameterMap {
@@ -153,7 +153,7 @@ class ParameterMap {
   }
 
   /**
-   * @usedBy{}
+   * @usedBy{/routes/data} - (/text/current)
    **/  
   get current () {
     return Array.from(this.#map.values()).map(r => r.dataObject);

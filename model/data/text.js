@@ -76,7 +76,6 @@ class TextParamMap extends ParameterMap {
   /**
    * @param{resp} - (TextMessageResponse)
    **/
-  
   processTextMsg = (resp) => {
     resp.dataObject.forEach((element, index, array) => {
       let elem = new TextElement(parseInt(element.code, 16), element, element.id, element.time);
@@ -117,7 +116,6 @@ class TextData {
     this.#resp = null;
     this.#map = new Map();
     this.#txtParam = new TextParamMap();
-    
     this.setEmptyParamObject();
   }
   
@@ -132,12 +130,12 @@ class TextData {
   
   /// ////////////////////////////////////////////////////////////////////// ///
   /// (A) Parameter Map
-  /// Preparation for reading text message data into a status object:
+  /// Preparation for reading text message data into status object:
   /// Copy data into a Map which uses 
-  /// parameter definition @see{bus.medibus.text.parameters} - (/config/medibus)
-  /// as Key
+  /// parameter definition as key
+  /// @see{bus.medibus.text.parameters} - (/config/medibus)
   /// ////////////////////////////////////////////////////////////////////// ///
-  createParameterMap = () => {
+  createparamMap = () => {
     if(this.#resp !== null){
       this.#map = new Map();
       
@@ -146,8 +144,8 @@ class TextData {
         let def = bus.text.messages.get(t.code);
         
         if(def === undefined){
-          win.def.log({ level: 'warn', file: 'text', func: 'createParameterMap', message: `Received unknown code ${t.code}` });
-          console.log(`[model/data/text] createParameterMap: Received unknown code ${t.code}`);
+          win.def.log({ level: 'warn', file: 'text', func: 'createparamMap', message: `Received unknown code ${t.code}` });
+          console.log(`[model/data/text] createparamMap: Received unknown code ${t.code}`);
           console.log(t);
         } else {
           /// //////////////////////////////////////////////////////////////// ///
@@ -169,7 +167,7 @@ class TextData {
   /**
    * @usedBy{Episode.terminate} - (/model/data/episode)
    **/
-  expire = () => { this.parameterMap.expireAll(); }
+  expire = () => { this.paramMap.expireAll(); }
   
   /// ////////////////////////////////////////////////////////////////////// ///
   /// (B) Parameter-Object
@@ -226,15 +224,14 @@ class TextData {
     }
   }
   
-  
   updateParamObject = () => {
     this.setEmptyParamObject();
-    /// AND will be evaluated from left to right and returns immediately 
-    /// upon the first falsy operand
+    /// AND operator will be evaluated from left to right 
+    /// and returns immediately upon the first falsy operand
     if(this.#resp !== null && this.#resp.length > 0 ) {
       this.#param.msgId = this.#resp.id;
       this.#param.time  = this.#resp.time;
-      this.createParameterMap();
+      this.createparamMap();
       this.copyParamMapToObject();
       episode.setText(this);
     } else {
@@ -243,17 +240,16 @@ class TextData {
   }
   
   
-  /// ////////////////////////////////////////////////////////////// ///
-  /// Externally triggered worker method
-  /// ////////////////////////////////////////////////////////////// ///
-  /**
+  /*********************************************************************
    * @usedBy{text} - (/bus/action)
    * @param {msg}   - (Message)
    * @rem   {
+   *     Externally triggered worker method
    *     Empty message should result in TexMessageResponse.length = 0.
-   *     In this case, updateParamObject will only set #param to emptyParamObject
+   *     In this case, updateParamObject will only set #param to 
+   *     emptyParamObject
    *    }
-   **/
+   *********************************************************************/
   extractTextMessages = (msg) => {
     if(msg.hasPayload){
       this.#resp = new TextMessageResponse(msg);
@@ -268,7 +264,7 @@ class TextData {
   get id           () { return this.#param.msgId;    }  /// Number
   get time         () { return this.#param.time;     }  /// Date
   get paramObject  () { return this.#param;          }
-  get parameterMap () { return this.#txtParam;       }  
+  get paramMap     () { return this.#txtParam;       }
   
   
   get standby () { return {
