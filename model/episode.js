@@ -147,14 +147,14 @@ class Episode {
   /// //////////////////////////////////////////////////////////////////
   
   /**
-   * @usedBy{PortController.open}
+   * @usedBy{PortController.open} ??
    **/
   get uuid  () { return this.#uuid; }
   get ventilationPeriods () { return this.#ventModePeriods; }
   
-  beginVentPeriod = (standby) => {
-    win.status.log({ level: 'info', code: value.code, text: value.text, begin: value.begin, end: value.back });
-    win.def.log({ level: 'debug', file: 'model/data/episode', func: 'beginVentPeriod', message: `[Episode] Begin vent period: id: ${standby.msgId}, time: ${standby.time.toLocaleTimeString()},  ${standby.value}`});
+  beginVentPeriod = (vent) => {
+    //win.status.log({ level: 'info', code: value.code, text: value.text, begin: value.begin, end: value.back });
+    win.def.log({ level: 'debug', file: 'model/data/episode', func: 'beginVentPeriod', message: `[Episode] Begin vent period: id: ${vent.msgId}, time: ${vent.time.toLocaleTimeString()},  ${vent.value}`});
     this.#currentVentilationPeriod = standby;
   }
   
@@ -210,6 +210,8 @@ class Episode {
     if(this.#currentVentModePeriod !== null){
       this.#currentVentModePeriod.end = ventmode;
       this.#ventModePeriods.push(this.#currentVentModePeriod);
+      // ToDo: Date format ??
+      monitor.infoMsg('Episode', `Vent-Mode ${this.#currentVentModePeriod.begin.text}:  ${this.#currentVentModePeriod.begin.time.toISOString().substr(11, 8)} - ${this.#currentVentModePeriod.end.time.toISOString().substr(11, 8)} `);
       win.def.log({ level: 'info', file: 'model/data/episode', func: 'endVentModePeriod', message: `[Episode] Vent-Mode-Period: Begin: ${this.#currentVentModePeriod.begin.time}, End: ${this.#currentVentModePeriod.end.time}`});      
       this.#currentVentModePeriod = null;
     }
@@ -221,13 +223,13 @@ class Episode {
    **/
   beginVentModePeriod = (ventmode) => {
     if(this.#currentVentModePeriod !== null){
-      this.#currentVentModePeriod.end = ventmode;
-      this.#ventModePeriods.push(this.#currentVentModePeriod);
+      this.endVentModePeriod(ventmode);
     }
     this.#currentVentModePeriod = {
       begin: ventmode,
       end  : null
     }
+    monitor.infoMsg('Episode', `Begin Vent-Mode Mode: ${this.#currentVentModePeriod.begin.text} | Time: ${this.#currentVentModePeriod.begin.time.toISOString().substr(11, 8)} `);
   }
   
   
@@ -235,17 +237,16 @@ class Episode {
    * @usedBy{this.setText}
    * @param{ventmode} - ({ msgId, time, code, text })
    **/
-  
   setVentmode = (ventmode) => {
     if(this.#lastVentMode === null) {
-      this.#lastVentMode = ventmode;
       this.beginVentModePeriod(ventmode);
     } else {
       if(ventmode.code != this.#lastVentMode.code){
+        this.endVentModePeriod(ventmode);
         this.beginVentModePeriod(ventmode);
       }
-      this.#lastVentMode = ventmode;
     }
+    this.#lastVentMode = ventmode;
   }
   
   /**
@@ -256,7 +257,6 @@ class Episode {
     this.setStandby(text.standby);
     this.setVentmode(text.ventmode);    
   }
-
 }
 
 

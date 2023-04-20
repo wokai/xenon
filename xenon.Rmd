@@ -11,6 +11,19 @@ output:
         toc: true
         toc_depth: 3
 ---
+
+--------------------------------------------------------------------------------
+
+<!--- --------------------------------------------------------------------- --->
+# Raspberry Pi
+<!--- --------------------------------------------------------------------- --->
+
+## Network
+
+ - Find Raspberry in network: `arp -a`
+ - Pi as [WLAN access point](https://www.elektronik-kompendium.de/sites/raspberry-pi/2002171.htm)
+ - [WLAN Frequencies](https://www.elektronik-kompendium.de/sites/net/1712061.htm)
+
 --------------------------------------------------------------------------------
 
 <!--- --------------------------------------------------------------------- --->
@@ -23,7 +36,7 @@ output:
  - [Medibus Procol Definition](https://hit.healthsystem.virginia.edu/index.cfm/_api/render/file/?fileID=DC02EE3A-17A4-77A0-3E1CF4BE2E1B9EA8&fileEXT=.pdf)
  - [Medibus for Primus](https://www.draeger.com/Products/Content/IfU_SP_Primus_MEDIBUS_for_Primus__Primus_IE__Apollo_and_Pallas_9037426.pdf)
 
- - Find Raspberry in network: `arp -a`
+
  - Primus password: 8056
  - Evita password: 1210
 

@@ -100,9 +100,9 @@ class TextData {
     inhal: '',
     secInhal: '',
     carrier: '',
-    ventmode: '',
-    sync:   { text: 'No' },
-    psvadd: { text: 'No' },
+    ventmode: { code: 0, text: '(empty)' },
+    sync:     { text: 'No' },
+    psvadd:   { text: 'No' },
     autoflow: 'False',
     airway: '(empty)'
    };

@@ -131,7 +131,6 @@ class EpisodeLog extends FsLog {
   writeTimes = (begin, end) => {
     this.writeHead({id: 0, code: '0', text: 'Episode' }).writeTime(begin).writeTime(end).tail();
   }
-  
 }
 
 /// //////////////////////////////////////////////////////////////////////// ///
