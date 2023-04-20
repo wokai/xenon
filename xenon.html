@@ -1043,6 +1043,118 @@ call to <code>doNextAction</code> triggers</p>
 <!--- --------------------------------------------------------------------- --->
 <div id="settings" class="section level2">
 <h2>Settings</h2>
+<p>Device settings are queried using the <em>Request Current Device
+Settings</em> command (29H) <span class="citation">(1. Dräger
+2007)</span> (p.17). The response consists of segments with a size of 7
+bytes:</p>
+<ul>
+<li>Two bytes <em>setting code</em></li>
+<li>Five bytes <em>setting</em></li>
+</ul>
+<p>The codes for settings ar described in <span class="citation">(2.
+Dräger 2010)</span> (p.13):</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Code</th>
+<th align="left">Device Setting</th>
+<th align="left">Unit</th>
+<th align="left">Format</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">01H</td>
+<td align="left">O2</td>
+<td align="left">%</td>
+<td align="left"><em>XXX</em></td>
+</tr>
+<tr class="even">
+<td align="left">04H</td>
+<td align="left">Insp. Tidalvolume</td>
+<td align="left">L</td>
+<td align="left">X.XXX</td>
+</tr>
+<tr class="odd">
+<td align="left">05H</td>
+<td align="left">Inspiratory time</td>
+<td align="left">sec</td>
+<td align="left">_XX.X</td>
+</tr>
+<tr class="even">
+<td align="left">0AH</td>
+<td align="left">Frequency</td>
+<td align="left">1/min</td>
+<td align="left">XXX.X</td>
+</tr>
+<tr class="odd">
+<td align="left">0CH</td>
+<td align="left">Intermittend PEEP</td>
+<td align="left">mbar _</td>
+<td align="left">XX.X</td>
+</tr>
+<tr class="even">
+<td align="left">12H</td>
+<td align="left">Pressure Support Pressure ΔPPS</td>
+<td align="left">mbar _</td>
+<td align="left">__XX</td>
+</tr>
+<tr class="odd">
+<td align="left">13H</td>
+<td align="left">Max. insp. Airway Pressurem</td>
+<td align="left">bar X</td>
+<td align="left">XX.X</td>
+</tr>
+<tr class="even">
+<td align="left">27H</td>
+<td align="left">Insp. Pause/insp. Time</td>
+<td align="left">% _</td>
+<td align="left">_XXX</td>
+</tr>
+<tr class="odd">
+<td align="left">29H</td>
+<td align="left">Flow Trigger</td>
+<td align="left">L/min _</td>
+<td align="left">XX.X</td>
+</tr>
+<tr class="even">
+<td align="left">2EH</td>
+<td align="left">Slope time (Ramp)</td>
+<td align="left">sec _</td>
+<td align="left">XX.X</td>
+</tr>
+<tr class="odd">
+<td align="left">2FH</td>
+<td align="left">Freshgas Flow</td>
+<td align="left">mL/min X</td>
+<td align="left">XXXX</td>
+</tr>
+<tr class="even">
+<td align="left">42H</td>
+<td align="left">Minimal Frequency</td>
+<td align="left">1/min X</td>
+<td align="left">XX.X</td>
+</tr>
+<tr class="odd">
+<td align="left">45H</td>
+<td align="left">Inspiratory pressure</td>
+<td align="left">mbar _</td>
+<td align="left">__XX</td>
+</tr>
+<tr class="even">
+<td align="left">4AH</td>
+<td align="left">Age</td>
+<td align="left">a _</td>
+<td align="left">_XXX</td>
+</tr>
+<tr class="odd">
+<td align="left">4BH</td>
+<td align="left">Weight</td>
+<td align="left">kg _</td>
+<td align="left">_XXX</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="text-message-response" class="section level2">
 <h2>Text Message response</h2>
@@ -1231,7 +1343,7 @@ Mode</td>
 <tr class="header">
 <th align="left">Code</th>
 <th align="left">Text Message<span class="citation">(3. Dräger
-2019)</span> (p.109-)</th>
+2019)</span> (p.109-127)</th>
 </tr>
 </thead>
 <tbody>
@@ -1276,11 +1388,20 @@ Mode</td>
 <td align="left">Mode PC-HFO</td>
 </tr>
 <tr class="odd">
-<td align="left">1EH</td>
-<td align="left">Ventilator is in standby mode</td>
+<td align="left">47H</td>
+<td align="left">Mode PC-AC</td>
+</tr>
+<tr class="even">
+<td align="left">6AH</td>
+<td align="left">Mode PC-CMV</td>
+</tr>
+<tr class="odd">
+<td align="left">6BH</td>
+<td align="left">Mode O2 therapy</td>
 </tr>
 </tbody>
 </table>
+<p>1EH Ventilator is in standby mode</p>
 <p>20H Device is in adult mode 21H Device is in neonatal mode</p>
 <p>11H Automatic apnea ventilation active 12H Device in PRODUCT TEST
 mode</p>

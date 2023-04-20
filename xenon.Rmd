@@ -422,6 +422,35 @@ When the *MessageController* schedule array is empty, the next call to
 
 ## Settings
 
+Device settings are queried using the *Request Current Device Settings* command
+(29H) [@MbProtDef] (p.17).
+The response consists of segments with a size of 7 bytes:
+
+ - Two bytes *setting code*
+ - Five bytes *setting*
+
+The codes for settings ar described in [@MbPrimus] (p.13):
+
+Code      Device Setting                 Unit      Format
+------    ---------------------------    ------    ----------
+01H       O2                             %         _XXX_
+04H       Insp. Tidalvolume              L         X.XXX
+05H       Inspiratory time               sec       _XX.X
+0AH       Frequency                      1/min     XXX.X
+0CH       Intermittend PEEP              mbar     _XX.X
+12H       Pressure Support Pressure ΔPPS mbar     ___XX
+13H       Max. insp. Airway Pressurem    bar      XXX.X
+27H       Insp. Pause/insp. Time         %        __XXX
+29H       Flow Trigger                   L/min    _XX.X
+2EH       Slope time (Ramp)              sec      _XX.X
+2FH       Freshgas Flow                  mL/min   XXXXX
+42H       Minimal Frequency              1/min    XXX.X
+45H       Inspiratory pressure           mbar     ___XX
+4AH       Age                            a        __XXX
+4BH       Weight                         kg       __XXX
+
+
+
 ## Text Message response
 See Medibus for Primus [@MbPrimus] (p.34) and additionally [@MbxProfDef] (p.109).
 A *Text Message Response* (TMR) [@MbProtDef] (p.18) contains all current text messages.
