@@ -284,7 +284,6 @@ The status logger takes an object containing four properties:
 
 There are four controllers located in the `/controller` directory.
 
-
 ## PortController
 
 The *PortController* derives from `Stream.readable` and contains
@@ -323,6 +322,21 @@ The ProtocolController on the Medibus Protocol level using the
 
 
 ## MessageController
+
+The MessageController contains an array of query commands which shall be sent
+to the Dräger device.
+A set of query commands is called a `cycle` and consists of
+
+ - Code page1
+ - Alarm high limits
+ - Alarm low limits
+ - Alarm code page 1
+ - Alarm code page 2
+ - Text messages
+ - Settings
+
+
+
 
 --------------------------------------------------------------------------------
 
