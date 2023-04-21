@@ -153,14 +153,12 @@ class ParameterMap {
   }
 
   /**
-   * @usedBy{/routes/data} - (/text/current)
+   * @usedBy{/routes/data} - (/text/current) via (/data/text)
    **/  
   get current () {
     return Array.from(this.#map.values()).map(r => r.dataObject);
   }
-  
   get expired () { return this.#expired; }
-  
   
   /// ////////////////////////////////////////////////////////////// ///
   /// Insert new ParameterElement
@@ -226,7 +224,7 @@ class ParameterMap {
       this.logExpiredDataObject(value.dataObject);
       map.delete(key);
     });
-    win.def.log({ level: 'info', file: 'parameterMap', func: 'expireAll', message: `Exspiring ${l} parameters` });
+    win.def.log({ level: 'info', file: 'parameterMap', func: 'expireAll', message: `Expiring ${l} parameters` });
   }
 }
 

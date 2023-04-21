@@ -264,8 +264,11 @@ class TextData {
   get id           () { return this.#param.msgId;    }  /// Number
   get time         () { return this.#param.time;     }  /// Date
   get paramObject  () { return this.#param;          }
-  get paramMap     () { return this.#txtParam;       }
   
+  /**
+   * @usedBy{/routes/data} - (/data/text/current | /data/text/expired)
+   **/
+  get paramMap     () { return this.#txtParam;       }
   
   get standby () { return {
     msgId: this.#param.msgId,
