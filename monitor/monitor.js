@@ -64,8 +64,8 @@ class Monitor extends EventEmitter {
   emitMsg  = (source, action, message, data) => {
     var d = new Date(); 
     this.emit(source, {
-      date    : d.toISOString().substr(0, 10),  
-      time    : dateformat(d, config.monitor.dateformat),
+      date    : dateformat(d, config.monitor.dateformat), 
+      time    : dateformat(d, config.monitor.timeformat),
       action  : action,
       message : message,
       data    : data

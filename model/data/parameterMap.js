@@ -65,7 +65,7 @@ class TimePoint {
 
 class ParameterElement {
   
-  #code   /// @number     | Medibus-code of Parameter
+  #code   /// @String     | Medibus-code of Parameter @seeAlso{/config/medibus.text.messages}
   #param  /// @object     | Object containing parameter data
   #begin  /// @TimePoint  | First Medibus message with parameter
   #last   /// @TimePoint  | Last  Medibus message with parameter
@@ -101,7 +101,7 @@ class ParameterElement {
   get back  ()  { return this.#back;  }
   
   /**
-   * @usedBy {}
+   * @usedBy {ParameterMap.current | .expireElements | .expireAll}
    **/
   
   get dataObject () {

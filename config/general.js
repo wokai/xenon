@@ -35,7 +35,8 @@ const config = {
     dateformat: 'mm/dd/yy HH:mm:ss'
   },
   monitor: {
-    dateformat: 'HH:MM:ss'
+    timeformat: 'HH:MM:ss',
+    dateformat: 'dd.mm.yy'
   },
   content : {
     params : {

@@ -43,11 +43,34 @@ const { TimePoint, ParameterElement, ParameterMap } = require(path.join(__dirnam
 /// }
 /// ////////////////////////////////////////////////////////////////////////////
 class TextElement extends ParameterElement { 
+
+  #param   = null;  /// String, e.g. ventmode
+  #value   = '';    /// Label defined in config/medibus
+  #def     = '';    /// Definition text defined in config (-> text)
+
   constructor(code, object, id, time = config.empty.time){
     super(code, object, id, time);
+    
+    let def = bus.text.messages.get(code);
+    if(def !== undefined){
+      this.#param   = def.param;
+      this.#value   = def.value;
+      this.#def     = def.text;
+    } else {
+      win.def.log({ level: 'warn', file: 'text', func: 'TextElement (constructor)', message: `Received unknown code ${code}` });
+      console.log(`[model/data/text] createparamMap: Received unknown code ${code}`);
+    }
   }
   
   getText = () => { return this.param.text; }
+  
+  get dataObject () {
+    let obj = super.dataObject;
+    obj.param.param = this.#param;
+    obj.param.value = this.#value;
+    obj.param.def   = this.#def;
+    return obj;
+  }
 }
 
 class TextParamMap extends ParameterMap {
@@ -78,7 +101,7 @@ class TextParamMap extends ParameterMap {
    **/
   processTextMsg = (resp) => {
     resp.dataObject.forEach((element, index, array) => {
-      let elem = new TextElement(parseInt(element.code, 16), element, element.id, element.time);
+      let elem = new TextElement(element.code, element, element.id, element.time);
       this.upsertElement(elem);
     });
     this.expireElements(new TimePoint(resp.id, resp.time));
