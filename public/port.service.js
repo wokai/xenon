@@ -377,15 +377,6 @@ app.component('serialPortConfig', {
 });
 
 
-app.component('statusMessageTable', {
-  templateUrl: 'statusMessageTable.html',
-  bindings: {
-    messages: '='
-  },
-  controller: function($scope) {}
-});
-
-
 app.component('portStatusRow', {
   templateUrl: 'portStatusRow.html',
   controller: function($scope, $rootScope, PortService){

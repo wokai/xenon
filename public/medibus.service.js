@@ -345,6 +345,18 @@ app.component('evitaParam', {
   }
 });
 
+/// ------------------------------------------------------------------------ ///
+/// B.3 Status message table
+/// ------------------------------------------------------------------------ ///
+
+app.component('statusMessageTable', {
+  templateUrl: 'statusMessageTable.html',
+  bindings: {
+    messages: '='
+  },
+  controller: function($scope) {}
+});
+
 
 })(window.angular); /// function(angular)
 

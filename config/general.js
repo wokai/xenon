@@ -34,6 +34,9 @@ const config = {
     level: 'info',     /// { error: 0, warn: 1, info: 2, http: 3, verbose: 4, debug: 5, silly: 6 }
     dateformat: 'mm/dd/yy HH:mm:ss'
   },
+  monitor: {
+    dateformat: 'HH:MM:ss'
+  },
   content : {
     params : {
       filename: path.join(__dirname, '..', 'medibusParams.json')

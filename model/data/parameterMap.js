@@ -20,7 +20,7 @@
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
  
-const path = require('path'); 
+const path    = require('path'); 
 
 const win     = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus     = require(path.join(__dirname, '..', '..', 'config', 'medibus'));

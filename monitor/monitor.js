@@ -20,7 +20,11 @@
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 
-const EventEmitter = require('events');
+const EventEmitter   = require('events');
+const path           = require('path'); 
+const { dateformat } = require(path.join(__dirname, '..', 'logger', 'dateformat'));
+const config         = require(path.join(__dirname, '..', 'config', 'general'));
+
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Monitor is an interface for dynamic data:
@@ -61,7 +65,7 @@ class Monitor extends EventEmitter {
     var d = new Date(); 
     this.emit(source, {
       date    : d.toISOString().substr(0, 10),  
-      time    : d.toISOString().substr(11, 8),
+      time    : dateformat(d, config.monitor.dateformat),
       action  : action,
       message : message,
       data    : data
