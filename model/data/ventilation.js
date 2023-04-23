@@ -178,7 +178,6 @@ class Ventilation {
     
     this.#val.msgId = msg.id;
     this.#val.time  = msg.dateTime;
-    
                                                                     /// Snomed CT identifier
     this.#val.patient.compliance          = res.getSegment('06');   ///   3863008
     

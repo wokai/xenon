@@ -272,7 +272,9 @@ const bus = {
         ventmode: 'ventmode',
         autoflow: 'autoflow',
         psvadd:   'psvadd',
-        sync:     'sync'
+        sync:     'sync',
+        airway:   'airway',
+        tubetype: 'tubetype'
       }
     },
     

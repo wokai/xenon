@@ -64,6 +64,7 @@ class TextElement extends ParameterElement {
   
   getText = () => { return this.param.text; }
   
+  get param () { return this.#param; }
   get dataObject () {
     let obj = super.dataObject;
     obj.param.param = this.#param;
@@ -109,6 +110,8 @@ class TextParamMap extends ParameterMap {
 }
 
 
+
+
 class TextData {
 
   static emptyParamObject = {
@@ -127,7 +130,8 @@ class TextData {
     sync:     { text: 'No' },
     psvadd:   { text: 'No' },
     autoflow: 'False',
-    airway: '(empty)'
+    airway: '(-)',
+    tubetype: '(-)'
    };
 
   #resp     /// @type{TextMessageResponse}
@@ -237,6 +241,8 @@ class TextData {
         this.#param.sync      = this.getParam(vent.sync,        empty.sync);
         this.#param.psvadd    = this.getParam(vent.psvadd,      empty.psvadd);
         this.#param.autoflow  = this.getParam(vent.autoflow,    empty.autoflow);
+        this.#param.airway    = this.getParam(vent.airway,      empty.airway);
+        this.#param.tubetype  = this.getParam(vent.tubetype,    empty.tubetype);
         
         /// ////////////////////////////////////////////////////////// ///
       }

@@ -456,7 +456,7 @@ The response consists of segments with a size of 7 bytes:
  - Two bytes *setting code*
  - Five bytes *setting*
 
-The codes for settings ar described in [@MbPrimus] (p.13):
+The codes for settings are described in [@MbPrimus] (p.13):
 
 Code      Device Setting                 Unit      Format
 ------    ---------------------------    ------    ----------
@@ -478,7 +478,7 @@ Code      Device Setting                 Unit      Format
 
 
 
-## Text Message response
+## Text Message Response
 See Medibus for Primus [@MbPrimus] (p.34) and additionally [@MbxProfDef] (p.109).
 A *Text Message Response* (TMR) [@MbProtDef] (p.18) contains all current text messages.
 The response is divided into variable amounts of text-segments.
@@ -503,6 +503,8 @@ Each data-object is made up of the following fields:
  
 After reading the text segments out of the message, the values are copied
 into a default parameter object.
+
+Data from *Text Message Response* can be accessed via `{hostname}/data/text/param`.
 
 ### Text Messages
 
@@ -559,12 +561,9 @@ Code  Text Message[@MbxProfDef] (p.109-127)
 47H   Mode PC-AC
 6AH   Mode PC-CMV
 6BH   Mode O2 therapy
-
 1EH   Ventilator is in standby mode
-
 20H   Device is in adult mode
 21H   Device is in neonatal mode
-
 11H   Automatic apnea ventilation active
 12H   Device in PRODUCT TEST mode
 
@@ -580,7 +579,6 @@ together with their modes.
 
 ##### Derived device parameters
 
-
 Code                Parameter           Description             Modes
 ----------------    -----------------   --------------------    ----------------
 2CH                 `language`          Language                D: deutsch, GB: english, ...
@@ -588,32 +586,10 @@ Code                Parameter           Description             Modes
 56H, 57H            `agentunit`         Agent-Unit              kPa, %
 58H, 1EH, 53H       `devicemode`        Device-mode             HLM, Standby, Leaktest
 37H, 38H            `carrier`           Carrier-gas             Air, N<sub>2</sub>O
-
-
-
-### Ventilation parameters
-
-+---------------+---------------+---------------------------------------------------------+
-| Code          | Parameter     | Description                                             |
-+:==============+:==============+:========================================================+
-|               | `inhal`       | Anaesthesia gas                                         |
-+---------------+---------------+---------------------------------------------------------+
-|               | `secInhal`    | 2nd Anaesthesia gas                                     |
-+---------------+---------------+---------------------------------------------------------+
-|               | `carrier`     | Carrier gas                                             |
-+---------------+---------------+---------------------------------------------------------+
-|               | `ventmode`    | Ventilation mode                                        |
-+---------------+---------------+---------------------------------------------------------+
-|               | `sync`        | Synchronized vent                                       |
-+---------------+---------------+---------------------------------------------------------+
-|               | `psvadd`      | Pressure support added to intermittent Ventilation Mode |
-+---------------+---------------+---------------------------------------------------------+
-|               | `autoflow`    | Autoflow added to Volume mode                           |
-+---------------+---------------+---------------------------------------------------------+
-|               | `airway`      | Airway device configured                                |
-+---------------+---------------+---------------------------------------------------------+
-
-
+5CH                 `psvadd`            PS added                No, Yes
+4EH                 `autoflow`          Autoflow added          False, True
+48H, 49H            `airway`            Airway                  IV, NIV
+68H, 70H            `tubetype`          Tubustype               Entotracheal, Tracheostoma
 
 ### ParameterMap
 
