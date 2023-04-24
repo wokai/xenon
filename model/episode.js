@@ -135,12 +135,14 @@ class Episode {
   /**
    * @param {time} - { Date }
    * @usedBy{portControler.endEpisode}
-   **/
+
   endPortEpisode = (time) => { 
     this.#portEpisode.end = time;
     win.status.log({ level: 'info', code: 'Port Episode', text: this.#portEpisode.uuid, begin: { id: 0, time: this.#portEpisode.begin }, end: { id: 0,  time: this.#portEpisode.end } });
     epilog.writeTimes(this.#portEpisode.begin, this.#portEpisode.end);
   }
+   **/  
+  
   
   /// //////////////////////////////////////////////////////////////////
   /// Ventilation-Episode

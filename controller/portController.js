@@ -31,7 +31,7 @@ const general = require(path.join(__dirname, '..', 'config', 'general'));
 const win     = require(path.join(__dirname, '..', 'logger', 'logger'));
 const status  = require(path.join(__dirname, '..', 'controller', 'statusController'));
 const monitor = require(path.join(__dirname, '..', 'monitor', 'monitor'));
-const { episode } = require(path.join(__dirname, '..', 'model', 'episode'));
+//const { episode } = require(path.join(__dirname, '..', 'model', 'episode'));
 
 /// ////////////////////////////////////////////////////////////////////////////
 /// Wrapper class around SerialPort object
@@ -85,13 +85,13 @@ class PortController extends Stream.Readable {
     this.#episode.begin = new Date().toISOString();
     this.#episode.uuid  = crypto.randomBytes(16).toString("hex");
     this.#episode.end   = null;
-    episode.setPortEpisode(this.#episode);
+    //episode.setPortEpisode(this.#episode);
   }
   
   endEpisode = () => {
     var d = new Date();
     this.#episode.end = d.toISOString();
-    episode.endPortEpisode(d);
+    //episode.endPortEpisode(d);
   }
   
   get episode () { return this.#episode; }  
