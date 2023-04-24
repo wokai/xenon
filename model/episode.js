@@ -79,8 +79,8 @@ class Episode {
   
   constructor() {
     this.#nEpisodes = 0;
-    this.#begin = general.empty.time,
-    this.#uuid  = general.empty.uuid,
+    this.#begin = general.empty.time;
+    this.#uuid  = crypto.randomUUID();
     this.#end   = null;
     
     /// ----------------------------------------------------------------

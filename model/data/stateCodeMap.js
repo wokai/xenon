@@ -34,20 +34,20 @@ const config  = require(path.join(__dirname, '..', '..', 'config', 'general'));
 /// ////////////////////////////////////////////////////////////////////
 
 class TimePoint {
-  #id     /// @ number | Medibus-Message-Id
+  #msgId     /// @ number | Medibus-Message-Id
   #time   /// @ Date
    
   /// There is no type checking, because it would mess up the code
   /// This class mainly exists in order to have clean accessors...
-  constructor(id = 0, time = config.empty.time) {
-    this.#id = id;
+  constructor(msgId = 0, time = config.empty.time) {
+    this.#msgId = msgId;
     this.#time = time;
   }
   
-  set id(i)   { this.#id   = i;    }
+  set msgId(i)   { this.#msgId   = i;    }
   set time(t) { this.#time = t;    }
   
-  get id()    { return this.#id;   }
+  get msgId()    { return this.#msgId;   }
   get time()  { return this.#time; }
 }
 
@@ -67,7 +67,7 @@ class StateElement {
   
   static #lastId = 0;     /// Counter for creation of (session) unique state id's
   
-  #id     /// @type{Number}    - (Message id; application unique)
+  #id     /// @type{Number}    - (State-Id; application unique)
   #code   /// @type{String}    - (Medibus-code of Parameter) -  @seeAlso{/config/medibus.text.messages)
   #param  /// @type{object}    - (Object containing parameter data)
   #begin  /// @type{TimePoint} - (First Medibus message with parameter)
@@ -88,14 +88,14 @@ class StateElement {
    * @id{number}      - {Medibus message id}
    **/
   
-  constructor(code, object, id, time = config.empty.time) {
+  constructor(code, object, msgId, time = config.empty.time) {
     
     this.#id = ++StateElement.#lastId;
     
     this.#code  = code;
     this.#param = object;
-    this.#begin = new TimePoint(id, time);
-    this.#last  = new TimePoint(id, time);
+    this.#begin = new TimePoint(msgId, time);
+    this.#last  = new TimePoint(msgId, time);
     this.#back   = new TimePoint();
   }
     
@@ -116,15 +116,15 @@ class StateElement {
       code:  this.#code,
       param: this.#param,
       begin: {
-        id:   this.#begin.id,
+        msgId:   this.#begin.msgId,
         time: this.#begin.time
       },
       last: {
-        id:   this.#last.id,
+        msgId:   this.#last.msgId,
         time: this.#last.time
       },
       back: {
-        id:   this.#back.id,
+        msgId:   this.#back.msgId,
         time: this.#back.time
       }
     };
@@ -138,10 +138,10 @@ class StateElement {
   
   /**
    * @descr {Terminates duration period of observed parameter}
-   * @param {id}   - {number}
+   * @param {msgId}   - {number}
    * @param {time} - {Date}
    **/
-  stop =    (id, time) => { this.back = new TimePoint(id, time); }
+  stop =    (msgId, time) => { this.back = new TimePoint(msgId, time); }
 } 
 
 
@@ -208,7 +208,7 @@ class StateCodeMap {
    **/
   expireElements = (tp) => {
     this.#map.forEach((value, key, map) => {
-      if(value.last.id != tp.id){
+      if(value.last.msgId != tp.msgId){
         value.back = tp;
         win.status.log({ level: 'info', code: value.code, text: value.text, begin: value.begin, end: value.back });
         this.#expired.push(value.dataObject);

@@ -48,8 +48,8 @@ class TextElement extends StateElement {
   #value   = '';    /// Label defined in config/medibus
   #def     = '';    /// Definition text defined in config (-> text)
 
-  constructor(code, object, id, time = config.empty.time){
-    super(code, object, id, time);
+  constructor(code, object, msgId, time = config.empty.time){
+    super(code, object, msgId, time);
     
     let def = bus.text.messages.get(code);
     if(def !== undefined){
@@ -102,7 +102,7 @@ class TextParamMap extends StateCodeMap {
    **/
   processTextMsg = (resp) => {
     resp.dataObject.forEach((element, index, array) => {
-      let elem = new TextElement(element.code, element, element.id, element.time);
+      let elem = new TextElement(element.code, element, element.msgId, element.time);
       this.upsertElement(elem);
     });
     this.expireElements(new TimePoint(resp.id, resp.time));

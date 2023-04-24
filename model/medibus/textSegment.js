@@ -156,7 +156,7 @@ class TextSegment {
    **/
   get dataObject () {
     return {
-      id: this.messageId,
+      msgId: this.messageId,
       time: this.time,
       code: this.code,
       text: this.text

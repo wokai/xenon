@@ -23,9 +23,7 @@
 const colors     = require('colors/safe');
 const winston    = require('winston');
 
-//const dateformat = require("dateformat");
 const { dateformat } = require('./dateformat');
-
 const { format } = winston;
 const { combine, label, json } = format;
 
@@ -57,8 +55,6 @@ const config = require(path.join(__dirname, '..', 'config', 'general'));
 /// debug:   5 
 /// silly:   6 
 /// //////////////////////////////////////////////////////////////////////// ///
-
-
 
 
 /// //////////////////////////////////////////////////////////////////////// ///
