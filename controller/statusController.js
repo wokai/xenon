@@ -114,6 +114,7 @@ class StatusController extends EventEmitter {
         
       case status.stopping.val:
         /// Called upon /port/stop
+        /// @notified{/model/data/text} - (TextData.exspire)
         this.#status = status.stopping;
         break;
         

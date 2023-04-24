@@ -29,6 +29,8 @@ const { epilog }     = require(path.join(__dirname, '..', 'logger', 'fslog'));
 const monitor        = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 const general        = require(path.join(__dirname, '..', 'config', 'general'));
 
+const status         = require(path.join(__dirname, '..', 'controller', 'statusController'));
+
 
 /**
  * @importedBy{/routes/episode}
@@ -46,6 +48,7 @@ class Runtime {
   #begin        /// Date
   #end          /// Date
   #uuid         /// uuid
+  #episode      /// Episode
   
   constructor() {
     this.#nEpisodes = 0;
@@ -62,6 +65,9 @@ class Runtime {
   terminate = () => {
     this.#end = new Date();
     win.status.log({ level: 'info', code: 'Runtime', text: `UUID: ${this.#uuid} `, begin: { id: 0, time: this.#begin }, end: { id: 0, time: this.#end } });
+  }
+  
+  beginEpisode = () => {
   }
 }
 

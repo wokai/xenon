@@ -204,8 +204,6 @@ class Episode {
   /// //////////////////////////////////////////////////////////////////
   /// Ventilation Mode
   /// //////////////////////////////////////////////////////////////////
-  
-  
   endVentModePeriod = (ventmode) => {
     if(this.#currentVentModePeriod !== null){
       this.#currentVentModePeriod.end = ventmode;
@@ -267,6 +265,7 @@ const episode = new Episode();
  * @see  {}
  **/
 
-module.exports = { 
+module.exports = {
+  Episode: Episode,
   episode: episode
 };

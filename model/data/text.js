@@ -26,8 +26,12 @@ const config              = require(path.join(__dirname, '..', '..', 'config', '
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const { epilog }          = require(path.join(__dirname, '..', '..', 'logger', 'fslog'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
+
+const status              = require(path.join(__dirname, '..', '..', 'controller', 'statusController'));
+
 const { episode }         = require(path.join(__dirname, '..', 'episode'));
 const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textMessageResponse'));
+
 
 const { TimePoint, StateElement, StateCodeMap } = require(path.join(__dirname, 'stateCodeMap'));
 
@@ -144,6 +148,8 @@ class TextData {
     this.#map = new Map();
     this.#txtParam = new TextParamMap();
     this.setEmptyParamObject();
+    
+    status.controller.on('stopping', (data) => { this.expire(); });
   }
   
   /// ////////////////////////////////////////////////////////////////////// ///
@@ -153,6 +159,11 @@ class TextData {
    this.#param = {};
    Object.assign(this.#param, TextData.emptyParamObject);
   }
+  
+  /**
+   * @usedBy{this.constructor} - (StatusController: stopping)
+   **/
+  expire = () => { this.paramMap.expireAll(); }
   
   
   /// ////////////////////////////////////////////////////////////////////// ///
@@ -191,10 +202,6 @@ class TextData {
     }
   }
 
-  /**
-   * @usedBy{Episode.terminate} - (/model/data/episode)
-   **/
-  expire = () => { this.paramMap.expireAll(); }
   
   /// ////////////////////////////////////////////////////////////////////// ///
   /// (B) Parameter-Object
