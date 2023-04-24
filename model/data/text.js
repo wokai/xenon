@@ -29,7 +29,7 @@ const bus                 = require(path.join(__dirname, '..', '..', 'config', '
 const { episode }         = require(path.join(__dirname, '..', 'episode'));
 const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textMessageResponse'));
 
-const { TimePoint, ParameterElement, ParameterMap } = require(path.join(__dirname, 'parameterMap'));
+const { TimePoint, StateElement, StateCodeMap } = require(path.join(__dirname, 'stateCodeMap'));
 
 
 /// ////////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,7 @@ const { TimePoint, ParameterElement, ParameterMap } = require(path.join(__dirnam
 ///   text: String
 /// }
 /// ////////////////////////////////////////////////////////////////////////////
-class TextElement extends ParameterElement { 
+class TextElement extends StateElement { 
 
   #param   = null;  /// String, e.g. ventmode
   #value   = '';    /// Label defined in config/medibus
@@ -74,7 +74,7 @@ class TextElement extends ParameterElement {
   }
 }
 
-class TextParamMap extends ParameterMap {
+class TextParamMap extends StateCodeMap {
   
   constructor() { super(); }
   
@@ -93,7 +93,7 @@ class TextParamMap extends ParameterMap {
    * }
    **/
   
-  logExpiredDataObject = (dataObj) => {
+  logExpiredState = (dataObj) => {
     epilog.writeParamEpisode(dataObj.param, dataObj.begin, dataObj.back);
   }
   

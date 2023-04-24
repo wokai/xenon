@@ -52,7 +52,7 @@ class TimePoint {
 }
 
 /// ////////////////////////////////////////////////////////////////////
-/// ParameterElement
+/// StateElement
 /// Stores a Parameter-Type + 2 time points:
 ///
 /// The structure of the parameter object is not further constrained
@@ -63,13 +63,16 @@ class TimePoint {
 /// the ID and time of the first observation without the parameter
 /// ////////////////////////////////////////////////////////////////////
 
-class ParameterElement {
+class StateElement {
   
-  #code   /// @String     | Medibus-code of Parameter @seeAlso{/config/medibus.text.messages}
-  #param  /// @object     | Object containing parameter data
-  #begin  /// @TimePoint  | First Medibus message with parameter
-  #last   /// @TimePoint  | Last  Medibus message with parameter
-  #back   /// @TimePoint  | First Medibus message without parameter
+  static #lastId = 0;     /// Counter for creation of (session) unique state id's
+  
+  #id     /// @type{Number}    - (Message id; application unique)
+  #code   /// @type{String}    - (Medibus-code of Parameter) -  @seeAlso{/config/medibus.text.messages)
+  #param  /// @type{object}    - (Object containing parameter data)
+  #begin  /// @type{TimePoint} - (First Medibus message with parameter)
+  #last   /// @type{TimePoint} - (Last  Medibus message with parameter)
+  #back   /// @type{TimePoint} - (First Medibus message without parameter)
   
   
   /// //////////////////////////////////////////////////////////////////////////
@@ -86,6 +89,9 @@ class ParameterElement {
    **/
   
   constructor(code, object, id, time = config.empty.time) {
+    
+    this.#id = ++StateElement.#lastId;
+    
     this.#code  = code;
     this.#param = object;
     this.#begin = new TimePoint(id, time);
@@ -93,15 +99,16 @@ class ParameterElement {
     this.#back   = new TimePoint();
   }
     
-  get code  ()  { return this.#code;  }
-  get text  ()  { return this.getText(); }
-  get param ()  { return this.#param; }
-  get begin ()  { return this.#begin; }
-  get last  ()  { return this.#last;  }
-  get back  ()  { return this.#back;  }
+  get id    () { return this.#id;        }
+  get code  () { return this.#code;      }
+  get text  () { return this.getText();  }
+  get param () { return this.#param;     }
+  get begin () { return this.#begin;     }
+  get last  () { return this.#last;      }
+  get back  () { return this.#back;      }
   
   /**
-   * @usedBy {ParameterMap.current | .expireElements | .expireAll}
+   * @usedBy {StateCodeMap.current | .expireElements | .expireAll}
    **/
   
   get dataObject () {
@@ -139,13 +146,16 @@ class ParameterElement {
 
 
 /// ////////////////////////////////////////////////////////////////////
-/// Wrapper around a map of generic parameters
+/// Wrapper around a map of generic state indicators
+/// Map-keys for states are codes defined in Medibus standard e.g.
+///  - Medibus for Primnus           - (p.34)
+///  - Medibux.X Profile Definition  - (p.109 - 127)
 /// ////////////////////////////////////////////////////////////////////
 
-class ParameterMap {
+class StateCodeMap {
 
-  #map      /// @type{Map<string, ParameterElement>}  - {current settings = under observation}
-  #expired  /// @type{array<ParameterElement>}        - {expired ParameterElement objects}
+  #map      /// @type{Map<string, StateElement>}  - {current settings = under observation}
+  #expired  /// @type{array<StateElement>}        - {expired StateElement objects}
   
   constructor() {
     this.#map = new Map();
@@ -161,20 +171,20 @@ class ParameterMap {
   get expired () { return this.#expired; }
   
   /// ////////////////////////////////////////////////////////////// ///
-  /// Insert new ParameterElement
+  /// Insert new StateElement
   /// ////////////////////////////////////////////////////////////// ///
   
   /**
-   * @param{p}  - {ParameterElement}
+   * @param{p}  - {StateElement}
    **/
   upsertElement = (p) => {
     /// 1) Check for existing Object with appropriate code
     let elem = this.#map.get(p.code);
     if(elem !== undefined) {
-      /// 3) If exists: Update end of ParameterElement
+      /// 3) If exists: Update end of StateElement
       elem.last = p.begin;
     } else {
-      /// 2) If not: Insert ParameterElement
+      /// 2) If not: Insert StateElement
       this.#map.set(p.code, p);  
     }
   }
@@ -183,16 +193,14 @@ class ParameterMap {
   /// Checks all map entries and expires outdated elements based on 
   /// Medibus-Message-id:
   /// a) Back value is set
-  /// b) ParameterElement is shifted from Map to exspired
+  /// b) StateElement is shifted from Map to exspired
   /// ////////////////////////////////////////////////////////////// ///
   
-  /// Serves as an empty template which can be overloaded in derived
-  /// classes.
-  
   /**
-   * @param{dataObj} - (See ParameterElement.dataObject)
+   * @param{dataObj} - (See StateElement.dataObject)
+   * @useCase{Empty template to be overloaded in derived classes}
    **/
-  logExpiredDataObject = (dataObj) => {}
+  logExpiredState = (dataObj) => {}
   
   /**
    * @param{tp}                - (TimePoint)
@@ -204,7 +212,7 @@ class ParameterMap {
         value.back = tp;
         win.status.log({ level: 'info', code: value.code, text: value.text, begin: value.begin, end: value.back });
         this.#expired.push(value.dataObject);
-        this.logExpiredDataObject(value.dataObject);
+        this.logExpiredState(value.dataObject);
         map.delete(key);
       }
     });
@@ -221,10 +229,10 @@ class ParameterMap {
       value.back = tp;
       win.status.log({ level: 'info', code: value.code, text: value.text, begin: value.begin, end: value.back });
       this.#expired.push(value.dataObject);
-      this.logExpiredDataObject(value.dataObject);
+      this.logExpiredState(value.dataObject);
       map.delete(key);
     });
-    win.def.log({ level: 'info', file: 'parameterMap', func: 'expireAll', message: `Expiring ${l} parameters` });
+    win.def.log({ level: 'info', file: 'StateCodeMap', func: 'expireAll', message: `Expiring ${l} parameters` });
   }
 }
 
@@ -236,6 +244,6 @@ class ParameterMap {
 
 module.exports = {
   TimePoint,
-  ParameterElement,
-  ParameterMap
+  StateElement,
+  StateCodeMap
 };

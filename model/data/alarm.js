@@ -28,6 +28,7 @@ const bus                 = require(path.join(__dirname, '..', '..', 'config', '
 const monitor             = require(path.join(__dirname, '..', '..', 'monitor', 'monitor'));
 const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
 
+const { TimePoint }       = require(path.join(__dirname, 'stateCodeMap'));
 const DataResponse        = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
 const AlarmStatusResponse = require(path.join(__dirname, '..', 'medibus', 'alarmStatusResponse'));
 
@@ -201,6 +202,7 @@ class AlarmLimits {
 /// 12 bytes alarm phrase  : Character string.
 /// //////////////////////////////////////////////////////////////////////// ///
 
+/*
 class PeriodPoint {
   
   #id     /// @ number | Medibus-Message-Id
@@ -219,7 +221,7 @@ class PeriodPoint {
   get id()    { return this.#id;   }
   get time()  { return this.#time; }
 }
-
+*/
 
 class Alarm {
   
@@ -227,7 +229,7 @@ class Alarm {
   #priority  /// @ number | range 1-31
   #code      /// @ string | ascii-hex
   #phrase    /// @ string | 12 bytes
-  #begin     /// @ PeriodPoint | Message-ID and Time of observation
+  #begin     /// @ TimePoint | Message-ID and Time of observation
   #label     /// @ string - Content of bus.alarm.cpx -> label
   
   constructor() {
@@ -235,7 +237,7 @@ class Alarm {
     this.#code     = '';
     this.#phrase   = '';
     this.#label    = '';
-    this.#begin     = new PeriodPoint();
+    this.#begin     = new TimePoint();
   }
   
   set id(i)       { this.#id       = i; }
@@ -261,12 +263,12 @@ class Alarm {
 
 class AlarmPeriod extends Alarm {
   
-             /// @ time: PeriodPoint | first observation
-  #back      /// @ PeriodPoint       | last observation
+             /// @ time: TimePoint | first observation
+  #back      /// @ TimePoint       | last observation
   
   constructor() {
     super();
-    this.#back     = new PeriodPoint();
+    this.#back     = new TimePoint();
   }
   get back()      { return this.#back;      }
   
@@ -405,7 +407,7 @@ class CurrentAlarms {
     let a = this.#alarms.get(alarm.code);
     if(a !== undefined){
       /// Update time of last observation
-      a.back.id = alarm.id;
+      a.back.id = alarm.msgId;
       a.back.time = alarm.time;
     } else {
       /// Create AlarmPeriod object

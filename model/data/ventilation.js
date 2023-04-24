@@ -170,6 +170,9 @@ class Ventilation {
 
   }
   
+  /**
+   * @param{msg} - (/model/medibus/message)
+   **/
   setVentilation = (msg) => {
     try {
     
@@ -192,7 +195,6 @@ class Ventilation {
     this.#val.gas.fio2                    = res.getSegment('F0');   /// 250774007
     this.#val.gas.feo2                    = res.getSegment('EF');   /// 250775008
     this.#val.gas.o2uptake                = res.getSegment('64');   /// 251832002
-    
     this.#val.gas.feco2                   = res.getSegment('E6');   /// 250790007
     
     this.#val.inhalation.mac              = res.getSegment('AD');   /// 860940008
