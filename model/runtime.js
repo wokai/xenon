@@ -33,7 +33,7 @@ const status         = require(path.join(__dirname, '..', 'controller', 'statusC
 
 
 /**
- * @importedBy{/routes/episode}
+ * @importedBy{}
  **/
 
 /// ////////////////////////////////////////////////////////////////////
@@ -42,32 +42,85 @@ const status         = require(path.join(__dirname, '..', 'controller', 'statusC
 ///
 /// ////////////////////////////////////////////////////////////////////
 
-class Runtime {
+class UuidState {
   
-  #nEpisodes    /// Number
+  #uuid         /// uuid
   #begin        /// Date
   #end          /// Date
-  #uuid         /// uuid
-  #episode      /// Episode
+
+  #storage
   
+  get begin() { return this.#begin; }
+  get end()   { return this.#end;   }
+  get uuid()  { return this.#uuid;  }
+
   constructor() {
-    this.#nEpisodes = 0;
     this.#begin = new Date();
     this.#uuid  = crypto.randomUUID();
     this.#end   = null;
+  }
+  
+  /// //////////////////////////////////////////////////////////////////
+  /// Save expired object
+  /// Envelope function. To be overridden in derived classes
+  /// //////////////////////////////////////////////////////////////////
+  saveExpired = () {}
+  
+  /// //////////////////////////////////////////////////////////////////
+  /// Get plain JavaScript object.
+  /// Intended to be used for saving of expired objects
+  /// //////////////////////////////////////////////////////////////////
+  
+  /// Envelope function. To be overridden in derived classes
+  /// The overridden version shall append additional member variables
+  extendDataObject = (data) => { return data; }
+  
+  getDataObject = () => {
+    let d = {
+      uuid:  this.#uuid,
+      begin: this.#begin,
+      end:   this.#end
+    }
+    return this.extendDataObject(r);
+  }
+  
+  terminate = () => { 
+    this.#end = new Date();
+    this.saveExpired();
+  }
+}
+
+
+class Runtime extends UuidState {
+  
+  #connection   /// Connection
+  
+  constructor() {
+    super();
+    this.#connection  = null;
     
     /// ----------------------------------------------------------------
-    /// 
+    /// Connection
     /// ----------------------------------------------------------------
+    status.controller.on('protocol', (data) => { this.beginConnection(); });
+    status.controller.on('stopping', (data) => { this.endConnection(); });
+    
     win.status.log({ level: 'info', code: 'Runtime', text: `UUID: ${this.#uuid} `, begin: { id: 0, time: this.#begin } });
   }
   
   terminate = () => {
-    this.#end = new Date();
+    super.terminate();
     win.status.log({ level: 'info', code: 'Runtime', text: `UUID: ${this.#uuid} `, begin: { id: 0, time: this.#begin }, end: { id: 0, time: this.#end } });
   }
   
-  beginEpisode = () => {
+  beginConnection = () => {
+    if(this.#connection != null) {
+      this.
+    }
+    
+  }
+  
+  endConnection = () => {
   }
 }
 
