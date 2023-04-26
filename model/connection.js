@@ -39,6 +39,12 @@ const status         = require(path.join(__dirname, '..', 'controller', 'statusC
 /// Thalas definition:
 /// Connection: A period of successful network communication between an 
 ///             interface (Xenon) and a (Dräger) device
+/// 
+/// Begin and end of connection (creation and expiration of Connection
+/// object) is triggered by StatusController events:
+/// - protocol
+/// - stopping
+/// @see: {/model/runtime} - (Runtime.constructor)
 /// ////////////////////////////////////////////////////////////////////
 
 class Connection {
@@ -85,13 +91,8 @@ class Connection {
       runtime : this.#runtime.uuid
     };
   }
-  
- 
-  
 }
 
-
-const episode = new Episode();
 
 /**
  * @descr{}
@@ -99,6 +100,5 @@ const episode = new Episode();
  **/
 
 module.exports = {
-  Episode: Episode,
-  episode: episode
+  Connection: Connection
 };

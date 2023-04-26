@@ -28,6 +28,7 @@ const win            = require(path.join(__dirname, '..', 'logger', 'logger'));
 const { epilog }     = require(path.join(__dirname, '..', 'logger', 'fslog'));
 const monitor        = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 const general        = require(path.join(__dirname, '..', 'config', 'general'));
+const Connection     = require(path.join(__dirname, 'connection'));
 
 const status         = require(path.join(__dirname, '..', 'controller', 'statusController'));
 
@@ -64,7 +65,7 @@ class UuidState {
   /// Save expired object
   /// Envelope function. To be overridden in derived classes
   /// //////////////////////////////////////////////////////////////////
-  saveExpired = () {}
+  saveExpired = () => {}
   
   /// //////////////////////////////////////////////////////////////////
   /// Get plain JavaScript object.
@@ -99,28 +100,35 @@ class Runtime extends UuidState {
     super();
     this.#connection  = null;
     
-    /// ----------------------------------------------------------------
-    /// Connection
-    /// ----------------------------------------------------------------
+    /// ////////////////////////////////////////////////////////////////
+    /// Connection via PortController
+    /// ////////////////////////////////////////////////////////////////
     status.controller.on('protocol', (data) => { this.beginConnection(); });
     status.controller.on('stopping', (data) => { this.endConnection(); });
     
-    win.status.log({ level: 'info', code: 'Runtime', text: `UUID: ${this.#uuid} `, begin: { id: 0, time: this.#begin } });
+    win.status.log({ level: 'info', code: 'Runtime', text: `UUID: ${this.uuid} `, begin: { id: 0, time: this.begin } });
   }
   
   terminate = () => {
     super.terminate();
-    win.status.log({ level: 'info', code: 'Runtime', text: `UUID: ${this.#uuid} `, begin: { id: 0, time: this.#begin }, end: { id: 0, time: this.#end } });
+    win.status.log({ level: 'info', code: 'Runtime', text: `UUID: ${this.uuid} `, begin: { id: 0, time: this.begin }, end: { id: 0, time: this.end } });
+  }
+  
+  
+  /// //////////////////////////////////////////////////////////////////
+  /// Connection
+  /// //////////////////////////////////////////////////////////////////
+  
+  endConnection = () => {
+    if(this.#connection != null) {
+      this.#connection.terminate();
+      this.#connection = null;
+    }
   }
   
   beginConnection = () => {
-    if(this.#connection != null) {
-      this.
-    }
-    
-  }
-  
-  endConnection = () => {
+    this.endConnection();
+    this.#connection = new Connection(this);
   }
 }
 
