@@ -28,68 +28,21 @@ const win            = require(path.join(__dirname, '..', 'logger', 'logger'));
 const { epilog }     = require(path.join(__dirname, '..', 'logger', 'fslog'));
 const monitor        = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 const general        = require(path.join(__dirname, '..', 'config', 'general'));
-const Connection     = require(path.join(__dirname, 'connection'));
+
+const { UuidState  } = require(path.join(__dirname, 'uuidState'));
+const { Connection } = require(path.join(__dirname, 'connection'));
 
 const status         = require(path.join(__dirname, '..', 'controller', 'statusController'));
 
 
 /**
- * @importedBy{}
+ * @importedBy{app}
  **/
 
 /// ////////////////////////////////////////////////////////////////////
 /// Thalas definition:
 /// Runtime: The execution time of a software device
-///
 /// ////////////////////////////////////////////////////////////////////
-
-class UuidState {
-  
-  #uuid         /// uuid
-  #begin        /// Date
-  #end          /// Date
-
-  #storage
-  
-  get begin() { return this.#begin; }
-  get end()   { return this.#end;   }
-  get uuid()  { return this.#uuid;  }
-
-  constructor() {
-    this.#begin = new Date();
-    this.#uuid  = crypto.randomUUID();
-    this.#end   = null;
-  }
-  
-  /// //////////////////////////////////////////////////////////////////
-  /// Save expired object
-  /// Envelope function. To be overridden in derived classes
-  /// //////////////////////////////////////////////////////////////////
-  saveExpired = () => {}
-  
-  /// //////////////////////////////////////////////////////////////////
-  /// Get plain JavaScript object.
-  /// Intended to be used for saving of expired objects
-  /// //////////////////////////////////////////////////////////////////
-  
-  /// Envelope function. To be overridden in derived classes
-  /// The overridden version shall append additional member variables
-  extendDataObject = (data) => { return data; }
-  
-  getDataObject = () => {
-    let d = {
-      uuid:  this.#uuid,
-      begin: this.#begin,
-      end:   this.#end
-    }
-    return this.extendDataObject(r);
-  }
-  
-  terminate = () => { 
-    this.#end = new Date();
-    this.saveExpired();
-  }
-}
 
 
 class Runtime extends UuidState {

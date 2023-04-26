@@ -29,7 +29,8 @@ const { epilog }     = require(path.join(__dirname, '..', 'logger', 'fslog'));
 const monitor        = require(path.join(__dirname, '..', 'monitor', 'monitor'));
 const general        = require(path.join(__dirname, '..', 'config', 'general'));
 const status         = require(path.join(__dirname, '..', 'controller', 'statusController'));
-
+const { UuidState  } = require(path.join(__dirname, 'uuidState'));
+const { text       } = require(path.join(__dirname, 'data', 'text'));
 
 /**
  * @importedBy{/routes/episode}
@@ -47,49 +48,25 @@ const status         = require(path.join(__dirname, '..', 'controller', 'statusC
 /// @see: {/model/runtime} - (Runtime.constructor)
 /// ////////////////////////////////////////////////////////////////////
 
-class Connection {
+class Connection extends UuidState {
   
-  #nCon     /// number
-  #begin    /// date
-  #end      /// date
-  #uuid     /// string
   #runtime  /// Runtime
   
   static #lastId = 0; /// Counter for creation of (session) unique id
   
   constructor(runtime) {
+    super(++Connection.#lastId);
     this.#runtime = runtime;
-    this.#nCon    = ++Connection.#lastId;
-    this.#uuid    = crypto.randomUUID();
-    this.#begin   = new Date();
-    this.#end     = null;
+    monitor.statusMsg('Connection', { id: this.id, begin: this.begin, end: this.end });
   }
   
-  begin = () => {
-    ++this.#nCon;
-    this.#begin = new Date();
-    this.#uuid  = crypto.randomBytes(16).toString("hex");
-    this.#end = null;
-    monitor.infoMsg('Connection', `Begin: ${this.#begin.toISOString().substr(11, 8)} | Number of episodes: ${this.#nCon}`);
+  extendDataObject = (data) => {
+    return data;
   }
   
-  terminate = () => {
-    this.#end = new Date();
-    monitor.infoMsg('Connection', `End. Periode Begin: ${this.#begin.toISOString().substr(11, 8)} - End: ${this.#end.toISOString().substr(11, 8)}`);
-    /// Terminates all current Text-Status parameters via shutdown
-  }
-  
-  get begin () { return this.#begin; }
-  get end   () { return this.#end;   }
-  get uuid  () { return this.#uuid;  }
-  
-  get dataObject () {
-    return {
-      uuid  : this.#uuid,
-      begin : this.#begin,
-      end   : this.#end,
-      runtime : this.#runtime.uuid
-    };
+  expire = () => {
+    text.expire();
+    monitor.statusMsg('Connection', { id: this.id, begin: this.begin, end: this.end });
   }
 }
 

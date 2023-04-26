@@ -95,6 +95,15 @@ class Monitor extends EventEmitter {
    * @target{index.html} - (socket.on | io:info | Will be fed into message table)
    **/
   infoMsg   = (action, msg)          => { this.emitMsg('info',   action, msg,    {}); }
+  
+  /**
+   * @param{action} - (string)
+   * @param{times}  - (object: { id: number, begin: date, end: date })
+   **/
+  
+  statusMsg = (action, times)        => {
+    this.emitMsg('info', action, `ID: ${times.id}  Begin: ${dateformat(times.begin, 'HH:MM:ss')}  End: ${times.end ? dateformat(times.end, 'HH:MM:ss') : ''}`, {}); 
+  }
 }
 
 const monitor = new Monitor();

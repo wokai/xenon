@@ -487,11 +487,10 @@ schedule</a></li>
 <ul>
 <li><a href="#settings" id="toc-settings">Settings</a></li>
 <li><a href="#text-message-response" id="toc-text-message-response">Text
-Message response</a>
+Message Response</a>
 <ul>
 <li><a href="#text-messages" id="toc-text-messages">Text
 Messages</a></li>
-<li><a href="#ventilation-parameters" id="toc-ventilation-parameters">Ventilation parameters</a></li>
 <li><a href="#parametermap" id="toc-parametermap">ParameterMap</a></li>
 </ul></li>
 </ul></li>
@@ -932,6 +931,18 @@ status</li>
 </div>
 <div id="messagecontroller" class="section level2">
 <h2>MessageController</h2>
+<p>The MessageController contains an array of query commands which shall
+be sent to the Dräger device. A set of query commands is called a
+<code>cycle</code> and consists of</p>
+<ul>
+<li>Code page1</li>
+<li>Alarm high limits</li>
+<li>Alarm low limits</li>
+<li>Alarm code page 1</li>
+<li>Alarm code page 2</li>
+<li>Text messages</li>
+<li>Settings</li>
+</ul>
 <hr />
 <!--- --------------------------------------------------------------------- --->
 </div>
@@ -1070,7 +1081,7 @@ bytes:</p>
 <li>Two bytes <em>setting code</em></li>
 <li>Five bytes <em>setting</em></li>
 </ul>
-<p>The codes for settings ar described in <span class="citation">(2.
+<p>The codes for settings are described in <span class="citation">(2.
 Dräger 2010)</span> (p.13):</p>
 <table>
 <thead>
@@ -1176,7 +1187,7 @@ Dräger 2010)</span> (p.13):</p>
 </table>
 </div>
 <div id="text-message-response" class="section level2">
-<h2>Text Message response</h2>
+<h2>Text Message Response</h2>
 <p>See Medibus for Primus <span class="citation">(2. Dräger 2010)</span>
 (p.34) and additionally <span class="citation">(3. Dräger 2019)</span>
 (p.109). A <em>Text Message Response</em> (TMR) <span class="citation">(1. Dräger 2007)</span> (p.18) contains all current
@@ -1203,6 +1214,8 @@ data-object is made up of the following fields:</p>
 </ul>
 <p>After reading the text segments out of the message, the values are
 copied into a default parameter object.</p>
+<p>Data from <em>Text Message Response</em> can be accessed via
+<code>{hostname}/data/text/param</code>.</p>
 <div id="text-messages" class="section level3">
 <h3>Text Messages</h3>
 <table>
@@ -1418,12 +1431,28 @@ Mode</td>
 <td align="left">6BH</td>
 <td align="left">Mode O2 therapy</td>
 </tr>
+<tr class="even">
+<td align="left">1EH</td>
+<td align="left">Ventilator is in standby mode</td>
+</tr>
+<tr class="odd">
+<td align="left">20H</td>
+<td align="left">Device is in adult mode</td>
+</tr>
+<tr class="even">
+<td align="left">21H</td>
+<td align="left">Device is in neonatal mode</td>
+</tr>
+<tr class="odd">
+<td align="left">11H</td>
+<td align="left">Automatic apnea ventilation active</td>
+</tr>
+<tr class="even">
+<td align="left">12H</td>
+<td align="left">Device in PRODUCT TEST mode</td>
+</tr>
 </tbody>
 </table>
-<p>1EH Ventilator is in standby mode</p>
-<p>20H Device is in adult mode 21H Device is in neonatal mode</p>
-<p>11H Automatic apnea ventilation active 12H Device in PRODUCT TEST
-mode</p>
 <div id="derived-parameters" class="section level4">
 <h4>Derived parameters</h4>
 <p>The text messages often describe entities where different modes are
@@ -1473,70 +1502,34 @@ entities together with their modes.</p>
 <td align="left">Carrier-gas</td>
 <td align="left">Air, N<sub>2</sub>O</td>
 </tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="ventilation-parameters" class="section level3">
-<h3>Ventilation parameters</h3>
-<table style="width:99%;">
-<colgroup>
-<col width="17%" />
-<col width="17%" />
-<col width="63%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left">Code</th>
-<th align="left">Parameter</th>
-<th align="left">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left"></td>
-<td align="left"><code>inhal</code></td>
-<td align="left">Anaesthesia gas</td>
-</tr>
 <tr class="even">
-<td align="left"></td>
-<td align="left"><code>secInhal</code></td>
-<td align="left">2nd Anaesthesia gas</td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left"><code>carrier</code></td>
-<td align="left">Carrier gas</td>
-</tr>
-<tr class="even">
-<td align="left"></td>
-<td align="left"><code>ventmode</code></td>
-<td align="left">Ventilation mode</td>
-</tr>
-<tr class="odd">
-<td align="left"></td>
-<td align="left"><code>sync</code></td>
-<td align="left">Synchronized vent</td>
-</tr>
-<tr class="even">
-<td align="left"></td>
+<td align="left">5CH</td>
 <td align="left"><code>psvadd</code></td>
-<td align="left">Pressure support added to intermittent Ventilation
-Mode</td>
+<td align="left">PS added</td>
+<td align="left">No, Yes</td>
 </tr>
 <tr class="odd">
-<td align="left"></td>
+<td align="left">4EH</td>
 <td align="left"><code>autoflow</code></td>
-<td align="left">Autoflow added to Volume mode</td>
+<td align="left">Autoflow added</td>
+<td align="left">False, True</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
+<td align="left">48H, 49H</td>
 <td align="left"><code>airway</code></td>
-<td align="left">Airway device configured</td>
+<td align="left">Airway</td>
+<td align="left">IV, NIV</td>
+</tr>
+<tr class="odd">
+<td align="left">68H, 70H</td>
+<td align="left"><code>tubetype</code></td>
+<td align="left">Tubustype</td>
+<td align="left">Entotracheal, Tracheostoma</td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
 </div>
 <div id="parametermap" class="section level3">
 <h3>ParameterMap</h3>

@@ -148,8 +148,6 @@ class TextData {
     this.#map = new Map();
     this.#txtParam = new TextParamMap();
     this.setEmptyParamObject();
-    
-    status.controller.on('stopping', (data) => { this.expire(); });
   }
   
   /// ////////////////////////////////////////////////////////////////////// ///
@@ -161,7 +159,7 @@ class TextData {
   }
   
   /**
-   * @usedBy{this.constructor} - (StatusController: stopping)
+   * @usedBy{/model/connection} - (expire)
    **/
   expire = () => { this.paramMap.expireAll(); }
   

@@ -102,7 +102,7 @@ class Episode {
     this.#ventModePeriods = [];
     
     status.controller.on('protocol', (data) => { this.begin(); });
-    status.controller.on('stopping', (data) => { this.terminate(); });
+    //status.controller.on('stopping', (data) => { this.terminate(); });
   }
   
   begin = () => {
@@ -113,11 +113,12 @@ class Episode {
     monitor.infoMsg('Episode', `Begin: ${this.#begin.toISOString().substr(11, 8)} | Number of episodes: ${this.#nEpisodes}`);
   }
   
+  /*
   terminate = () => {
     this.#end = new Date();
     monitor.infoMsg('Episode', `End. Periode Begin: ${this.#begin.toISOString().substr(11, 8)} - End: ${this.#end.toISOString().substr(11, 8)}`);
-    /// Terminates all current Text-Status parameters via shutdown
   }
+  **/
   
   get begin () { return this.#begin; }
   

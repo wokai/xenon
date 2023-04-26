@@ -44,11 +44,11 @@ class TimePoint {
     this.#time = time;
   }
   
-  set msgId(i)   { this.#msgId   = i;    }
-  set time(t) { this.#time = t;    }
+  set msgId(i) { this.#msgId   = i;  }
+  set time(t)  { this.#time = t;     }
   
-  get msgId()    { return this.#msgId;   }
-  get time()  { return this.#time; }
+  get msgId()  { return this.#msgId; }
+  get time()   { return this.#time;  }
 }
 
 /// ////////////////////////////////////////////////////////////////////
