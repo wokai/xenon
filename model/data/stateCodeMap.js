@@ -25,6 +25,7 @@ const path    = require('path');
 const win     = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const bus     = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const config  = require(path.join(__dirname, '..', '..', 'config', 'general'));
+const { Message } = require(path.join(__dirname, '..', 'medibus', 'message'));
 
 /// ////////////////////////////////////////////////////////////////////
 /// TimePoint carries information about when this interface received
@@ -210,8 +211,8 @@ class StateCodeMap {
     this.#map.forEach((value, key, map) => {
       if(value.last.msgId != tp.msgId){
         value.back = tp;
-        win.status.log({ level: 'info', code: value.code, text: value.text, begin: value.begin, end: value.back });
         this.#expired.push(value.dataObject);
+        console.log('[/model/data/stateCodeMap] expireElements');
         this.logExpiredState(value.dataObject);
         map.delete(key);
       }
@@ -223,11 +224,10 @@ class StateCodeMap {
    * @usedBy{Closing the Medibus communication} - (Shutdown)
    **/
   expireAll = () => {
-    let l = this.#map.length;
-    let tp = new TimePoint(0, new Date());
+    let l = this.#map.size;
+    let tp = new TimePoint(Message.getLastId(), new Date());
     this.#map.forEach((value, key, map) => {
       value.back = tp;
-      win.status.log({ level: 'info', code: value.code, text: value.text, begin: value.begin, end: value.back });
       this.#expired.push(value.dataObject);
       this.logExpiredState(value.dataObject);
       map.delete(key);

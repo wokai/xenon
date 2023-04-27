@@ -163,12 +163,12 @@ const statusTransport = new winston.transports.Stream({ stream: statusStream });
  * @param{end}   - (TimePoint)
  **/
 const statusFormat = winston.format.printf( ({ code, text, begin, end }) => {
-  if(!code)   { code = '00'; }
-  if(!text)   { text = '';   }
-  if(!begin)  { begin = { id: 0, time : config.empty.time}; }
-  if(!end)    { end = { id: 0, time : config.empty.time}; }
+  if(!code)  { code = '00'; }
+  if(!text)  { text = '';   }
+  if(!begin) { begin = { msgId: 0, time : config.empty.time}; }
+  if(!end)   { end = { msgId: 0, time : config.empty.time}; }
   
-  return `Code ${code} | Text: ${text} | Begin: ${begin.id}-${dateformat(begin.time, 'HH:MM:ss')} | End: ${end.id}-${dateformat(end.time, 'HH:MM:ss')}`;
+  return `Code ${code} | Text: ${text} | Begin: ${begin.msgId}-${dateformat(begin.time, 'HH:MM:ss')} | End: ${end.msgId}-${dateformat(end.time, 'HH:MM:ss')}`;
 });
 
 const status = winston.createLogger({
@@ -181,7 +181,7 @@ const status = winston.createLogger({
   transports: [
     statusTransport
   ],
-  level: config.status.level,
+  level: config.logger.status,
   exitOnError: false
 });
 

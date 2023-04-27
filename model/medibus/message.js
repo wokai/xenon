@@ -33,6 +33,7 @@ const AsciiHex = require(path.join(__dirname, 'asciiHex'));
 class Message {
   
   static #lastId = 0; /// Counter for creation of (session) unique id
+  static getLastId() { return Message.#lastId; }
   
   #id                 /// @type{Number} - (Message id; application unique)
   #buffer             /// Complete buffer or null (when not created from buffer)

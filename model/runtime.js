@@ -31,6 +31,7 @@ const general        = require(path.join(__dirname, '..', 'config', 'general'));
 
 const { UuidState  } = require(path.join(__dirname, 'uuidState'));
 const { Connection } = require(path.join(__dirname, 'connection'));
+const { Message    } = require(path.join(__dirname, 'medibus', 'message' ));
 
 const status         = require(path.join(__dirname, '..', 'controller', 'statusController'));
 
@@ -59,12 +60,12 @@ class Runtime extends UuidState {
     status.controller.on('protocol', (data) => { this.beginConnection(); });
     status.controller.on('stopping', (data) => { this.endConnection(); });
     
-    win.status.log({ level: 'info', code: 'Runtime', text: `UUID: ${this.uuid} `, begin: { id: 0, time: this.begin } });
+    win.status.log({ level: 'info', code: 'Runtime', text: `UUID: ${this.uuid} `, begin: { msgId: 0, time: this.begin } });
   }
   
   terminate = () => {
     super.terminate();
-    win.status.log({ level: 'info', code: 'Runtime', text: `UUID: ${this.uuid} `, begin: { id: 0, time: this.begin }, end: { id: 0, time: this.end } });
+    win.status.log({ level: 'info', code: 'Runtime', text: `UUID: ${this.uuid} `, begin: { msgId: 0, time: this.begin }, end: { msgId: Message.getLastId(), time: this.end } });
   }
   
   

@@ -24,7 +24,6 @@ const path = require('path');
 
 const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
-const { epilog }          = require(path.join(__dirname, '..', '..', 'logger', 'fslog'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const status              = require(path.join(__dirname, '..', '..', 'controller', 'statusController'));
 const { episode }         = require(path.join(__dirname, '..', 'episode'));
@@ -97,7 +96,9 @@ class TextParamMap extends StateCodeMap {
   
   /// Log to status in base class
   logExpiredState = (dataObj) => {
-    epilog.writeParamEpisode(dataObj.param, dataObj.begin, dataObj.back);
+    win.status.log({ level: 'debug', code: dataObj.code, text: dataObj.param.text, begin: dataObj.begin, end: dataObj.back });
+    console.log(`[/model/data/text] logExpiredState: Code: ${dataObj.code} | Text: ${dataObj.param.text} | End: ${dataObj.back.msgId}`.green);
+    //console.log(dataObj);
   }
   
   /**
@@ -179,9 +180,8 @@ class TextData {
         let def = bus.text.messages.get(t.code);
         
         if(def === undefined){
-          win.def.log({ level: 'warn', file: 'text', func: 'createparamMap', message: `Received unknown code ${t.code}` });
-          console.log(`[model/data/text] createparamMap: Received unknown code ${t.code}`);
-          console.log(t);
+          win.def.log({ level: 'warn', file: 'text', func: 'createparamMap', message: `Received unknown code ${t.code} | Text: ${t.text}` });
+          console.log(`[model/data/text] createparamMap: Received unknown code ${t.code} | Text: ${t.text}`);
         } else {
           /// //////////////////////////////////////////////////////////////// ///
           /// Store Text messages in parametrised format. Map:

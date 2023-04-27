@@ -360,6 +360,7 @@ const bus = {
       [ '6F', { param: 'atctype'       , value: 'Inspiratory'    , text: 'Inspiratory ATC enabled'              } ],
       [ '70', { param: 'tubetype'      , value: 'Tracheostoma'   , text: 'Tube type tracheostoma'               } ],
       [ '71', { param: 'apneavent'     , value: 'Enabled'        , text: 'Apnea ventilation enabled'            } ],
+      [ '76', { param: 'humid'         , value: 'Unheated'       , text: 'Active humid unheated'                } ],
       [ '78', { param: 'hme'           , value: 'HME / Filter'   , text: 'HME / Filter'                         } ],
       [ '9F', { param: 'trachpres'     , value: 'Enabled'        , text: 'Tracheal pressure calculation enabled as real-time value'            } ]
     ]),
