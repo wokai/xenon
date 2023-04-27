@@ -26,9 +26,7 @@ const config              = require(path.join(__dirname, '..', '..', 'config', '
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
 const { epilog }          = require(path.join(__dirname, '..', '..', 'logger', 'fslog'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
-
 const status              = require(path.join(__dirname, '..', '..', 'controller', 'statusController'));
-
 const { episode }         = require(path.join(__dirname, '..', 'episode'));
 const TextMessageResponse = require(path.join(__dirname, '..', 'medibus', 'textMessageResponse'));
 
@@ -97,6 +95,7 @@ class TextParamMap extends StateCodeMap {
    * }
    **/
   
+  /// Log to status in base class
   logExpiredState = (dataObj) => {
     epilog.writeParamEpisode(dataObj.param, dataObj.begin, dataObj.back);
   }

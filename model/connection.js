@@ -60,7 +60,9 @@ class Connection extends UuidState {
     monitor.statusMsg('Connection', { id: this.id, begin: this.begin, end: this.end });
   }
   
-  extendDataObject = (data) => {
+  /// 
+  extendDataObject = (data) => { 
+    data.runtime = this.#runtime.uuid;
     return data;
   }
   

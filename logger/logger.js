@@ -181,7 +181,7 @@ const status = winston.createLogger({
   transports: [
     statusTransport
   ],
-  level: config.logger.level,
+  level: config.status.level,
   exitOnError: false
 });
 
