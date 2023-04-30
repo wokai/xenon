@@ -390,6 +390,15 @@ const bus = {
   }
 };
 
+bus.alarms.map = {
+  cp1: new Map(),
+  cp2: new Map()
+};
+
+bus.alarms.cp1.forEach(a => { bus.alarms.map.cp1.set(a.code, a) });
+bus.alarms.cp2.forEach(a => { bus.alarms.map.cp2.set(a.code, a) });
+
+
 
 module.exports = Object.freeze(bus);
 

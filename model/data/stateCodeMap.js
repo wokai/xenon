@@ -92,7 +92,6 @@ class StateElement {
   constructor(code, object, msgId, time = config.empty.time) {
     
     this.#id = ++StateElement.#lastId;
-    
     this.#code  = code;
     this.#param = object;
     this.#begin = new TimePoint(msgId, time);

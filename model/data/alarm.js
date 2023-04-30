@@ -28,11 +28,10 @@ const bus                 = require(path.join(__dirname, '..', '..', 'config', '
 const monitor             = require(path.join(__dirname, '..', '..', 'monitor', 'monitor'));
 const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
 
-const { TimePoint }       = require(path.join(__dirname, 'stateCodeMap'));
 const DataResponse        = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
 const AlarmStatusResponse = require(path.join(__dirname, '..', 'medibus', 'alarmStatusResponse'));
 
-
+const { TimePoint, StateElement }       = require(path.join(__dirname, 'stateCodeMap'));
 
 /**
  * @usecBy{router.get('/alarm/limits')} - (/routes/data)
@@ -202,30 +201,10 @@ class AlarmLimits {
 /// 12 bytes alarm phrase  : Character string.
 /// //////////////////////////////////////////////////////////////////////// ///
 
-/*
-class PeriodPoint {
-  
-  #id     /// @ number | Medibus-Message-Id
-  #time   /// @ Date
-   
-  /// There is no type checking, because it would mess up the code
-  /// This class mainly exists in order to have clean accessors...
-  constructor(id = 0, time = config.empty.time) {
-    this.#id = id;
-    this.#time = time;
-  }
-  
-  set id(i)   { this.#id   = i;    }
-  set time(t) { this.#time = t;    }
-  
-  get id()    { return this.#id;   }
-  get time()  { return this.#time; }
-}
-*/
 
 class Alarm {
   
-  #id        /// @ number | Content of bus.alarm.cpx -> id
+  #alarmId   /// @ number | Content of bus.alarm.cpx -> id
   #priority  /// @ number | range 1-31
   #code      /// @ string | ascii-hex
   #phrase    /// @ string | 12 bytes
@@ -240,23 +219,76 @@ class Alarm {
     this.#begin     = new TimePoint();
   }
   
-  set id(i)       { this.#id       = i; }
+  set alarmId(i)  { this.#alarmId       = i; }
   set priority(p) { this.#priority = p; }
   set code(c)     { this.#code     = c; }
   set phrase(p)   { this.#phrase   = p; }
   set label(l)    { this.#label    = l; }
   
-  get id()        { return this.#id;        }
+  get alarmId()   { return this.#alarmId;   }
   get priority()  { return this.#priority;  }
   get code()      { return this.#code;      }
   get phrase()    { return this.#phrase;    }
   get label()     { return this.#label;     }
   get text()      { return this.#label;     }
   
-  get begin()      { return this.#begin;     }
+  get begin()     { return this.#begin;     }
   
   toString() { 
-   return `[Alarm] Priority: ${this.#priority} | Code: ${this.#code} | Phrase: ${this.#phrase} | Label: ${this.#label} | Time Id: ${this.#begin.id}. `;
+    return `[Alarm] Priority: ${this.#priority} | Code: ${this.#code} | Phrase: ${this.#phrase} | Label: ${this.#label} | Time Id: ${this.#begin.id}. `;
+  }
+  
+}
+
+
+class AlarmState extends StateElement {
+    
+  /**
+   * code:     string,             src: message
+   * priority: number (range 1-31) src: message
+   * label:    string,             src: /config/medibus: bus.alarm.cpx
+   * phrase:   string (12 bytes),  src: message
+   **/
+  
+  /// @param{code}   - (string)
+  /// @param{object} - ({ code: string, priority: string, label: string, phrase: string })
+  /// @param{msgId}  - (number) - (alarmStatusResponse)
+  /// @param{begin}  - (Date)
+  
+  constructor(code, object, msgId, begin){
+    super(code, object, msgId, time = begin);
+  }
+  
+  set priority(p)   { this.param.priority = p; }
+  set phrase(p)     { this.param.phrase   = p; }
+  set label(l)      { this.param.label    = l; }
+  
+  get priority()    { return this.param.priority; }
+  get phrase()      { return this.param.phrase;   }
+  get label()       { return this.param.label;    }
+  
+  /**
+   * @usedBy{CurrentAlarms.extractAlarm} - ()
+   * @param {alarm} - defined by {AlarmSegment.dataObject} (model/medibus/alarmSegment)
+   * @param {def}   - (bus.alarms.map.cpx) - (Map: (key: code, value: { code: string, label: string })
+   **/
+  static from(alarm, def=null){
+    
+    let label = null;
+    if(def) {
+      let ad = def.get(alarm.code);
+      if(ad !== undefined) {
+        label = ad.label;
+      }
+    }
+    
+    let obj = {
+      code:     alarm.code,
+      priority: alarm.priority,
+      phrase:   alarm.phrase,   
+      label:    label
+    }
+    return new AlarmState(alarm.code, obj, alarm.msgId, alarm.time);
   }
   
 }
@@ -306,7 +338,7 @@ class AlarmPeriod extends Alarm {
   
   get dataObject() {
     return {
-      id: this.id,
+      alarmId: this.alarmId,
       label: this.label,
       priority: this.priority,
       code: this.code,
@@ -357,7 +389,7 @@ class ExpiredAlarms {
 
 
 /**
- * @use   {bus/alarm/action.js} alarm object
+ * @usedBy   {bus/alarm/action.js} alarm object
  */
 
 /// //////////////////////////////////////////////////////////////////////// ///
@@ -373,11 +405,11 @@ class ExpiredAlarms {
 
 class CurrentAlarms {
   
-  #expired         /// {ExpiredAlarms}
-  #definedAlarms    /// {Map<{id|code|label}>} - (key = alarm.code) - (config/medibus) 
+  #expired          /// {ExpiredAlarms}
+  #definedAlarms    /// {Map<{ id:number, code:string, label: string }>} - (key = alarm.code) - (config/medibus) 
   #alarms           /// {Map<AlarmPeriod>}     - (key = alarm.code) - current alarms
   
-  setupDefinedAlarms(alarms){
+  setupDefinedAlarms(alarms) {
     this.#definedAlarms = new Map();
     alarms.forEach(a => {
       this.#definedAlarms.set(a.code, a); 

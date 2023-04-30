@@ -22,10 +22,10 @@
  
 const path = require('path'); 
 
-const win     = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
-const bus     = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
+const win     = require(path.join(__dirname, '..', '..', 'logger' , 'logger'));
+const bus     = require(path.join(__dirname, '..', '..', 'config' , 'medibus'));
 const monitor = require(path.join(__dirname, '..', '..', 'monitor', 'monitor'));
-const config  = require(path.join(__dirname, '..', '..', 'config', 'general'));
+const config  = require(path.join(__dirname, '..', '..', 'config' , 'general'));
 
 
 /// ////////////////////////////////////////////////////////////////////////////

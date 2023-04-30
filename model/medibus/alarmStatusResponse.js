@@ -1,7 +1,7 @@
 'use strict';
 /*******************************************************************************
  * The MIT License
- * Copyright 2022, Wolfgang Kaisers
+ * Copyright 2023, Wolfgang Kaisers
  * Permission is hereby granted, free of charge, to any person obtaining a 
  * copy of this software and associated documentation files (the "Software"), 
  * to deal in the Software without restriction, including without limitation 
@@ -43,9 +43,9 @@ const AlarmSegment = require('./alarmSegment');
 
 class AlarmStatusResponse {
 
-  #msgid      /// {number}
-  #time       /// {Date}   (model/medibus/message)
-  #code       /// {string}
+  #msgid      /// { number }
+  #time       /// { Date }   (model/medibus/message) - (msg.dateTime)
+  #code       /// { string }
   #hexPayload
   #map        /// Map key-value pairs: keys=codeString, value = AlarmSegment object
 

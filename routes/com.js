@@ -36,9 +36,6 @@ router.get('/summary', function(request, result, next) {
   result.status(200).json(status.controller.summary);
 });
 
-router.get('/episode', function(request, result, next) {
-  result.status(200).json(status.controller.episode);
-});
 
 
 module.exports = router;

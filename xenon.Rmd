@@ -24,6 +24,17 @@ output:
  - Pi as [WLAN access point](https://www.elektronik-kompendium.de/sites/raspberry-pi/2002171.htm)
  - [WLAN Frequencies](https://www.elektronik-kompendium.de/sites/net/1712061.htm)
 
+
+--------------------------------------------------------------------------------
+
+<!--- --------------------------------------------------------------------- --->
+# SDC (IEEE 11073 Service-oriented Device Connectivity)
+<!--- --------------------------------------------------------------------- --->
+
+ - [Wikipedia](https://de.wikipedia.org/wiki/IEEE_11073_Service-oriented_Device_Connectivity_(SDC))
+ - [GitHub](https://github.com/surgitaix/sdclib)
+ - [Sourceforge](https://sourceforge.net/projects/opensdc/)
+
 --------------------------------------------------------------------------------
 
 <!--- --------------------------------------------------------------------- --->
