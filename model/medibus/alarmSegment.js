@@ -37,7 +37,7 @@ const { parameters } = require('../parameters');
  
 class AlarmSegment {
   
-  #msgid    /// {number} @desc{Message.id | model/medibus/message}
+  #msgId    /// {number} @desc{Message.id | model/medibus/message}
   #time     /// {Date}
   
   #priority /// {number}
@@ -57,7 +57,7 @@ class AlarmSegment {
     this.#code     = p.slice(begin + 1, begin +  3);   /// two  bytes alarm code
     this.#phrase   = p.slice(begin + 3, begin + 18);   /// 12   bytes alarm phrase
     
-    this.#msgid    = alarmStatusResponse.id;
+    this.#msgId    = alarmStatusResponse.id;
     this.#time     = alarmStatusResponse.time;
   }
   
@@ -72,7 +72,8 @@ class AlarmSegment {
   }
   
   get time            () { return this.#time; }
-  get messageId       () { return this.#msgid; }
+  get msgId           () { return this.#msgId; }
+  get messageId       () { return this.#msgId; }
   get priority        () { return parseInt(this.#priority, 16); }
   get code            () { return AsciiHex.hexArrayToString(this.#code); }
   get phrase          () { return this.#phrase.toString(); }
@@ -83,7 +84,7 @@ class AlarmSegment {
    */
   get dataObject      () {
     return {
-      msgId: this.messageId,    /// number
+      msgId: this.msgId,        /// number
       time: this.time,          /// Date
       priority: this.priority,  /// string
       code: this.code,          /// string

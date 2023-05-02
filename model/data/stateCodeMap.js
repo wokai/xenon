@@ -188,6 +188,7 @@ class StateCodeMap {
   upsertElement = (p) => {
     /// 1) Check for existing Object with appropriate code
     let elem = this.#map.get(p.code);
+    //console.log(`[/model/data/stateCodeMap] upsertElement: ${this.constructor.name}. Code ${p.code}`);
     if(elem !== undefined) {
       /// 3) If exists: Update end of StateElement
       elem.last = p.begin;
@@ -219,7 +220,7 @@ class StateCodeMap {
       if(value.last.msgId != tp.msgId){
         value.back = tp;
         this.#expired.push(value.dataObject);
-        console.log('[/model/data/stateCodeMap] expireElements');
+        //console.log(`[/model/data/stateCodeMap] expireElement: ${this.constructor.name}. MsgId: ${tp.msgId}`);
         this.logExpiredState(value.dataObject);
         map.delete(key);
       }

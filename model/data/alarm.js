@@ -266,6 +266,7 @@ class AlarmCodeMap extends StateCodeMap {
     };
     /// Try to extract label from alarm definition
     /// a = { code: string, label: string };
+    
     let a = this.#definedAlarms.get(alarm.code);
     if(a !== undefined){
       dataObj.label = a.label;
@@ -292,6 +293,12 @@ class AlarmCodeMap extends StateCodeMap {
       });
     }
     this.expireElements(TimePoint.from(msg));
+  }
+  
+  logExpiredState = (dataObj) => {
+    console.log(dataObj);
+    monitor.infoMsg('Alarm', `'${dataObj.param.label}' from ${dataObj.begin.time} (id ${dataObj.begin.msgId}) to ${dataObj.back.time} (id ${dataObj.back.msgId})` );
+    win.def.log({ level: 'info', file: 'alarm', func: 'AlarmState.logExpiredState', message:  `Alarm '${dataObj.label}' from ${dataObj.begin.time} (id ${dataObj.begin.msgId}) to ${dataObj.back.time} (id ${dataObj.back.msgId})` });
   }
 
 }
