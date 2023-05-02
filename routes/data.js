@@ -32,7 +32,7 @@ const { settings }    = require(path.join(__dirname, '..', 'model', 'data', 'set
 const { cache }       = require(path.join(__dirname, '..', 'model', 'data', 'cache'));
 
 const { alarmLimits } = require(path.join(__dirname, '..', 'model', 'data', 'alarmLimits'));
-const { expiredAlarms, cp1Alarms } = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
+const { expiredAlarms, cp1Alarms, cp1AlarmStates, cp2AlarmStates } = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
 
 const router = express.Router();
 
@@ -60,8 +60,20 @@ router.get('/alarm/expired', function(request, result, next){
   result.status(200).json(expiredAlarms.getArray());
 });
 
+router.get('/alarm/expiredStates', function(request, result, next){
+  result.status(200).json(cp1AlarmStates.expired);
+});
+
 router.get('/alarm/cp1', function(request, result, next){
   result.status(200).json(cp1Alarms.getAlarmArray());
+});
+
+router.get('/alarm/cp1States', function(request, result, next){
+  result.status(200).json(cp1AlarmStates.current);
+});
+
+router.get('/alarm/cp2States', function(request, result, next){
+  result.status(200).json(cp2AlarmStates.current);
 });
 
 router.get('/text/text', function(request, result, next) {

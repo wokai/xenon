@@ -102,7 +102,7 @@ class AlarmState extends StateElement {
   /// @param{begin}  - (Date)
   
   constructor(code, object, msgId, begin){
-    super(code, object, msgId, time = begin);
+    super(code, object, msgId, begin);
   }
   
   set priority(p)   { this.param.priority = p; }
@@ -238,7 +238,62 @@ class ExpiredAlarms {
 
 class AlarmCodeMap extends StateCodeMap {
   
+  /// This class shares one singel array containing expired alarms
+  static expired = [];
+  #definedAlarms    /// {Map<{ id:number, code:string, label: string }>} - (key = alarm.code) - (config/medibus) 
   
+  
+  /**
+   * @param { Map[code, { code:string, label: string }] } - (/config/medibus: bus.alarms.cpx) 
+   */
+  constructor(alarms) {
+    super(AlarmCodeMap.expired);
+    this.#definedAlarms = alarms;
+  }
+  
+  /*********************************************************************
+   * @descr {Inserts a single alarm into map}
+   * @see   {model/medibus} getDataObject
+   * @param {alarm} - defined by {AlarmSegment.dataObject} - (model/medibus/alarmSegment)
+   * @param {alarm} - { msgId: number, time:Date, priority: string, code: string, phrase: string }
+   */
+  pushAlarm = (alarm) => {
+    /// Create AlarmPeriod object
+    let dataObj = { 
+      code:     alarm.code, 
+      priority: alarm.priority,
+      phrase:   alarm.phrase 
+    };
+    /// Try to extract label from alarm definition
+    /// a = { code: string, label: string };
+    let a = this.#definedAlarms.get(alarm.code);
+    if(a !== undefined){
+      dataObj.label = a.label;
+    } else {
+      dataObj.label = `[undef] ${alarm.phrase}`
+    }
+    this.upsertElement(new AlarmState(alarm.code, dataObj, alarm.msgId, alarm.time));
+  }
+  
+  /**
+   * @param  {Message} - (model/medibus/message)
+   * @usedBy {Action.constructor} - Callback - (/bus/action)
+   * @descr  Calls conversion of Alarm related payload content from Medibus
+   *         message into {AlarmStatusResponse} and further into separate
+   *         {AlarmPeriod} objects residing in a {Map}.
+   *         Finally, {expireElements} identifies Alarm types which are
+   *         no more current and thus are moved to {expired}.
+   **/
+  extractAlarms = (msg) => {
+    if(msg.hasPayload()){
+      let resp = new AlarmStatusResponse(msg);
+      resp.map.forEach((as) => {
+        this.pushAlarm(as);
+      });
+    }
+    this.expireElements(TimePoint.from(msg));
+  }
+
 }
 
 
@@ -354,12 +409,20 @@ const expiredAlarms  = new ExpiredAlarms();
 /**
  * @descr{Code-page 1 Alarms}
  * @see  {MEDIBUS for Primus. p.14}
+ * @usedBy {/bus/action}
+ * @usedBy {/model/data/ventilation}
+ * @usedBy {/routes/alarm}
  **/
 const cp1Alarms = new CurrentAlarms(bus.alarms.cp1, expiredAlarms);
 const cp2Alarms = new CurrentAlarms(bus.alarms.cp2, expiredAlarms);
 
+const cp1AlarmStates = new AlarmCodeMap(bus.alarms.cp1);
+const cp2AlarmStates = new AlarmCodeMap(bus.alarms.cp2);
+
 module.exports = { 
   expiredAlarms: expiredAlarms,
   cp1Alarms: cp1Alarms,
-  cp2Alarms: cp2Alarms
+  cp2Alarms: cp2Alarms,
+  cp1AlarmStates: cp1AlarmStates,
+  cp2AlarmStates: cp2AlarmStates
 };

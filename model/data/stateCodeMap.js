@@ -50,6 +50,11 @@ class TimePoint {
   
   get msgId()  { return this.#msgId; }
   get time()   { return this.#time;  }
+  
+  /// @param{message} - (/model/medibus/message)
+  static from(message) {
+    return new TimePoint(message.id, message.dateTime);
+  }
 }
 
 /// ////////////////////////////////////////////////////////////////////
@@ -157,9 +162,9 @@ class StateCodeMap {
   #map      /// @type{Map<string, StateElement>}  - {current settings = under observation}
   #expired  /// @type{array<StateElement>}        - {expired StateElement objects}
   
-  constructor() {
+  constructor(expired = []) {
     this.#map = new Map();
-    this.#expired = [];
+    this.#expired = expired;
   }
 
   /**

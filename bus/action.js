@@ -36,7 +36,7 @@ const { ventilation }   = require(path.join(__dirname, '..', 'model', 'data', 'v
 
 
 const { alarmLimits }   = require(path.join(__dirname, '..', 'model', 'data', 'alarmLimits'));
-const { cp1Alarms, cp2Alarms }
+const { cp1Alarms, cp2Alarms, cp1AlarmStates, cp2AlarmStates}
                         = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
                         
 const { text }          = require(path.join(__dirname, '..', 'model', 'data', 'text'));
@@ -139,10 +139,12 @@ module.exports = {
     cp1 : new Action(commands.alarm.cp1, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp1', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
         cp1Alarms.extractAlarm(msg);
+        cp1AlarmStates.extractAlarms(msg);
       }),
     cp2 : new Action(commands.alarm.cp2, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp2', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
         cp2Alarms.extractAlarm(msg);
+        cp2AlarmStates.extractAlarms(msg);
       })
   },
   

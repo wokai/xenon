@@ -83,11 +83,11 @@ class AlarmSegment {
    */
   get dataObject      () {
     return {
-      msgId: this.messageId,
-      time: this.time,
-      priority: this.priority,
-      code: this.code,
-      phrase: this.phrase
+      msgId: this.messageId,    /// number
+      time: this.time,          /// Date
+      priority: this.priority,  /// string
+      code: this.code,          /// string
+      phrase: this.phrase       /// string
     };
   }
   
