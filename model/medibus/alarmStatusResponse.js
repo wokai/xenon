@@ -82,6 +82,7 @@ class AlarmStatusResponse {
   }
 
   
+  get msgId     () { return this.#msgid; }
   get id        () { return this.#msgid; }
   get time      () { return this.#time; }
   get rawLength () { return this.#hexPayload.length; }

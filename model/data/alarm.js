@@ -23,7 +23,6 @@
 const path = require('path'); 
 
 const win                 = require(path.join(__dirname, '..', '..', 'logger', 'logger'));
-const { epilog }          = require(path.join(__dirname, '..', '..', 'logger', 'fslog'));
 const bus                 = require(path.join(__dirname, '..', '..', 'config', 'medibus'));
 const monitor             = require(path.join(__dirname, '..', '..', 'monitor', 'monitor'));
 const config              = require(path.join(__dirname, '..', '..', 'config', 'general'));
@@ -66,7 +65,7 @@ class Alarm {
     this.#begin     = new TimePoint();
   }
   
-  set alarmId(i)  { this.#alarmId       = i; }
+  set alarmId(i)  { this.#alarmId  = i; }
   set priority(p) { this.#priority = p; }
   set code(c)     { this.#code     = c; }
   set phrase(p)   { this.#phrase   = p; }
@@ -162,15 +161,16 @@ class AlarmPeriod extends Alarm {
    */
   static from(alarm, alarmDefinition=null){
     let a = new AlarmPeriod();
-    a.priority   = alarm.priority;   /// number 1-31
-    a.phrase     = alarm.phrase;     /// string
-    a.code       = alarm.code        /// string
     
-    a.begin.id   = alarm.id;         /// number: Message-id
-    a.begin.time = alarm.time;       /// Date: Time of Medibus message creation
+    a.priority    = alarm.priority;   /// number 1-31
+    a.phrase      = alarm.phrase;     /// string
+    a.code        = alarm.code        /// string
     
-    a.back.id    = alarm.id;         /// During time of creation, the first observation
-    a.back.time  = alarm.time        /// is also the last observation
+    a.begin.msgId = alarm.msgId;      /// number: Message-id
+    a.begin.time  = alarm.time;       /// Date: Time of Medibus message creation
+    
+    a.back.msgId  = alarm.msgId;      /// During time of creation, the first observation
+    a.back.time   = alarm.time        /// is also the last observation
     
     /// Eventually add data from stored alarm-definitions
     /// This should almost always be present
@@ -187,18 +187,18 @@ class AlarmPeriod extends Alarm {
   
   get dataObject() {
     return {
-      alarmId: this.alarmId,
+      //alarmId: this.alarmId,
       label: this.label,
       priority: this.priority,
       code: this.code,
       text: this.text,    /// @usedBy{/logger/fslog}
       phrase: this.phrase,
       begin: {
-        id: this.begin.id,
+        msgId: this.begin.msgId,
         time: this.begin.time.toLocaleTimeString()
       },
       back: {
-        id: this.back.id,
+        msgId: this.back.msgId,
         time: this.back.time.toLocaleTimeString()
       }
     };
@@ -225,8 +225,7 @@ class ExpiredAlarms {
     
     let p = period.dataObject;
     monitor.infoMsg('Alarm', `${p.label} from ${p.begin.time} to ${p.back.time}`);
-    win.def.log({ level: 'info', file: 'alarm', func: 'ExpiredAlarms.push', message:  `Alarm '${p.label}' from ${p.begin.time} (id ${p.begin.id}) to ${p.back.time} (id ${p.back.id})` });
-    epilog.writeAlarmPeriod(period);
+    win.def.log({ level: 'info', file: 'alarm', func: 'ExpiredAlarms.push', message:  `Alarm '${p.label}' from ${p.begin.time} (id ${p.begin.msgId}) to ${p.back.time} (id ${p.back.msgId})` });
   }
   
   consume = () => {
@@ -263,14 +262,7 @@ class CurrentAlarms {
   #expired          /// {ExpiredAlarms}
   #definedAlarms    /// {Map<{ id:number, code:string, label: string }>} - (key = alarm.code) - (config/medibus) 
   #alarms           /// {Map<AlarmPeriod>}     - (key = alarm.code) - current alarms
-  
-  setupDefinedAlarms(alarms) {
-    this.#definedAlarms = new Map();
-    alarms.forEach(a => {
-      this.#definedAlarms.set(a.code, a); 
-    });
-  }
-  
+    
   get size          () { return this.#alarms.size; }
   get definedAlarms () { return this.#definedAlarms; }
   
@@ -335,7 +327,7 @@ class CurrentAlarms {
         let ad = this.#definedAlarms.get(as.code);
         if(ad !== undefined){
           let am = as.dataObject;
-          am.alarmId = ad.id;
+          am.alarmId = ad.msgId;
           am.label   = ad.label;
           this.pushAlarm(am);
         }
