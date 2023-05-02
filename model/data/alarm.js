@@ -275,11 +275,12 @@ class CurrentAlarms {
   get definedAlarms () { return this.#definedAlarms; }
   
   /**
-   * @param {Map[code, ]} alarms | {ExpiredAlarms} expired
+   * @param { Map[code, { code:string, label: string }] } - (/config/medibus: bus.alarms.cpx) 
+   * @param { ExpiredAlarms } - (ExpiredAlarms)
    */
   constructor(alarms, expired) {
     this.#expired = expired;
-    this.setupDefinedAlarms(alarms);
+    this.#definedAlarms = alarms;
     this.#alarms = new Map();
   }
   
