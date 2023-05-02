@@ -271,7 +271,7 @@ class CurrentAlarms {
     });
   }
   
-  get size () { return this.#alarms.size; }
+  get size          () { return this.#alarms.size; }
   get definedAlarms () { return this.#definedAlarms; }
   
   /**
