@@ -43,7 +43,7 @@ const AlarmSegment = require('./alarmSegment');
 
 class AlarmStatusResponse {
 
-  #msgid      /// { number }
+  #msgId      /// { number }
   #time       /// { Date }   (model/medibus/message) - (msg.dateTime)
   #code       /// { string }
   #hexPayload
@@ -54,7 +54,7 @@ class AlarmStatusResponse {
    */
   constructor(msg) {
 
-    this.#msgid      = msg.id;
+    this.#msgId      = msg.id;
     this.#time       = msg.dateTime;
     this.#code       = msg.code;
     this.#hexPayload = msg.hexPayload;
@@ -82,8 +82,8 @@ class AlarmStatusResponse {
   }
 
   
-  get msgId     () { return this.#msgid; }
-  get id        () { return this.#msgid; }
+  get msgId     () { return this.#msgId; }
+  get id        () { return this.#msgId; }
   get time      () { return this.#time; }
   get rawLength () { return this.#hexPayload.length; }
   get length    () { return this.#map.length; }
