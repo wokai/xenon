@@ -31,160 +31,7 @@ const config              = require(path.join(__dirname, '..', '..', 'config', '
 const DataResponse        = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
 const AlarmStatusResponse = require(path.join(__dirname, '..', 'medibus', 'alarmStatusResponse'));
 
-const { TimePoint, StateElement }       = require(path.join(__dirname, 'stateCodeMap'));
-
-/**
- * @usecBy{router.get('/alarm/limits')} - (/routes/data)
- **/
-
-class AlarmLimits {
-  
-  #obj
-  
-  /**
-   * @param{res} - { DataResponse }
-   * @see  {this.extractLowLimits}
-   **/
-  setLowLimits = (res) => {
-    try {
-      /// Time and date set by Medibus message constructor
-      this.#obj.date = res.date;
-      this.#obj.time = res.time;
-      
-      this.#obj.ll.resp.pressure        = res.getSegment('05');
-      this.#obj.ll.resp.minutevolume    = res.getSegment('B9');
-      this.#obj.ll.oxymeter.pulse_rate  = res.getSegment('E1');
-      this.#obj.ll.oxymeter.saturation  = res.getSegment('EB');
-      this.#obj.ll.o2.fi                = res.getSegment('F0');
-      
-    } catch(err) {
-      win.def.log({ level: 'warn', file: 'alarm', func: 'setDataObject', message:  err.message });
-      console.log(this.#obj);
-    }
-  }
-  
-  setHighLimits = (res) => {
-    try {
-      /// Time and date set by Medibus message constructor
-      this.#obj.date = res.date;
-      this.#obj.time = res.time;
-      
-      this.#obj.hl.oxymeter.pulse_rate  = res.getSegment('E1');
-      
-      this.#obj.hl.resp.pressure        = res.getSegment('05');
-      this.#obj.hl.resp.minutevolume    = res.getSegment('B9');
-      
-      this.#obj.hl.inhal.halothane_kPa  = res.getSegment('50');
-      this.#obj.hl.inhal.enflurane_kPa  = res.getSegment('52');
-      this.#obj.hl.inhal.isoflurane_kPa = res.getSegment('54');
-      this.#obj.hl.inhal.desflurane_kPa = res.getSegment('56');
-      this.#obj.hl.inhal.sevoflurane_kPa= res.getSegment('58');
-      
-      this.#obj.hl.inhal.desflurane_pct = res.getSegment('AE');
-      this.#obj.hl.inhal.sevoflurane_pct= res.getSegment('B0');
-      this.#obj.hl.inhal.halothane_pct  = res.getSegment('F4');
-      this.#obj.hl.inhal.enflurane_pct  = res.getSegment('F6');
-      this.#obj.hl.inhal.isoflurane_pct = res.getSegment('F8');
-      
-      this.#obj.hl.co2.fi_pct           = res.getSegment('DA');
-      this.#obj.hl.co2.et_pct           = res.getSegment('DB');
-      this.#obj.hl.co2.et_kPa           = res.getSegment('E3');
-      this.#obj.hl.co2.fi_mmHg          = res.getSegment('E5');
-      this.#obj.hl.co2.et_mmHg          = res.getSegment('E6');
-      this.#obj.hl.co2.fi_kPa           = res.getSegment('FF');
-      
-      this.#obj.hl.n2o.fi_pct           = res.getSegment('FB');
- 
-    } catch(err) {
-      win.def.log({ level: 'warn', file: 'alarm', func: 'setDataObject', message:  err.message });
-      console.log(this.#obj);
-    }
-  }
-  
-  setDefaultObject = () => {
-    this.#obj = {
-      date: '00.00.0000',
-      time: '00:00:00',
-      
-      ll: {
-        resp: {
-          pressure: '-',
-          minutevolume: '-',
-        },
-        co2: {
-          et_pct: '-',
-          et_kPa: '-',
-          et_mmHg: '-',
-        },
-        o2: {
-          fi: '-'
-        },
-        inhal: {
-          halothane_kPa: '-',
-          halothane_pct: '-',
-          enflurane_kPa: '-',
-          enflurane_pct: '-',
-          isoflurane_kPa: '-',
-          isoflurane_pct: '-',
-          sevoflurane_kPa: '-',
-          sevoflurane_pct: '-',
-          desflurane_kPa: '-',
-          desflurane_pct: '-'
-        },
-        oxymeter: {
-          pulse_rate: '-',
-          saturation: '-'
-        }
-      },
-      
-      hl: {
-        resp: {
-          pressure: '-',
-          minutevolume: '-',
-        },
-        n2o: {
-          fi_pct: '-'
-        },
-        co2: {
-          et_pct: '-',
-          et_kPa: '-',
-          et_mmHg: '-',
-          fi_pct: '-',
-          fi_kPa: '-',
-          fi_mmHg: '-'
-        },
-        o2: {
-          fi: '-'
-        },
-        inhal: {
-          halothane_kPa: '-',
-          halothane_pct: '-',
-          enflurane_kPa: '-',
-          enflurane_pct: '-',
-          isoflurane_kPa: '-',
-          isoflurane_pct: '-',
-          sevoflurane_kPa: '-',
-          sevoflurane_pct: '-',
-          desflurane_kPa: '-',
-          desflurane_pct: '-'
-        },
-        oxymeter: {
-          pulse_rate: '-',
-          saturation: '-'
-        }
-      }
-    }
-  }
-  
-  
-  constructor(){ this.setDefaultObject(); }
-  
-  get dataObject ()  { return this.#obj; }
-  
-  /// Wrapper functions for obtaining data from  
-  extractLowLimits  = (msg) => { this.setLowLimits (new DataResponse(msg)); }
-  extractHighLimits = (msg) => { this.setHighLimits(new DataResponse(msg)); }
-}
+const { TimePoint, StateElement, StateCodeMap } = require(path.join(__dirname, 'stateCodeMap'));
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Keeps a map with current alarms
@@ -240,7 +87,7 @@ class Alarm {
   
 }
 
-
+/// Shall replace AlarmPeriod
 class AlarmState extends StateElement {
     
   /**
@@ -292,6 +139,8 @@ class AlarmState extends StateElement {
   }
   
 }
+
+
 
 class AlarmPeriod extends Alarm {
   
@@ -385,6 +234,12 @@ class ExpiredAlarms {
     this.#periods = [];
     return res;
   }  
+}
+
+
+class AlarmCodeMap extends StateCodeMap {
+  
+  
 }
 
 
@@ -501,7 +356,6 @@ class CurrentAlarms {
   }
 }
 
-const alarmLimits = new AlarmLimits();
 const expiredAlarms  = new ExpiredAlarms();
 
 /**
@@ -513,7 +367,6 @@ const cp2Alarms = new CurrentAlarms(bus.alarms.cp2, expiredAlarms);
 
 module.exports = { 
   expiredAlarms: expiredAlarms,
-  alarmLimits: alarmLimits,
   cp1Alarms: cp1Alarms,
   cp2Alarms: cp2Alarms
 };

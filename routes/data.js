@@ -31,7 +31,8 @@ const { text }        = require(path.join(__dirname, '..', 'model', 'data', 'tex
 const { settings }    = require(path.join(__dirname, '..', 'model', 'data', 'settings'));
 const { cache }       = require(path.join(__dirname, '..', 'model', 'data', 'cache'));
 
-const { alarmLimits, expiredAlarms, cp1Alarms } = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
+const { alarmLimits } = require(path.join(__dirname, '..', 'model', 'data', 'alarmLimits'));
+const { expiredAlarms, cp1Alarms } = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
 
 const router = express.Router();
 

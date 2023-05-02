@@ -170,6 +170,9 @@ class StateCodeMap {
   }
   get expired () { return this.#expired; }
   
+  get currentSize () { return this.#map.size;       }
+  get expiredSize () { return this.#expired.length; }
+  
   /// ////////////////////////////////////////////////////////////// ///
   /// Insert new StateElement
   /// ////////////////////////////////////////////////////////////// ///

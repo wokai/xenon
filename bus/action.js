@@ -34,7 +34,9 @@ const { device }        = require(path.join(__dirname, '..', 'model', 'data', 'd
 const { dateTime }      = require(path.join(__dirname, '..', 'model', 'data', 'dateTime'));
 const { ventilation }   = require(path.join(__dirname, '..', 'model', 'data', 'ventilation'));
 
-const { alarmLimits, cp1Alarms, cp2Alarms }
+
+const { alarmLimits }   = require(path.join(__dirname, '..', 'model', 'data', 'alarmLimits'));
+const { cp1Alarms, cp2Alarms }
                         = require(path.join(__dirname, '..', 'model', 'data', 'alarm'));
                         
 const { text }          = require(path.join(__dirname, '..', 'model', 'data', 'text'));
