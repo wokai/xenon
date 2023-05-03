@@ -28,7 +28,7 @@ const status        = require(path.join(__dirname, '..', '..', 'controller', 'st
 const { port }      = require(path.join(__dirname, '..', '..', 'controller', 'portController'));
 const { episode }   = require(path.join(__dirname, '..', 'episode'));
 const DataResponse  = require(path.join(__dirname, '..', 'medibus', 'dataResponse'));
-const { cp1Alarms } = require(path.join(__dirname, 'alarm'));
+const { cp1Alarms, cp1AlarmStates } = require(path.join(__dirname, 'alarm'));
 const { text }      = require(path.join(__dirname, 'text' ));
 const { settings }  = require(path.join(__dirname, 'settings'));
 
@@ -48,7 +48,9 @@ class Ventilation {
   getValueObject () {
     this.#val.episode = episode.uuid;
     this.#val.status  = status.controller.text;
-    this.#val.alarm.cp1 = cp1Alarms.getAlarmArray(); /// Array<AlarmPeriod.dataObject>
+    this.#val.alarm.cp1 = cp1AlarmStates.current; /// StateCodeMap
+    this.#val.alarm.cp2 = cp2AlarmStates.current;
+    //this.#val.alarm.cp1 = cp1Alarms.getAlarmArray(); /// Array<AlarmPeriod.dataObject>
     this.#val.text = text.paramObject;
     this.#val.settings = settings.dataObject;
     return this.#val;

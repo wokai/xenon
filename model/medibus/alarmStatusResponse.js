@@ -60,7 +60,6 @@ class AlarmStatusResponse {
     this.#hexPayload = msg.hexPayload;
     this.#map        = new Map();
 
-
     if(msg.hasPayload()) {
       
       if(this.#hexPayload.length % 15 != 0){
@@ -69,9 +68,7 @@ class AlarmStatusResponse {
         /// Each alarm segment is of 15 Bytes length
         var segments = this.#hexPayload.length / 15;
         var s;
-        
         win.def.log({ level: 'debug', file: 'alarmStatusResponse', func: 'construct', message: `MSG id: ${msg.id} | Reading ${segments} segments from payload size ${this.#hexPayload.length}.`});
-        
         for(var i = 0; i < segments; ++i){
           s = AlarmSegment.from(this, i);
           this.#map.set(s.code, s);

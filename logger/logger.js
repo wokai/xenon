@@ -166,9 +166,9 @@ const statusFormat = winston.format.printf( ({ code, text, begin, end }) => {
   if(!code)  { code = '00'; }
   if(!text)  { text = '';   }
   if(!begin) { begin = { msgId: 0, time : config.empty.time}; }
-  if(!end)   { end = { msgId: 0, time : config.empty.time}; }
+  if(!end)   { end =   { msgId: 0, time : config.empty.time}; }
   
-  return `Code ${code} | Text: ${text} | Begin: ${begin.msgId}-${dateformat(begin.time, 'HH:MM:ss')} | End: ${end.msgId}-${dateformat(end.time, 'HH:MM:ss')}`;
+  return `Code ${code} | Text: ${text} | Begin: id:${begin.msgId} ${dateformat(begin.time, 'HH:MM:ss')} | End: id:${end.msgId} ${dateformat(end.time, 'HH:MM:ss')}`;
 });
 
 const status = winston.createLogger({
@@ -196,6 +196,7 @@ def.log({ level: 'info', file: 'logger', func: '(-)', message: `Log level: ${con
 module.exports = {
   def   : def,
   msg   : msg,
-  status: status
+  status: status,
+  dateformat: dateformat
 };
 

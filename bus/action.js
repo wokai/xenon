@@ -143,7 +143,7 @@ module.exports = {
       }),
     cp2 : new Action(commands.alarm.cp2, (msg) => {
         win.def.log({ level: 'debug', file: 'action', func: 'alarm.cp2', message: `Msg id: ${msg.id} | Code: ${msg.code}`})
-        cp2Alarms.extractAlarm(msg);
+        //cp2Alarms.extractAlarm(msg);
         cp2AlarmStates.extractAlarms(msg);
       })
   },

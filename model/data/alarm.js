@@ -48,43 +48,6 @@ const { TimePoint, StateElement, StateCodeMap } = require(path.join(__dirname, '
 /// //////////////////////////////////////////////////////////////////////// ///
 
 
-class Alarm {
-  
-  //#alarmId   /// @ number | Content of bus.alarm.cpx -> id
-  #priority  /// @ number | range 1-31
-  #code      /// @ string | ascii-hex
-  #phrase    /// @ string | 12 bytes
-  #begin     /// @ TimePoint | Message-ID and Time of observation
-  #label     /// @ string - Content of bus.alarm.cpx -> label
-  
-  constructor() {
-    this.#priority = 1;
-    this.#code     = '';
-    this.#phrase   = '';
-    this.#label    = '';
-    this.#begin     = new TimePoint();
-  }
-  
-  //set alarmId(i)  { this.#alarmId  = i; }
-  set priority(p) { this.#priority = p; }
-  set code(c)     { this.#code     = c; }
-  set phrase(p)   { this.#phrase   = p; }
-  set label(l)    { this.#label    = l; }
-  
-  //get alarmId()   { return this.#alarmId;   }
-  get priority()  { return this.#priority;  }
-  get code()      { return this.#code;      }
-  get phrase()    { return this.#phrase;    }
-  get label()     { return this.#label;     }
-  get text()      { return this.#label;     }
-  
-  get begin()     { return this.#begin;     }
-  
-  toString() { 
-    return `[Alarm] Priority: ${this.#priority} | Code: ${this.#code} | Phrase: ${this.#phrase} | Label: ${this.#label} | Time Id: ${this.#begin.id}. `;
-  }
-  
-}
 
 /// Shall replace AlarmPeriod
 class AlarmState extends StateElement {
@@ -140,7 +103,6 @@ class AlarmState extends StateElement {
 }
 
 
-
 class AlarmCodeMap extends StateCodeMap {
   
   /// This class shares one singel array containing expired alarms
@@ -175,8 +137,10 @@ class AlarmCodeMap extends StateCodeMap {
     let a = this.#definedAlarms.get(alarm.code);
     if(a !== undefined){
       dataObj.label = a.label;
+      dataObj.priority = a.priority;
     } else {
-      dataObj.label = `[undef] ${alarm.phrase}`
+      dataObj.label = `[undef] ${alarm.phrase} (Code: ${alarm.code})`
+      dataObj.priority = '';
     }
     this.upsertElement(new AlarmState(alarm.code, dataObj, alarm.msgId, alarm.time));
   }
@@ -200,16 +164,58 @@ class AlarmCodeMap extends StateCodeMap {
     this.expireElements(TimePoint.from(msg));
   }
   
+  
+  /// @param{dataObj} - ({ code: string, param: { code: string, priority: string, phrase: string, label: string }, begin: Date, last: Date, back: Date })
   logExpiredState = (dataObj) => {
-    console.log(dataObj);
-    monitor.infoMsg('Alarm', `'${dataObj.param.label}' from ${dataObj.begin.time} (id ${dataObj.begin.msgId}) to ${dataObj.back.time} (id ${dataObj.back.msgId})` );
-    win.def.log({ level: 'info', file: 'alarm', func: 'AlarmState.logExpiredState', message:  `Alarm '${dataObj.label}' from ${dataObj.begin.time} (id ${dataObj.begin.msgId}) to ${dataObj.back.time} (id ${dataObj.back.msgId})` });
+    //console.log(dataObj);
+    monitor.infoMsg('Alarm', `'${dataObj.param.label}'. Begin: id:${dataObj.begin.msgId} ${win.dateformat(dataObj.begin.time, 'HH:MM:ss')}, End: id:${dataObj.back.msgId} ${win.dateformat(dataObj.back.time, 'HH:MM:ss')}` );
+    win.def.log({ level: 'info', file: 'alarm', func: 'AlarmState.logExpiredState', message:  `Alarm '${dataObj.param.label}' from ${win.dateformat(dataObj.begin.time, 'HH:MM:ss')} (id ${dataObj.begin.msgId}) to ${win.dateformat(dataObj.back.time, 'HH:MM:ss')} (id ${dataObj.back.msgId})` });
+    win.status.log({ level: 'info', code: dataObj.code, text: dataObj.param.label, begin: dataObj.begin, end: dataObj.back });
   }
 
 }
 
 /// ////////////////////////////////////////////////////////////////////
 /// ////////////////////////////////////////////////////////////////////
+
+
+class Alarm {
+  
+  //#alarmId   /// @ number | Content of bus.alarm.cpx -> id
+  #priority  /// @ number | range 1-31
+  #code      /// @ string | ascii-hex
+  #phrase    /// @ string | 12 bytes
+  #begin     /// @ TimePoint | Message-ID and Time of observation
+  #label     /// @ string - Content of bus.alarm.cpx -> label
+  
+  constructor() {
+    this.#priority = 1;
+    this.#code     = '';
+    this.#phrase   = '';
+    this.#label    = '';
+    this.#begin     = new TimePoint();
+  }
+  
+  //set alarmId(i)  { this.#alarmId  = i; }
+  set priority(p) { this.#priority = p; }
+  set code(c)     { this.#code     = c; }
+  set phrase(p)   { this.#phrase   = p; }
+  set label(l)    { this.#label    = l; }
+  
+  //get alarmId()   { return this.#alarmId;   }
+  get priority()  { return this.#priority;  }
+  get code()      { return this.#code;      }
+  get phrase()    { return this.#phrase;    }
+  get label()     { return this.#label;     }
+  get text()      { return this.#label;     }
+  
+  get begin()     { return this.#begin;     }
+  
+  toString() { 
+    return `[Alarm] Priority: ${this.#priority} | Code: ${this.#code} | Phrase: ${this.#phrase} | Label: ${this.#label} | Time Id: ${this.#begin.id}. `;
+  }
+  
+}
 
 class AlarmPeriod extends Alarm {
   
@@ -292,10 +298,9 @@ class ExpiredAlarms {
     this.#periods.push(period);
     /// action: label
     /// Message: 
-    
     let p = period.dataObject;
-    monitor.infoMsg('Alarm', `${p.label} from ${p.begin.time} to ${p.back.time}`);
-    win.def.log({ level: 'info', file: 'alarm', func: 'ExpiredAlarms.push', message:  `Alarm '${p.label}' from ${p.begin.time} (id ${p.begin.msgId}) to ${p.back.time} (id ${p.back.msgId})` });
+    //monitor.infoMsg('Alarm', `${p.label} from ${p.begin.time} to ${p.back.time}`);
+    //win.def.log({ level: 'info', file: 'alarm', func: 'ExpiredAlarms.push', message:  `Alarm '${p.label}' from ${p.begin.time} (id ${p.begin.msgId}) to ${p.back.time} (id ${p.back.msgId})` });
   }
   
   consume = () => {

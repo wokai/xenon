@@ -57,22 +57,16 @@ router.get('/alarm/limits', function(request, result, next){
 });
 
 router.get('/alarm/expired', function(request, result, next){
-  result.status(200).json(expiredAlarms.getArray());
-});
-
-router.get('/alarm/expiredStates', function(request, result, next){
   result.status(200).json(cp1AlarmStates.expired);
+  //result.status(200).json(expiredAlarms.getArray());
 });
 
 router.get('/alarm/cp1', function(request, result, next){
-  result.status(200).json(cp1Alarms.getAlarmArray());
-});
-
-router.get('/alarm/cp1States', function(request, result, next){
   result.status(200).json(cp1AlarmStates.current);
+  //result.status(200).json(cp1Alarms.getAlarmArray());
 });
 
-router.get('/alarm/cp2States', function(request, result, next){
+router.get('/alarm/cp2', function(request, result, next){
   result.status(200).json(cp2AlarmStates.current);
 });
 

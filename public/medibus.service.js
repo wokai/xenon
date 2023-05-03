@@ -247,6 +247,10 @@ app.component('alarmStatusIndicator', {
   templateUrl: 'alarmStatusIndicator.html',
   controller: function($scope, MedibusService) {
     $scope.title = 'Current alarms';
+    $scope.dateloc = function(s) {
+        let d = new Date(s);
+        return d.toLocaleTimeString();
+      }
     
     /**
      * @content{data.vent.alarm.cp1}
@@ -258,7 +262,7 @@ app.component('alarmStatusIndicator', {
 });
 
 app.component('currentAlarmNumber', {
-  template: '<span>{{ data.vent.alarm.cp1.length }}</span>',
+  template: '<span>{{ data.vent.alarm.cp1.length + data.vent.alarm.cp2.length }}</span>',
     controller: function($scope, MedibusService) {    
     /**
      * @content{data.vent.alarm.cp1}

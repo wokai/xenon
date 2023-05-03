@@ -3,30 +3,38 @@
     <thead>
       <tr class="d-flex table-light">
         <th class="col-2" scope="col">
-          ID
+          Code
         </th>
         <th class="col-2" scope="col">
-          Priority
+          Label
         </th>
         <th class="col-4" scope="col">
-          Label
+          First Id
         </th>
         <th class="col-2" scope="col">
           Begin
         </th>
         <th class="col-2" scope="col">
-          Msg-ID
+          Last Id
         </th>
       </tr>
     </thead>
     <tbody>
-      <!-- @source{AlarmPeriod.dataObject} - (/model/data/alarm) -->
+      <!-- @source{cp1AlarmStates.current}     - (/model/data/alarm)       -->
+      <!---@see   {ventilation.getValueObject} - (/model/data/ventilation) -->
       <tr ng-repeat="a in data.vent.alarm.cp1" class="d-flex">
-        <td class="col-2">{{a.id}}</td>
-        <td class="col-2">{{a.priority}}</td>
-        <td class="col-4">{{a.label}}</td>
-        <td class="col-2">{{a.begin.time}}</td>
-        <td class="col-2">{{a.begin.id}}</td>
+        <td class="col-2">{{ a.code }}</td>
+        <td class="col-2">{{ a.param.label }}</td>
+        <td class="col-4">{{ a.begin.msgId }}</td>
+        <td class="col-2">{{ dateloc(a.begin.time) }}</td>
+        <td class="col-2">{{ a.last.msgId }}</td>
+      </tr>
+      <tr ng-repeat="a in data.vent.alarm.cp2" class="d-flex">
+        <td class="col-2">{{ a.code }}</td>
+        <td class="col-2">{{ a.param.label }}</td>
+        <td class="col-4">{{ a.begin.msgId }}</td>
+        <td class="col-2">{{ dateloc(a.begin.time) }}</td>
+        <td class="col-2">{{ a.last.msgId }}</td>
       </tr>
     </tbody>
     </table>
