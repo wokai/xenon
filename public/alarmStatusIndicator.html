@@ -5,17 +5,17 @@
         <th class="col-2" scope="col">
           Code
         </th>
-        <th class="col-2" scope="col">
-          Label
-        </th>
         <th class="col-4" scope="col">
-          First Id
+          Label
         </th>
         <th class="col-2" scope="col">
           Begin
         </th>
         <th class="col-2" scope="col">
-          Last Id
+          First Msg
+        </th>
+        <th class="col-2" scope="col">
+          Last Msg
         </th>
       </tr>
     </thead>
@@ -24,16 +24,16 @@
       <!---@see   {ventilation.getValueObject} - (/model/data/ventilation) -->
       <tr ng-repeat="a in data.vent.alarm.cp1" class="d-flex">
         <td class="col-2">{{ a.code }}</td>
-        <td class="col-2">{{ a.param.label }}</td>
-        <td class="col-4">{{ a.begin.msgId }}</td>
+        <td class="col-4">{{ a.param.label }}</td>
         <td class="col-2">{{ dateloc(a.begin.time) }}</td>
+        <td class="col-2">{{ a.begin.msgId }}</td>
         <td class="col-2">{{ a.last.msgId }}</td>
       </tr>
       <tr ng-repeat="a in data.vent.alarm.cp2" class="d-flex">
         <td class="col-2">{{ a.code }}</td>
-        <td class="col-2">{{ a.param.label }}</td>
-        <td class="col-4">{{ a.begin.msgId }}</td>
+        <td class="col-4">{{ a.param.label }}</td>
         <td class="col-2">{{ dateloc(a.begin.time) }}</td>
+        <td class="col-2">{{ a.begin.msgId }}</td>
         <td class="col-2">{{ a.last.msgId }}</td>
       </tr>
     </tbody>

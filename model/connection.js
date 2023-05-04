@@ -57,7 +57,7 @@ class Connection extends UuidState {
   constructor(runtime) {
     super(++Connection.#lastId);
     this.#runtime = runtime;
-    monitor.statusMsg('Connection', { id: this.id, begin: this.begin, end: this.end });
+    monitor.statusMsg('Connection',  id: this.id, begin: this.begin, end: this.end );
   }
   
   /// 
@@ -68,7 +68,7 @@ class Connection extends UuidState {
   
   expire = () => {
     text.expire();
-    monitor.statusMsg('Connection', { id: this.id, begin: this.begin, end: this.end });
+    monitor.statusMsg('Connection', id: this.id, begin: this.begin, end: this.end );
   }
 }
 

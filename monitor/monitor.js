@@ -98,11 +98,13 @@ class Monitor extends EventEmitter {
   
   /**
    * @param{action} - (string)
-   * @param{times}  - (object: { id: number, begin: date, end: date })
+   * @param{id}     - (number)
+   * @param{begin}  - (object: { id: number, time: Date })
+   * @param{end}    - (object: { id: number, time: Date })
    **/
   
-  statusMsg = (action, times)        => {
-    this.emitMsg('info', action, `ID: ${times.id}  Begin: ${dateformat(times.begin, 'HH:MM:ss')}  End: ${times.end ? dateformat(times.end, 'HH:MM:ss') : ''}`, {}); 
+  statusMsg = (action, id, begin, end)        => {
+    this.emitMsg('info', action, `Id: ${id} Begin: ${dateformat(begin, 'HH:MM:ss')}  End:${end ? dateformat(end.time, 'HH:MM:ss') : ''}`, {}); 
   }
 }
 
