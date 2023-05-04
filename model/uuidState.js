@@ -20,7 +20,10 @@
  * USE OR OTHER DEALINGS IN THE SOFTWARE.
  ******************************************************************************/
 
-const crypto  = require("crypto");    /// Generates uuid
+const crypto  = require('crypto');    /// Generates uuid
+const path    = require('path');
+
+const { TimePoint } = require(path.join(__dirname, 'data', 'stateCodeMap'));
 
 /// ////////////////////////////////////////////////////////////////////
 /// Generic container for State information. Indluces an UUID.
@@ -32,22 +35,25 @@ const crypto  = require("crypto");    /// Generates uuid
 
 
 class UuidState {
-  
+
+  static #lastId = 0; /// Counter for creation of (session) unique id
+  static getLastId() { return UuidState.#lastId; }
+
   #id     /// number     
   #uuid   /// uuid
-  #begin  /// Date
-  #end    /// Date
-
-  #storage
+  
+  #begin  /// TimePoint
+  #end    /// TimePoint
   
   get id()    { return this.#id;    }
   get begin() { return this.#begin; }
   get end()   { return this.#end;   }
   get uuid()  { return this.#uuid;  }
 
-  constructor(id = 0) {
-    this.#id    = id;
-    this.#begin = new Date();
+  /// id: Message.getLastId
+  constructor(tp = new TimePoint()) {
+    this.#id    = ++UuidState.#lastId;
+    this.#begin = tp;
     this.#uuid  = crypto.randomUUID();
     this.#end   = null;
   }
@@ -77,8 +83,8 @@ class UuidState {
     return this.extendDataObject(r);
   }
   
-  terminate = () => { 
-    this.#end = new Date();
+  terminate = (tp = new TimePoint()) => { 
+    this.#end = tp;
     this.expire();
   }
 }

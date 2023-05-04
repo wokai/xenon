@@ -60,19 +60,20 @@ class Runtime extends UuidState {
     status.controller.on('protocol', (data) => { this.beginConnection(); });
     status.controller.on('stopping', (data) => { this.endConnection(); });
     
-    win.status.log({ level: 'info', code: 'Runtime', text: `UUID: ${this.uuid} `, begin: { msgId: 0, time: this.begin } });
+    /// begin, end: TimePoint
+    win.status.log({ level: 'info', code: '', text: `Runtime UUID: ${this.uuid} `, begin: this.begin, end: this.end });
   }
   
   terminate = () => {
     super.terminate();
-    win.status.log({ level: 'info', code: 'Runtime', text: `UUID: ${this.uuid} `, begin: { msgId: 0, time: this.begin }, end: { msgId: Message.getLastId(), time: this.end } });
+    win.status.log({ level: 'info', code: '', text: `Runtime UUID: ${this.uuid} `, begin: this.begin, end: this.end });
   }
   
   
   /// //////////////////////////////////////////////////////////////////
   /// Connection
   /// //////////////////////////////////////////////////////////////////
-  
+  /// @usedBy{this.constructor}
   endConnection = () => {
     if(this.#connection != null) {
       this.#connection.terminate();
@@ -80,6 +81,7 @@ class Runtime extends UuidState {
     }
   }
   
+  /// @usedBy{this.constructor}
   beginConnection = () => {
     this.endConnection();
     this.#connection = new Connection(this);

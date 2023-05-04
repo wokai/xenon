@@ -35,12 +35,13 @@ const { Message } = require(path.join(__dirname, '..', 'medibus', 'message'));
 /// ////////////////////////////////////////////////////////////////////
 
 class TimePoint {
-  #msgId     /// @ number | Medibus-Message-Id
+  
+  #msgId  /// @ number | Medibus-Message-Id
   #time   /// @ Date
    
   /// There is no type checking, because it would mess up the code
   /// This class mainly exists in order to have clean accessors...
-  constructor(msgId = 0, time = config.empty.time) {
+  constructor(msgId = Message.getLastId(), time = new Date()) {
     this.#msgId = msgId;
     this.#time = time;
   }

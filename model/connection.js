@@ -52,10 +52,8 @@ class Connection extends UuidState {
   
   #runtime  /// Runtime
   
-  static #lastId = 0; /// Counter for creation of (session) unique id
-  
   constructor(runtime) {
-    super(++Connection.#lastId);
+    super();
     this.#runtime = runtime;
     monitor.statusMsg('Connection',  this.id, this.begin, this.end );
   }
@@ -68,6 +66,7 @@ class Connection extends UuidState {
   
   expire = () => {
     text.expire();
+    win.status.log({ level: 'info', code: '', text: `Connection UUID: ${this.uuid} `, begin: this.begin, end: this.end });
     monitor.statusMsg('Connection', this.id, this.begin, this.end );
   }
 }

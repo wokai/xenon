@@ -159,7 +159,7 @@ const statusTransport = new winston.transports.Stream({ stream: statusStream });
 /**
  * @param{code}  - (String number)
  * @param{text}  - (String)
- * @param{begin} - (TimePoint: /model/data/parameterMap) - { id: number, time: Date }
+ * @param{begin} - (TimePoint: /model/data/parameterMap) - { msgId: number, time: Date }
  * @param{end}   - (TimePoint)
  **/
 const statusFormat = winston.format.printf( ({ code, text, begin, end }) => {
