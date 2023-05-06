@@ -79,6 +79,7 @@ const consTransport = new winston.transports.Console({
       format: winston.format.colorize({ all: true })
 })
 
+
 /// Define logging-format
 const defFormat = winston.format.printf( ({ level, label, message, timestamp, file, func, stack}) => {
   if(!file)  { file = '-'; }
@@ -103,6 +104,7 @@ const def = winston.createLogger({
   level: config.logger.level, /// Default: info
   exitOnError: false
 });
+
 
 /// //////////////////////////////////////////////////////////////////////// ///
 /// Message repository
@@ -162,13 +164,13 @@ const statusTransport = new winston.transports.Stream({ stream: statusStream });
  * @param{begin} - (TimePoint: /model/data/parameterMap) - { msgId: number, time: Date }
  * @param{end}   - (TimePoint)
  **/
-const statusFormat = winston.format.printf( ({ code, text, begin, end }) => {
+const statusFormat = winston.format.printf( ({ timestamp, code, text, begin, end }) => {
   if(!code)  { code = '00'; }
   if(!text)  { text = '';   }
   if(!begin) { begin = { msgId: 0, time : config.empty.time}; }
   if(!end)   { end =   { msgId: 0, time : config.empty.time}; }
   
-  return `Code ${code} | Text: ${text} | Begin: id:${begin.msgId} ${dateformat(begin.time, 'HH:MM:ss')} | End: id:${end.msgId} ${dateformat(end.time, 'HH:MM:ss')}`;
+  return `[${timestamp}] Code ${code} | Text: ${text} | Begin: id:${begin.msgId} ${dateformat(begin.time, 'HH:MM:ss')} | End: id:${end.msgId} ${dateformat(end.time, 'HH:MM:ss')}`;
 });
 
 const status = winston.createLogger({
@@ -197,6 +199,10 @@ module.exports = {
   def   : def,
   msg   : msg,
   status: status,
-  dateformat: dateformat
+  dateformat: dateformat,
+  shutdown: function() { 
+    defFileStream.on('finish', function() { process.exit(); });
+    defFileStream.end();
+  }
 };
 

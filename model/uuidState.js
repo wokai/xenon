@@ -83,7 +83,7 @@ class UuidState {
     return this.extendDataObject(r);
   }
   
-  terminate = (tp = new TimePoint()) => { 
+  shutdown(tp = new TimePoint()) { 
     this.#end = tp;
     this.expire();
   }

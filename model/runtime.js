@@ -64,11 +64,12 @@ class Runtime extends UuidState {
     win.status.log({ level: 'info', code: '', text: `Runtime UUID: ${this.uuid} `, begin: this.begin, end: this.end });
   }
   
-  terminate = () => {
-    super.terminate();
-    win.status.log({ level: 'info', code: '', text: `Runtime UUID: ${this.uuid} `, begin: this.begin, end: this.end });
+  shutdown() {
+    super.shutdown(); /// Places new TimePoint at this.end
+    win.status.log({ level: 'info', code: '', text: `Runtime UUID: ${this.uuid}. Last MsgId at shutdown: ${Message.getLastId()}`, begin: this.begin, end: this.end });
+    win.def.log(   { level: 'info', file: 'runtime', func: 'shutdown', message: `UUID: ${this.uuid}. Begin`});
+    win.shutdown();
   }
-  
   
   /// //////////////////////////////////////////////////////////////////
   /// Connection
