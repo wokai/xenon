@@ -21,6 +21,8 @@ output:
  - [PCHAlliance](https://www.pchalliance.org/) (Personal Connected Health Alliance)
  - Bundesverband Gesundheits-IT [bvitg e. V.](https://www.bvitg.de/)
 
+--------------------------------------------------------------------------------
+
 <!--- --------------------------------------------------------------------- --->
 # Medizininformatik Initiative (MII)
 <!--- --------------------------------------------------------------------- --->
@@ -36,8 +38,6 @@ See [MII Kerndatensatz](https://www.medizininformatik-initiative.de/de/der-kernd
  - [MII Modul ICU Terminologien](https://www.medizininformatik-initiative.de/Kerndatensatz/Modul_Intensivmedizin/Terminologien.html)
  - [Art-Decor](https://art-decor.org/art-decor/decor-datasets--mide-): Quite rudimentary
  - [Simplifier](https://simplifier.net/)
-
-
 
 Laut *EU Recommendation on European Electronic Health Record exchange format* [2019/243](https://eur-lex.europa.eu/eli/reco/2019/243/oj) soll die
 Ausgangsbasis für ein europäisches Ausgangsformat für elektronische 
@@ -67,9 +67,14 @@ Recommendations:
 develops, tests and certifies (and help implement) digital standards that enable
 systems in the healthcare sector to exchange relevant data in a secure way.
 
+--------------------------------------------------------------------------------
+
 <!--- --------------------------------------------------------------------- --->
-# Parameters
+# LOINC
 <!--- --------------------------------------------------------------------- --->
+
+ - [BfArM](https://www.bfarm.de/DE/Kodiersysteme/Terminologien/LOINC-UCUM/LOINC-und-RELMA/_node.html)
+ - [LOINC User Group](http://www.loinc.de/index-Dateien/page0002.htm)
 
 ## FHIR Codes
 
@@ -79,7 +84,7 @@ are contained in ValueSet `10.97.1`.
 All codes are derived from [LOINC](http://loinc.org)
 
 Loinc     Display
--------   -------------------------------------------------------------------------
+-------   ----------------------------------------------------------------------
 8302-2    Body height
 29463-7   Body weight
 50064-5   Ideal body weight
@@ -87,7 +92,7 @@ Loinc     Display
 
 
 Loinc     Display
--------   -------------------------------------------------------------------------
+-------   ----------------------------------------------------------------------
 19835-8   Breath rate setting Ventilator synchronized intermittent mandatory
 19994-3   Oxygen/Total gas setting [Volume Fraction] Ventilator
 20077-4   Positive end expiratory pressure setting Ventilator
@@ -106,7 +111,7 @@ Loinc     Display
 ## LOINC Codes
 
 Loinc     Display
---------  --------------------------------------------------------------------------
+--------  ----------------------------------------------------------------------
 88034-4   Ventilator settings Document
 19996-8   FIO2 on vent
 19834-1   Breath rate setting Ventilator
@@ -116,14 +121,18 @@ Loinc     Display
 20124-4   [Ventilation mode Ventilator](https://loinc.org/20124-4/)
 
 Loinc         Display
---------      -------------------------------------------------------------------------
+--------      ------------------------------------------------------------------
 LP7706-7      Ventilator
 LA19016-7     Manual
 LA12671-6     Assisted ventilation
 LA29246-8     Controlled ventilation
 LL5054-3      Manual|Assist|Ctrl|Assist-Ctrl|MMV|Other
 
+--------------------------------------------------------------------------------
+
+<!--- --------------------------------------------------------------------- --->
 # Snomed-CT
+<!--- --------------------------------------------------------------------- --->
 
  - [Bioontology](https://bioportal.bioontology.org/ontologies/SNOMEDCT): TreeView browsing portal
  - [Community Content Browser](https://community-browser.ihtsdotools.org/?): Includes a german translation
@@ -291,8 +300,6 @@ SCTID       regime/therapy
 ## Cochrane Linked Data
 
  - Procedure [Dual Pressure Spontaneous Ventilation](https://data.cochrane.org/concepts/r4hp5zhbl4f2) = BIPAP
-
-
 
 
 
